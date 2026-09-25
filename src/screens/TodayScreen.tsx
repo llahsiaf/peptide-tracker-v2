@@ -386,8 +386,9 @@ export const TodayScreen: React.FC<TodayScreenProps> = ({
             </Text>
 
             <Text style={styles.heroSubtext}>
-              {language === 'en' ? 'Next site:' : 'Titik rotasi:'}{' '}
-              <Text style={styles.heroHighlightText}>{getSiteCode(currentSite, language)} ({getSiteLabel(currentSite)})</Text>
+              {dueOccurrences.length > 0
+                ? (language === 'en' ? 'Tap Quick Log when injection is finished' : 'Tekan Catat setelah suntik selesai')
+                : (language === 'en' ? 'All scheduled injections recorded' : 'Semua injeksi terjadwal sudah dicatat')}
             </Text>
           </View>
 

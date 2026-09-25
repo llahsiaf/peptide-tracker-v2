@@ -14,7 +14,6 @@ import * as Notifications from 'expo-notifications';
 import {
   Activity,
   FlaskConical,
-  RotateCw,
   History,
   Snowflake,
   TrendingUp,
@@ -25,7 +24,6 @@ import {
 } from 'lucide-react-native';
 
 import { InventoryScreen } from './src/screens/InventoryScreen';
-import { RotationScreen } from './src/screens/RotationScreen';
 import { HistoryScreen } from './src/screens/HistoryScreen';
 import { FreezerScreen } from './src/screens/FreezerScreen';
 import { FloatingAIChat } from './src/components/FloatingAIChat';
@@ -52,7 +50,7 @@ if (Platform.OS !== 'web') {
 function BioStackApp() {
   const { language, t } = useLanguage();
 
-  const [activeTab, setActiveTab] = useState<'today' | 'inventory' | 'rotation' | 'history' | 'freezer' | 'analytics' | 'settings'>('today');
+  const [activeTab, setActiveTab] = useState<'today' | 'inventory' | 'history' | 'freezer' | 'analytics' | 'settings'>('today');
   const [isCalculatorOpen, setIsCalculatorOpen] = useState(false);
   const [notificationTarget, setNotificationTarget] = useState<{ inventoryId?: string; date?: string } | null>(null);
   const injectionHistory = useBioStackStore((state) => state.injectionHistory || []);
@@ -295,20 +293,18 @@ function BioStackApp() {
           />
         )}
         {activeTab === 'inventory' && <InventoryScreen />}
-        {activeTab === 'rotation' && <RotationScreen />}
         {activeTab === 'history' && <HistoryScreen />}
         {activeTab === 'analytics' && <AnalyticsScreen />}
         {activeTab === 'freezer' && <FreezerScreen />}
         {activeTab === 'settings' && <SettingsScreen onDone={() => setActiveTab('today')} />}
       </View>
 
-      {/* Navigasi Utama — Floating Island Dock */}
+      {/* Navigasi Utama — Floating Island Dock (4 Tab Utama) */}
       <View style={styles.navBarContainer}>
         <View style={styles.navBar}>
           {([
             ['today', t('navigation.today'), Activity],
             ['inventory', t('navigation.inventory'), FlaskConical],
-            ['rotation', t('navigation.rotation'), RotateCw],
             ['history', t('navigation.history'), History],
             ['freezer', t('navigation.freezer'), Snowflake],
           ] as const).map(([tab, label, Icon]) => {

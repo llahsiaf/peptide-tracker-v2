@@ -133,12 +133,15 @@ export const CuteVialIllustration: React.FC<CuteVialProps> = ({
   const liquidHeight = (clampedProgress / 100) * totalHeight;
   const liquidY = bottleBottom - liquidHeight;
 
+  const safeId = (vialId || seed || category || 'def').replace(/[^a-zA-Z0-9_-]/g, '_');
+  const liquidGradId = `liquidGrad_${safeId}`;
+
   return (
     <View style={[styles.container, { width: dimensions.width, height: dimensions.height }]}>
       <Svg viewBox="0 0 100 150" width={dimensions.width} height={dimensions.height}>
         <Defs>
-          {/* Gradien Cairan Utama */}
-          <LinearGradient id="liquidGrad" x1="0" y1="0" x2="0" y2="1">
+          {/* Gradien Cairan Utama (Unik per botol agar tidak tabrakan di DOM) */}
+          <LinearGradient id={liquidGradId} x1="0" y1="0" x2="0" y2="1">
             <Stop offset="0%" stopColor={theme.top} stopOpacity={0.92} />
             <Stop offset="100%" stopColor={theme.bottom} stopOpacity={0.98} />
           </LinearGradient>
@@ -234,7 +237,7 @@ export const CuteVialIllustration: React.FC<CuteVialProps> = ({
                   Q 23 137 23 126
                   Z
                 `}
-                fill="url(#liquidGrad)"
+                fill={`url(#${liquidGradId})`}
               />
 
               {/* Garis Kilau Permukaan Air */}
