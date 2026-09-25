@@ -48,8 +48,8 @@ export const SyringeVisualizer: React.FC<SyringeVisualizerProps> = ({
       <Svg width="100%" height={80} viewBox="0 0 300 80">
         <Defs>
           <LinearGradient id="syringeLiquidGrad" x1="0" y1="0" x2="1" y2="0">
-            <Stop offset="0%" stopColor="#8f77d4" stopOpacity="0.85" />
-            <Stop offset="100%" stopColor="#bca9ef" stopOpacity="0.95" />
+            <Stop offset="0%" stopColor="#c97528" stopOpacity="0.85" />
+            <Stop offset="100%" stopColor="#DF8A3A" stopOpacity="0.95" />
           </LinearGradient>
           <LinearGradient id="syringeBarrelGrad" x1="0" y1="0" x2="0" y2="1">
             <Stop offset="0%" stopColor="#291c1b" stopOpacity="0.9" />
@@ -192,25 +192,25 @@ export const SyringeVisualizer: React.FC<SyringeVisualizerProps> = ({
         {/* 8. Garis Bidik Target & Label Dosis */}
         {boundedUnits > 0 && (
           <G>
-            {/* Garis bidik vertikal hijau neon */}
+            {/* Garis bidik vertikal amber */}
             <Line
               x1={targetX}
               y1={barrelY - 4}
               x2={targetX}
               y2={barrelY + barrelHeight + 4}
-              stroke="#bca9ef"
+              stroke="#DF8A3A"
               strokeWidth="2"
             />
             {/* Pointer segitiga */}
             <Polygon
               points={`${targetX - 4},${barrelY + barrelHeight + 7} ${targetX + 4},${barrelY + barrelHeight + 7} ${targetX},${barrelY + barrelHeight + 2}`}
-              fill="#bca9ef"
+              fill="#DF8A3A"
             />
             {/* Teks Mark X IU */}
             <SvgText
               x={targetX}
               y={barrelY + barrelHeight + 17}
-              fill="#bca9ef"
+              fill="#DF8A3A"
               fontSize="9"
               fontWeight="800"
               textAnchor="middle"

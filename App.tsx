@@ -233,7 +233,7 @@ function BioStackApp() {
               <View style={styles.subtitleRow}>
                 <Text style={styles.appSubtitle}>Personal Tracker</Text>
                 <View style={styles.headerStatus}>
-                  <ShieldCheck size={10} color="#34d399" />
+                  <ShieldCheck size={10} color={COLORS.sage} />
                   <Text style={styles.headerStatusText}>LOCAL</Text>
                 </View>
               </View>
@@ -247,7 +247,7 @@ function BioStackApp() {
               style={styles.notificationBtn}
               accessibilityLabel={language === 'en' ? 'Dose calculator' : 'Kalkulator dosis'}
             >
-              <Calculator size={18} color="#10b981" />
+              <Calculator size={18} color={isCalculatorOpen ? COLORS.accent : COLORS.accent} />
             </TouchableOpacity>
 
             <TouchableOpacity 
@@ -264,7 +264,7 @@ function BioStackApp() {
               accessibilityLabel={language === 'en' ? 'Open analytics' : 'Buka analytics'}
               /* Buka analytics */
             >
-              <TrendingUp size={18} color={activeTab === 'analytics' ? '#10b981' : '#94a3b8'} />
+              <TrendingUp size={18} color={activeTab === 'analytics' ? COLORS.accent : '#94a3b8'} />
             </TouchableOpacity>
 
             <TouchableOpacity 
@@ -272,7 +272,7 @@ function BioStackApp() {
               style={styles.notificationBtn}
               accessibilityLabel={language === 'en' ? 'Open settings' : 'Buka pengaturan'}
             >
-              <Settings size={18} color={activeTab === 'settings' ? '#10b981' : '#94a3b8'} />
+              <Settings size={18} color={activeTab === 'settings' ? COLORS.accent : '#94a3b8'} />
             </TouchableOpacity>
           </View>
         </View>

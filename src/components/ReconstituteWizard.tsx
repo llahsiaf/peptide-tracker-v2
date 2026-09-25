@@ -86,7 +86,7 @@ export const ReconstituteWizard: React.FC<ReconstituteWizardProps> = ({
           {/* Header */}
           <View style={styles.header}>
             <View style={styles.headerTitleWrap}>
-              <FlaskConical size={18} color="#bca9ef" />
+              <FlaskConical size={18} color={COLORS.accent} />
               <Text style={styles.headerTitle}>
                 {language === 'en' ? 'Reconstitution & Dose Setup' : 'Pelarutan & Penyetelan Dosis'}
               </Text>
@@ -200,7 +200,7 @@ export const ReconstituteWizard: React.FC<ReconstituteWizardProps> = ({
                     </Text>
                   </View>
                   <View style={styles.tipRow}>
-                    <Check size={16} color="#bca9ef" />
+                    <Check size={16} color={COLORS.accent} />
                     <Text style={styles.tipText}>
                       {language === 'en'
                         ? 'Store immediately in fridge at 2°C - 8°C and keep away from direct light.'

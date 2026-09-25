@@ -75,7 +75,7 @@ export const GenericDosingCalculatorModal: React.FC<GenericDosingCalculatorModal
           <View style={styles.header}>
             <View style={styles.headerTitleRow}>
               <View style={styles.iconBox}>
-                <Calculator size={18} color="#bca9ef" />
+                <Calculator size={18} color={COLORS.accent} />
               </View>
               <View>
                 <Text style={styles.headerTitle}>{t('calculator.title')}</Text>
@@ -238,7 +238,7 @@ export const GenericDosingCalculatorModal: React.FC<GenericDosingCalculatorModal
             {/* HASIL KALKULASI */}
             <View style={styles.resultCard}>
               <View style={styles.resultHeader}>
-                <Syringe size={16} color="#bca9ef" />
+                <Syringe size={16} color={COLORS.accent} />
                 <Text style={styles.resultTitle}>{t('calculator.resultTitle')}</Text>
               </View>
 
@@ -321,11 +321,11 @@ const styles = StyleSheet.create({
   },
   sheetContainer: {
     height: '88%',
-    backgroundColor: '#090d16',
+    backgroundColor: COLORS.card,
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     borderWidth: 1,
-    borderColor: '#1e293b',
+    borderColor: COLORS.border,
   },
   header: {
     flexDirection: 'row',
@@ -333,7 +333,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 16,
     borderBottomWidth: 1,
-    borderColor: '#1e293b',
+    borderColor: COLORS.border,
   },
   headerTitleRow: {
     flexDirection: 'row',
@@ -344,28 +344,28 @@ const styles = StyleSheet.create({
     width: 34,
     height: 34,
     borderRadius: 10,
-    backgroundColor: 'rgba(188, 169, 239, 0.1)',
+    backgroundColor: 'rgba(223, 138, 58, 0.12)',
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
-    borderColor: 'rgba(188, 169, 239, 0.25)',
+    borderColor: 'rgba(223, 138, 58, 0.28)',
   },
   headerTitle: {
     fontSize: 15,
     fontWeight: '800',
-    color: '#f8fafc',
+    color: COLORS.text,
   },
   headerSubtitle: {
     fontSize: 10,
-    color: '#94a3b8',
+    color: COLORS.muted,
     marginTop: 2,
   },
   closeBtn: {
     padding: 6,
     borderRadius: 8,
-    backgroundColor: '#0f172a',
+    backgroundColor: COLORS.cardElevated,
     borderWidth: 1,
-    borderColor: '#1e293b',
+    borderColor: COLORS.border,
   },
   scrollBody: {
     padding: 16,
@@ -373,11 +373,11 @@ const styles = StyleSheet.create({
     paddingBottom: 40,
   },
   inputGroup: {
-    backgroundColor: '#0f172a',
+    backgroundColor: COLORS.cardElevated,
     borderRadius: 14,
     padding: 14,
     borderWidth: 1,
-    borderColor: '#1e293b',
+    borderColor: COLORS.border,
     gap: 8,
   },
   labelRow: {
@@ -388,23 +388,23 @@ const styles = StyleSheet.create({
   inputLabel: {
     fontSize: 11,
     fontWeight: '800',
-    color: '#94a3b8',
+    color: COLORS.muted,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
   },
   inputMetaLabel: {
     fontSize: 11,
     fontWeight: '800',
-    color: '#38bdf8',
+    color: COLORS.accent,
   },
   unitToggleGroup: {
     flexDirection: 'row',
-    backgroundColor: '#030712',
+    backgroundColor: COLORS.bgDarker,
     borderRadius: 8,
     padding: 2,
     gap: 2,
     borderWidth: 1,
-    borderColor: '#1e293b',
+    borderColor: COLORS.border,
   },
   unitToggleBtn: {
     paddingHorizontal: 8,
@@ -417,7 +417,7 @@ const styles = StyleSheet.create({
   unitToggleText: {
     fontSize: 10,
     fontWeight: '800',
-    color: '#64748b',
+    color: COLORS.muted,
   },
   unitToggleTextActive: {
     color: '#231716',
@@ -427,7 +427,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.border,
     borderRadius: 10,
-    color: '#f8fafc',
+    color: COLORS.text,
     fontSize: 18,
     fontWeight: '800',
     paddingHorizontal: 14,
@@ -446,26 +446,26 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: 'rgba(255, 255, 255, 0.04)',
     borderWidth: 1,
-    borderColor: '#1e293b',
+    borderColor: COLORS.border,
   },
   quickChipActive: {
-    backgroundColor: 'rgba(188, 169, 239, 0.15)',
-    borderColor: '#bca9ef',
+    backgroundColor: 'rgba(223, 138, 58, 0.16)',
+    borderColor: COLORS.accent,
   },
   quickChipText: {
     fontSize: 10,
     fontWeight: '700',
-    color: '#94a3b8',
+    color: COLORS.muted,
   },
   quickChipTextActive: {
-    color: '#c2d3b6',
+    color: COLORS.accent,
   },
   resultCard: {
-    backgroundColor: '#05131b',
+    backgroundColor: COLORS.cardHighlight,
     borderRadius: 16,
     padding: 16,
     borderWidth: 1,
-    borderColor: 'rgba(188, 169, 239, 0.3)',
+    borderColor: 'rgba(223, 138, 58, 0.35)',
     gap: 12,
   },
   resultHeader: {
@@ -476,7 +476,7 @@ const styles = StyleSheet.create({
   resultTitle: {
     fontSize: 12,
     fontWeight: '800',
-    color: '#bca9ef',
+    color: COLORS.accent,
     letterSpacing: 0.5,
     textTransform: 'uppercase',
   },
@@ -486,47 +486,47 @@ const styles = StyleSheet.create({
   },
   metricBox: {
     flex: 1,
-    backgroundColor: '#030712',
+    backgroundColor: COLORS.bgDarker,
     borderRadius: 12,
     padding: 12,
     borderWidth: 1,
-    borderColor: '#1e293b',
+    borderColor: COLORS.border,
     alignItems: 'center',
   },
   metricLabel: {
     fontSize: 9,
     fontWeight: '700',
-    color: '#94a3b8',
+    color: COLORS.muted,
     textTransform: 'uppercase',
   },
   metricValHighlight: {
     fontSize: 22,
     fontWeight: '900',
-    color: '#38bdf8',
+    color: COLORS.accent,
     marginVertical: 4,
   },
   metricValAccent: {
     fontSize: 22,
     fontWeight: '900',
-    color: '#bca9ef',
+    color: COLORS.sage,
     marginVertical: 4,
   },
   metricSub: {
     fontSize: 8,
-    color: '#64748b',
+    color: COLORS.muted,
   },
   visualizerContainer: {
-    backgroundColor: '#030712',
+    backgroundColor: COLORS.bgDarker,
     borderRadius: 12,
     padding: 10,
     borderWidth: 1,
-    borderColor: '#1e293b',
+    borderColor: COLORS.border,
     alignItems: 'center',
   },
   visualizerLabel: {
     fontSize: 9,
     fontWeight: '800',
-    color: '#64748b',
+    color: COLORS.muted,
     marginBottom: 6,
     textTransform: 'uppercase',
   },
@@ -543,28 +543,28 @@ const styles = StyleSheet.create({
   },
   statLabel: {
     fontSize: 10,
-    color: '#94a3b8',
+    color: COLORS.muted,
   },
   statValue: {
     fontSize: 10,
     fontWeight: '800',
-    color: '#f8fafc',
+    color: COLORS.text,
   },
   tipBox: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
-    backgroundColor: 'rgba(188, 169, 239, 0.08)',
+    backgroundColor: 'rgba(223, 138, 58, 0.08)',
     borderRadius: 10,
     padding: 10,
     borderWidth: 1,
-    borderColor: 'rgba(188, 169, 239, 0.2)',
+    borderColor: 'rgba(223, 138, 58, 0.2)',
   },
   tipText: {
     flex: 1,
     fontSize: 10,
     lineHeight: 15,
-    color: '#c2d3b6',
+    color: COLORS.sage,
   },
   resetBtn: {
     flexDirection: 'row',
@@ -576,6 +576,6 @@ const styles = StyleSheet.create({
   resetBtnText: {
     fontSize: 11,
     fontWeight: '700',
-    color: '#94a3b8',
+    color: COLORS.muted,
   },
 });

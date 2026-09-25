@@ -404,7 +404,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ onDone }) => {
         {/* HERO */}
         <View style={styles.hero}>
           <View style={styles.heroIcon}>
-            <SettingsIcon size={20} color="#bca9ef" />
+            <SettingsIcon size={20} color={COLORS.accent} />
           </View>
 
           <View style={styles.heroCopy}>
@@ -425,7 +425,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ onDone }) => {
             >
               <CheckCircle2
                 size={16}
-                color={busy ? '#475569' : '#bca9ef'}
+                color={busy ? '#475569' : COLORS.accent}
               />
             </TouchableOpacity>
           )}
@@ -436,7 +436,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ onDone }) => {
           icon={
             <Languages
               size={16}
-              color="#38bdf8"
+              color={COLORS.accent}
             />
           }
           title={t('settings.language')}
@@ -484,7 +484,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ onDone }) => {
                   {active && (
                     <CheckCircle2
                       size={15}
-                      color="#bca9ef"
+                      color={COLORS.accent}
                     />
                   )}
                 </TouchableOpacity>
@@ -498,7 +498,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ onDone }) => {
           icon={
             <ArchiveRestore
               size={16}
-              color="#38bdf8"
+              color={COLORS.accent}
             />
           }
           title="Backup & Restore"
@@ -509,7 +509,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ onDone }) => {
             icon={
               <Download
                 size={18}
-                color="#38bdf8"
+                color={COLORS.accent}
               />
             }
             title={t("settings.exportAllData") || "Ekspor seluruh data"}
@@ -527,7 +527,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ onDone }) => {
             icon={
               <Upload
                 size={18}
-                color="#bca9ef"
+                color={COLORS.accent}
               />
             }
             title={t("settings.restoreFromBackup") || "Restore dari backup"}
@@ -627,7 +627,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ onDone }) => {
                 >
                   <Bell
                     size={14}
-                    color="#052e16"
+                    color="#231716"
                   />
 
                   <Text
@@ -683,7 +683,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ onDone }) => {
           icon={
             <ShieldCheck
               size={16}
-              color="#bca9ef"
+              color={COLORS.accent}
             />
           }
           title="Privacy"
@@ -697,7 +697,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ onDone }) => {
                 color={
                   aiNetworkAllowed
                     ? '#64748b'
-                    : '#bca9ef'
+                    : COLORS.accent
                 }
               />
             </View>
@@ -961,7 +961,7 @@ const Stat = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#030712',
+    backgroundColor: COLORS.bg,
   },
 
   content: {
@@ -975,9 +975,9 @@ const styles = StyleSheet.create({
     gap: 12,
     padding: 14,
     borderRadius: 16,
-    backgroundColor: '#090d16',
+    backgroundColor: COLORS.card,
     borderWidth: 1,
-    borderColor: '#1e293b',
+    borderColor: COLORS.border,
     marginBottom: 16,
   },
 
@@ -985,7 +985,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 12,
-    backgroundColor: 'rgba(16,185,129,.10)',
+    backgroundColor: 'rgba(223, 138, 58, 0.12)',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -998,28 +998,28 @@ const styles = StyleSheet.create({
     fontSize: 9,
     fontWeight: '800',
     letterSpacing: 1.2,
-    color: '#64748b',
+    color: COLORS.muted,
   },
 
   title: {
     fontSize: 19,
     fontWeight: '900',
-    color: '#fff',
+    color: COLORS.text,
     marginTop: 3,
   },
 
   subtitle: {
     fontSize: 11,
-    color: '#94a3b8',
+    color: COLORS.textMuted,
     marginTop: 2,
   },
 
   doneBtn: {
     padding: 8,
     borderRadius: 10,
-    backgroundColor: '#0f172a',
+    backgroundColor: COLORS.cardElevated,
     borderWidth: 1,
-    borderColor: '#1e293b',
+    borderColor: COLORS.border,
   },
 
   sectionTitle: {
@@ -1034,7 +1034,7 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
     borderRadius: 8,
-    backgroundColor: '#090d16',
+    backgroundColor: COLORS.cardElevated,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -1042,13 +1042,13 @@ const styles = StyleSheet.create({
   sectionTitleText: {
     fontSize: 13,
     fontWeight: '900',
-    color: '#e2e8f0',
+    color: COLORS.text,
   },
 
   card: {
-    backgroundColor: '#090d16',
+    backgroundColor: COLORS.card,
     borderWidth: 1,
-    borderColor: '#1e293b',
+    borderColor: COLORS.border,
     borderRadius: 16,
     padding: 14,
     marginBottom: 14,
@@ -1064,7 +1064,7 @@ const styles = StyleSheet.create({
     width: 34,
     height: 34,
     borderRadius: 10,
-    backgroundColor: '#0f172a',
+    backgroundColor: COLORS.cardElevated,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -1076,12 +1076,12 @@ const styles = StyleSheet.create({
   rowTitle: {
     fontSize: 12,
     fontWeight: '800',
-    color: '#fff',
+    color: COLORS.text,
   },
 
   rowDesc: {
     fontSize: 10,
-    color: '#64748b',
+    color: COLORS.muted,
     lineHeight: 15,
     marginTop: 3,
   },
@@ -1090,15 +1090,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 9,
     borderRadius: 9,
-    backgroundColor: 'rgba(56,189,248,.10)',
+    backgroundColor: 'rgba(223, 138, 58, 0.12)',
     borderWidth: 1,
-    borderColor: 'rgba(56,189,248,.35)',
+    borderColor: 'rgba(223, 138, 58, 0.35)',
   },
 
   actionText: {
     fontSize: 9,
     fontWeight: '900',
-    color: '#38bdf8',
+    color: COLORS.accent,
   },
 
   disabledControl: {
@@ -1107,7 +1107,7 @@ const styles = StyleSheet.create({
 
   divider: {
     height: 1,
-    backgroundColor: '#111827',
+    backgroundColor: COLORS.border,
     marginVertical: 14,
   },
 
@@ -1125,7 +1125,7 @@ const styles = StyleSheet.create({
   warningText: {
     flex: 1,
     fontSize: 9,
-    color: '#cbd5e1',
+    color: COLORS.textSecondary,
     lineHeight: 14,
   },
 
@@ -1143,30 +1143,30 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     paddingVertical: 5,
     borderRadius: 8,
-    backgroundColor: '#1e293b',
+    backgroundColor: COLORS.cardElevated,
     borderWidth: 1,
-    borderColor: '#334155',
+    borderColor: COLORS.border,
   },
 
   statusPillOk: {
-    backgroundColor: 'rgba(16,185,129,.10)',
-    borderColor: 'rgba(16,185,129,.3)',
+    backgroundColor: 'rgba(194, 211, 182, 0.12)',
+    borderColor: 'rgba(194, 211, 182, 0.3)',
   },
 
   statusPillText: {
     fontSize: 8,
     fontWeight: '900',
     letterSpacing: 1,
-    color: '#94a3b8',
+    color: COLORS.muted,
   },
 
   statusPillTextOk: {
-    color: '#c2d3b6',
+    color: COLORS.sage,
   },
 
   notificationHint: {
     fontSize: 9,
-    color: '#64748b',
+    color: COLORS.muted,
     lineHeight: 14,
     marginTop: 10,
   },
@@ -1185,29 +1185,29 @@ const styles = StyleSheet.create({
     gap: 6,
     paddingVertical: 10,
     borderRadius: 10,
-    backgroundColor: '#bca9ef',
+    backgroundColor: COLORS.accent,
   },
 
   notificationActionPrimaryText: {
     fontSize: 9,
     fontWeight: '900',
-    color: '#052e16',
+    color: '#231716',
   },
 
   notificationActionSecondary: {
     paddingHorizontal: 12,
     paddingVertical: 10,
     borderRadius: 10,
-    backgroundColor: '#0f172a',
+    backgroundColor: COLORS.cardElevated,
     borderWidth: 1,
-    borderColor: '#334155',
+    borderColor: COLORS.border,
     justifyContent: 'center',
   },
 
   notificationActionSecondaryText: {
     fontSize: 9,
     fontWeight: '900',
-    color: '#cbd5e1',
+    color: COLORS.textSecondary,
   },
 
   rebuildBtn: {
@@ -1243,25 +1243,25 @@ const styles = StyleSheet.create({
     width: 42,
     height: 24,
     borderRadius: 12,
-    backgroundColor: '#1e293b',
+    backgroundColor: COLORS.cardElevated,
     justifyContent: 'center',
     paddingHorizontal: 3,
   },
 
   switchOn: {
-    backgroundColor: '#047857',
+    backgroundColor: COLORS.accent,
   },
 
   switchKnob: {
     width: 18,
     height: 18,
     borderRadius: 9,
-    backgroundColor: '#94a3b8',
+    backgroundColor: COLORS.muted,
   },
 
   switchKnobOn: {
     alignSelf: 'flex-end',
-    backgroundColor: '#ecfdf5',
+    backgroundColor: '#231716',
   },
 
   secureNote: {
@@ -1274,7 +1274,7 @@ const styles = StyleSheet.create({
   secureNoteText: {
     flex: 1,
     fontSize: 9,
-    color: '#64748b',
+    color: COLORS.muted,
   },
 
   statsGrid: {
@@ -1287,20 +1287,20 @@ const styles = StyleSheet.create({
     width: '48%',
     padding: 10,
     borderRadius: 12,
-    backgroundColor: '#0f172a',
+    backgroundColor: COLORS.cardElevated,
     borderWidth: 1,
-    borderColor: '#1e293b',
+    borderColor: COLORS.border,
   },
 
   statValue: {
     fontSize: 16,
     fontWeight: '900',
-    color: '#fff',
+    color: COLORS.text,
   },
 
   statLabel: {
     fontSize: 9,
-    color: '#64748b',
+    color: COLORS.muted,
     marginTop: 3,
   },
 
@@ -1325,7 +1325,7 @@ const styles = StyleSheet.create({
 
   versionText: {
     fontSize: 8,
-    color: '#475569',
+    color: COLORS.muted,
     textAlign: 'center',
     marginTop: 10,
     lineHeight: 13,
@@ -1343,36 +1343,36 @@ const styles = StyleSheet.create({
     gap: 10,
     paddingHorizontal: 11,
     borderRadius: 10,
-    backgroundColor: '#030712',
+    backgroundColor: COLORS.bgDarker,
     borderWidth: 1,
-    borderColor: '#1e293b',
+    borderColor: COLORS.border,
   },
 
   languageOptionActive: {
-    borderColor: 'rgba(16,185,129,.55)',
-    backgroundColor: 'rgba(16,185,129,.06)',
+    borderColor: COLORS.accent,
+    backgroundColor: 'rgba(223, 138, 58, 0.12)',
   },
 
   languageOptionCode: {
     width: 32,
     fontSize: 10,
     fontWeight: '900',
-    color: '#64748b',
+    color: COLORS.muted,
   },
 
   languageOptionCodeActive: {
-    color: '#bca9ef',
+    color: COLORS.accent,
   },
 
   languageOptionLabel: {
     flex: 1,
     fontSize: 11,
     fontWeight: '800',
-    color: '#cbd5e1',
+    color: COLORS.textSecondary,
   },
 
   languageOptionLabelActive: {
-    color: '#ffffff',
+    color: COLORS.text,
   },
 
   modalOverlay: {
@@ -1388,21 +1388,21 @@ const styles = StyleSheet.create({
     maxWidth: 390,
     borderRadius: 18,
     padding: 18,
-    backgroundColor: '#090d16',
+    backgroundColor: COLORS.card,
     borderWidth: 1,
-    borderColor: '#334155',
+    borderColor: COLORS.border,
   },
 
   confirmTitle: {
     fontSize: 16,
     fontWeight: '900',
-    color: '#fff',
+    color: COLORS.text,
     marginTop: 10,
   },
 
   confirmText: {
     fontSize: 11,
-    color: '#94a3b8',
+    color: COLORS.muted,
     lineHeight: 17,
     marginTop: 6,
   },
@@ -1418,15 +1418,15 @@ const styles = StyleSheet.create({
     paddingVertical: 11,
     borderRadius: 10,
     alignItems: 'center',
-    backgroundColor: '#0f172a',
+    backgroundColor: COLORS.cardElevated,
     borderWidth: 1,
-    borderColor: '#1e293b',
+    borderColor: COLORS.border,
   },
 
   secondaryText: {
     fontSize: 10,
     fontWeight: '900',
-    color: '#94a3b8',
+    color: COLORS.muted,
   },
 
   primaryBtn: {

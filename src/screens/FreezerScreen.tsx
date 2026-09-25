@@ -523,7 +523,7 @@ export const FreezerScreen: React.FC = () => {
               <View style={styles.modalTitleRow}>
                 <FlaskConical
                   size={19}
-                  color="#bca9ef"
+                  color={COLORS.accent}
                 />
 
                 <Text style={styles.modalHeading}>
@@ -668,7 +668,7 @@ export const FreezerScreen: React.FC = () => {
               <View style={styles.modalTitleRow}>
                 <Plus
                   size={19}
-                  color="#bca9ef"
+                  color={COLORS.accent}
                 />
 
                 <Text style={styles.modalHeading}>
@@ -1183,10 +1183,10 @@ const styles = StyleSheet.create({
   },
 
   modalLargeBox: {
-    backgroundColor: '#090d16',
+    backgroundColor: COLORS.card,
     borderRadius: 17,
     borderWidth: 1,
-    borderColor: '#1e293b',
+    borderColor: COLORS.border,
     maxHeight: '88%',
     padding: 16,
   },
@@ -1196,7 +1196,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     borderBottomWidth: 1,
-    borderColor: '#1e293b',
+    borderColor: COLORS.border,
     paddingBottom: 13,
   },
 
@@ -1227,13 +1227,13 @@ const styles = StyleSheet.create({
   reconPeptideName: {
     fontSize: 14,
     fontWeight: '800',
-    color: '#38bdf8',
+    color: COLORS.accent,
   },
 
   reconPeptideDesc: {
     fontSize: 10,
     lineHeight: 15,
-    color: '#94a3b8',
+    color: COLORS.textMuted,
   },
 
   inputGroup: {
@@ -1247,9 +1247,9 @@ const styles = StyleSheet.create({
   },
 
   textInput: {
-    backgroundColor: '#030712',
+    backgroundColor: COLORS.bgDarker,
     borderWidth: 1,
-    borderColor: '#1e293b',
+    borderColor: COLORS.border,
     borderRadius: 9,
     minHeight: 42,
     paddingHorizontal: 11,
@@ -1295,7 +1295,7 @@ const styles = StyleSheet.create({
   },
 
   unitChipActive: {
-    backgroundColor: 'rgba(188, 169, 239, 0.16)',
+    backgroundColor: 'rgba(223, 138, 58, 0.16)',
     borderColor: COLORS.accent,
   },
 
@@ -1315,7 +1315,7 @@ const styles = StyleSheet.create({
   reconPreviewBox: {
     backgroundColor: COLORS.bgDarker,
     borderWidth: 1,
-    borderColor: 'rgba(188, 169, 239, 0.30)',
+    borderColor: 'rgba(223, 138, 58, 0.30)',
     borderRadius: 11,
     padding: 11,
     gap: 3,

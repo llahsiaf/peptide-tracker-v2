@@ -126,7 +126,7 @@ export const DoseDetailModal: React.FC<DoseDetailModalProps> = ({ visible, item,
             {/* Precision Metrics Card */}
             <View style={styles.metricsBox}>
               <View style={styles.metricsHeader}>
-                <Activity size={14} color="#bca9ef" />
+                <Activity size={14} color={COLORS.accent} />
                 <Text style={styles.metricsTitle}>
                   {language === 'en' ? 'Precision Calculation Results' : 'Hasil Kalkulasi Presisi'}
                 </Text>
@@ -252,11 +252,11 @@ const styles = StyleSheet.create({
     color: '#231716',
   },
   inputGroup: {
-    backgroundColor: '#0f172a',
+    backgroundColor: COLORS.cardElevated,
     borderRadius: 12,
     padding: 12,
     borderWidth: 1,
-    borderColor: '#1e293b',
+    borderColor: COLORS.border,
   },
   inputHeader: {
     flexDirection: 'row',
@@ -266,24 +266,24 @@ const styles = StyleSheet.create({
   inputLabel: {
     fontSize: 11,
     fontWeight: '700',
-    color: '#94a3b8',
+    color: COLORS.muted,
   },
   inputValueHighlight: {
     fontSize: 12,
     fontWeight: '800',
-    color: '#bca9ef',
+    color: COLORS.accent,
   },
   inputValueHighlightCyan: {
     fontSize: 12,
     fontWeight: '800',
-    color: '#06b6d4',
+    color: COLORS.sage,
   },
   numericInput: {
-    backgroundColor: '#090d16',
+    backgroundColor: COLORS.bgDarker,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#bca9ef',
-    color: '#ffffff',
+    borderColor: COLORS.accent,
+    color: COLORS.text,
     fontSize: 15,
     fontWeight: '800',
     textAlign: 'center',
@@ -291,11 +291,11 @@ const styles = StyleSheet.create({
     fontFamily: 'Courier',
   },
   numericInputCyan: {
-    backgroundColor: '#090d16',
+    backgroundColor: COLORS.bgDarker,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#06b6d4',
-    color: '#ffffff',
+    borderColor: COLORS.sage,
+    color: COLORS.text,
     fontSize: 15,
     fontWeight: '800',
     textAlign: 'center',
@@ -303,11 +303,11 @@ const styles = StyleSheet.create({
     fontFamily: 'Courier',
   },
   metricsBox: {
-    backgroundColor: '#090d16',
+    backgroundColor: COLORS.cardHighlight,
     borderRadius: 14,
     padding: 12,
     borderWidth: 1,
-    borderColor: 'rgba(188, 169, 239, 0.4)',
+    borderColor: 'rgba(223, 138, 58, 0.35)',
   },
   metricsHeader: {
     flexDirection: 'row',
@@ -318,7 +318,7 @@ const styles = StyleSheet.create({
   metricsTitle: {
     fontSize: 10,
     fontWeight: '800',
-    color: '#bca9ef',
+    color: COLORS.accent,
     textTransform: 'uppercase',
   },
   metricsGrid: {
@@ -327,30 +327,30 @@ const styles = StyleSheet.create({
   },
   metricCol: {
     flex: 1,
-    backgroundColor: '#0f172a',
+    backgroundColor: COLORS.bgDarker,
     borderRadius: 10,
     padding: 8,
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#1e293b',
+    borderColor: COLORS.border,
   },
   metricColHighlightEmerald: {
-    backgroundColor: 'rgba(188, 169, 239, 0.1)',
-    borderColor: '#bca9ef',
+    backgroundColor: 'rgba(223, 138, 58, 0.12)',
+    borderColor: COLORS.accent,
   },
   metricColHighlightCyan: {
-    backgroundColor: 'rgba(6, 182, 212, 0.1)',
-    borderColor: '#06b6d4',
+    backgroundColor: 'rgba(194, 211, 182, 0.12)',
+    borderColor: COLORS.sage,
   },
-  metricLabel: { fontSize: 8, color: '#64748b', fontWeight: '700' },
-  metricLabelEmerald: { fontSize: 8, color: '#c2d3b6', fontWeight: '700' },
-  metricLabelCyan: { fontSize: 8, color: '#38bdf8', fontWeight: '700' },
-  metricValue: { fontSize: 13, fontWeight: '800', color: '#ffffff', fontFamily: 'Courier' },
-  metricValueEmerald: { fontSize: 14, fontWeight: '900', color: '#c2d3b6', fontFamily: 'Courier' },
-  metricValueCyan: { fontSize: 14, fontWeight: '900', color: '#38bdf8', fontFamily: 'Courier' },
-  metricUnit: { fontSize: 8, color: '#475569' },
-  metricUnitEmerald: { fontSize: 8, color: '#bca9ef' },
-  metricUnitCyan: { fontSize: 8, color: '#06b6d4' },
+  metricLabel: { fontSize: 8, color: COLORS.muted, fontWeight: '700' },
+  metricLabelEmerald: { fontSize: 8, color: COLORS.accent, fontWeight: '700' },
+  metricLabelCyan: { fontSize: 8, color: COLORS.sage, fontWeight: '700' },
+  metricValue: { fontSize: 13, fontWeight: '800', color: COLORS.text, fontFamily: 'Courier' },
+  metricValueEmerald: { fontSize: 14, fontWeight: '900', color: COLORS.accent, fontFamily: 'Courier' },
+  metricValueCyan: { fontSize: 14, fontWeight: '900', color: COLORS.sage, fontFamily: 'Courier' },
+  metricUnit: { fontSize: 8, color: COLORS.muted },
+  metricUnitEmerald: { fontSize: 8, color: COLORS.accent },
+  metricUnitCyan: { fontSize: 8, color: COLORS.sage },
   saveButton: {
     backgroundColor: COLORS.accent,
     borderRadius: 14,

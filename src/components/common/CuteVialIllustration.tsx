@@ -56,8 +56,8 @@ export const CuteVialIllustration: React.FC<CuteVialProps> = ({
     if (cat.includes('brain') || cat.includes('neuro') || cat.includes('focus')) {
       return { top: '#fb7185', bottom: '#e11d48', cap: '#f43f5e', bubble: '#fecdd3' };
     }
-    // Default Soft Lilac
-    return { top: '#bca9ef', bottom: '#8f77d4', cap: '#a894e6', bubble: '#ede5fb' };
+    // Default Warm Amber / Copper
+    return { top: '#DF8A3A', bottom: '#c97528', cap: '#DF8A3A', bubble: '#fef3c7' };
   };
 
   const theme = getThemeColor();
@@ -84,7 +84,7 @@ export const CuteVialIllustration: React.FC<CuteVialProps> = ({
           {/* Gradien Kaca Vial */}
           <LinearGradient id="glassGrad" x1="0" y1="0" x2="1" y2="0">
             <Stop offset="0%" stopColor="#ffffff" stopOpacity={0.16} />
-            <Stop offset="25%" stopColor="#bca9ef" stopOpacity={0.06} />
+            <Stop offset="25%" stopColor="#DF8A3A" stopOpacity={0.06} />
             <Stop offset="75%" stopColor="#ffffff" stopOpacity={0.04} />
             <Stop offset="100%" stopColor="#ffffff" stopOpacity={0.18} />
           </LinearGradient>

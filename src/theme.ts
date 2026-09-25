@@ -10,7 +10,7 @@ export const COLORS = {
   // Warm Borders
   border: '#3d2b29',
   borderSoft: '#2d1e1d',
-  borderGlow: 'rgba(188, 169, 239, 0.35)',
+  borderGlow: 'rgba(223, 138, 58, 0.35)',
 
   // Typography (Warm Off-White & Taupe)
   text: '#fbf9f5',
@@ -19,9 +19,10 @@ export const COLORS = {
   muted: '#9c8985',
   textMuted: '#9c8985',
 
-  // Palette 1 Core Accents
-  accent: '#bca9ef',        // Soft Lilac / Wisteria Lavender
-  accentStrong: '#a894e6',
+  // Palette 1 Core Accents (Warm Espresso & Burnished Amber)
+  accent: '#DF8A3A',        // Burnished Amber / Warm Copper (High-energy & warm)
+  accentStrong: '#c97528',
+  amberGlow: 'rgba(223, 138, 58, 0.16)',
   lilac: '#bca9ef',
   sage: '#c2d3b6',          // Sage Cream / Matcha Green
   mint: '#c2d3b6',          // Map mint -> Sage Cream for harmonious natural tones
@@ -36,7 +37,7 @@ export const COLORS = {
   danger: '#f43f5e',
 
   // Category specific liquid colors
-  liquidDefault: '#bca9ef', // Soft Lilac
+  liquidDefault: '#DF8A3A', // Burnished Amber
   liquidHealing: '#c2d3b6', // Sage Cream
   liquidGlp1: '#fb923c',    // Warm Peach
   liquidGh: '#648cf7',     // Soft Cobalt
@@ -70,8 +71,8 @@ export const SHADOWS = {
     elevation: 6,
   },
   cardGlow: {
-    shadowColor: '#bca9ef',
-    shadowOpacity: 0.22,
+    shadowColor: '#DF8A3A',
+    shadowOpacity: 0.28,
     shadowRadius: 14,
     shadowOffset: { width: 0, height: 4 },
     elevation: 8,

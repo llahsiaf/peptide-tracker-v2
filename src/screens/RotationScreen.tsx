@@ -306,15 +306,15 @@ export const RotationScreen: React.FC = () => {
     siteId: string,
   ) =>
     currentSite === siteId
-      ? 'rgba(188, 169, 239, 0.20)'
-      : '#0f172a';
+      ? 'rgba(223, 138, 58, 0.20)'
+      : COLORS.cardElevated;
 
   const siteStroke = (
     siteId: string,
   ) =>
     currentSite === siteId
-      ? '#bca9ef'
-      : '#334155';
+      ? COLORS.accent
+      : COLORS.border;
 
   const siteStrokeWidth = (
     siteId: string,
@@ -325,7 +325,7 @@ export const RotationScreen: React.FC = () => {
     siteId: string,
   ) =>
     currentSite === siteId
-      ? '#bca9ef'
+      ? COLORS.accent
       : '#ffffff';
 
   const renderInteractiveSite = (siteId: string, cx: number, cy: number) => {
@@ -341,13 +341,13 @@ export const RotationScreen: React.FC = () => {
               cx={cx}
               cy={cy}
               r="27"
-              fill="rgba(188, 169, 239, 0.22)"
+              fill="rgba(223, 138, 58, 0.22)"
             />
             <Circle
               cx={cx}
               cy={cy}
               r="23"
-              stroke="#bca9ef"
+              stroke={COLORS.accent}
               strokeWidth="1.5"
               strokeDasharray="3 3"
               opacity={0.9}
@@ -360,8 +360,8 @@ export const RotationScreen: React.FC = () => {
           cx={cx}
           cy={cy}
           r="18"
-          fill={isSelected ? '#352423' : 'rgba(35, 23, 22, 0.88)'}
-          stroke={isSelected ? '#bca9ef' : '#1f4ab2'}
+          fill={isSelected ? COLORS.cardElevated : 'rgba(35, 23, 22, 0.88)'}
+          stroke={isSelected ? COLORS.accent : COLORS.border}
           strokeWidth={isSelected ? 2.5 : 1.5}
         />
 
@@ -419,7 +419,7 @@ export const RotationScreen: React.FC = () => {
         >
           <Compass
             size={20}
-            color="#bca9ef"
+            color={COLORS.accent}
           />
         </View>
 
@@ -757,7 +757,7 @@ export const RotationScreen: React.FC = () => {
                   {isSelected ? (
                     <CheckCircle2
                       size={16}
-                      color="#bca9ef"
+                      color={COLORS.accent}
                     />
                   ) : (
                     <Clock
@@ -795,7 +795,7 @@ export const RotationScreen: React.FC = () => {
       >
         <ShieldCheck
           size={16}
-          color="#bca9ef"
+          color={COLORS.accent}
         />
 
         <Text

@@ -106,7 +106,7 @@ export const TakeFromFreezerModal: React.FC<TakeFromFreezerModalProps> = ({
                   onPress={() => setSelectedItem(null)}
                   style={[styles.backBtn, { flexDirection: 'row', alignItems: 'center', gap: 6 }]}
                 >
-                  <ArrowLeft size={14} color="#bca9ef" />
+                  <ArrowLeft size={14} color={COLORS.accent} />
                   <Text style={styles.backBtnText}>
                     {language === 'en' ? 'Choose another vial' : 'Pilih vial lainnya'}
                   </Text>

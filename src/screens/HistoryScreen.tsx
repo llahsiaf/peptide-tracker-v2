@@ -270,7 +270,7 @@ export const HistoryScreen: React.FC = () => {
         >
           <History
             size={20}
-            color="#bca9ef"
+            color={COLORS.accent}
           />
         </View>
 
@@ -315,7 +315,7 @@ export const HistoryScreen: React.FC = () => {
           >
             <Download
               size={16}
-              color="#38bdf8"
+              color={COLORS.accent}
             />
           </TouchableOpacity>
 
@@ -377,7 +377,7 @@ export const HistoryScreen: React.FC = () => {
           >
             <TrendingUp
               size={14}
-              color="#38bdf8"
+              color={COLORS.accent}
             />
 
             <Text
@@ -489,7 +489,7 @@ export const HistoryScreen: React.FC = () => {
           >
             <FlaskConical
               size={12}
-              color="#bca9ef"
+              color={COLORS.accent}
             />
 
             <Text
@@ -530,7 +530,7 @@ export const HistoryScreen: React.FC = () => {
           >
             <FlaskConical
               size={14}
-              color="#bca9ef"
+              color={COLORS.accent}
             />
 
             <Text

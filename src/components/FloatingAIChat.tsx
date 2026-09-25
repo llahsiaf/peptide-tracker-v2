@@ -265,7 +265,7 @@ export const FloatingAIChat: React.FC = () => {
                 <View style={styles.chatHeader}>
                   <View style={styles.headerTitleRow}>
                     <View style={styles.botIconWrap}>
-                      <Bot size={18} color="#bca9ef" />
+                      <Bot size={18} color={COLORS.accent} />
                     </View>
                     <View>
                       <Text style={styles.headerTitle}>BioStack AI Expert</Text>
@@ -321,7 +321,7 @@ export const FloatingAIChat: React.FC = () => {
                   ))}
                   {isLoading && (
                     <View style={styles.loadingBubble}>
-                      <ActivityIndicator size="small" color="#bca9ef" />
+                      <ActivityIndicator size="small" color={COLORS.accent} />
                       <Text style={styles.loadingText}>
                         {language === 'en' ? 'Preparing clinical response...' : 'Menyiapkan respon klinis...'}
                       </Text>
@@ -361,7 +361,7 @@ export const FloatingAIChat: React.FC = () => {
                       onPress={() => setActiveView('chat')}
                       style={styles.backBtn}
                     >
-                      <ChevronLeft size={20} color="#bca9ef" />
+                      <ChevronLeft size={20} color={COLORS.accent} />
                     </TouchableOpacity>
                     <View>
                       <Text style={styles.headerTitle}>
@@ -379,7 +379,7 @@ export const FloatingAIChat: React.FC = () => {
 
                 <ScrollView contentContainerStyle={styles.settingsBody} showsVerticalScrollIndicator={false}>
                   <View style={styles.infoBox}>
-                    <Key size={18} color="#bca9ef" />
+                    <Key size={18} color={COLORS.accent} />
                     <Text style={styles.settingsDesc}>
                       {language === 'en'
                         ? 'Enter Google Gemini API Key (or OpenAI). The key is stored locally and securely on your device.'
@@ -498,7 +498,7 @@ const styles = StyleSheet.create({
     width: 34,
     height: 34,
     borderRadius: 10,
-    backgroundColor: 'rgba(188, 169, 239, 0.16)',
+    backgroundColor: 'rgba(223, 138, 58, 0.16)',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -570,13 +570,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 8,
     padding: 10,
-    backgroundColor: '#0f172a',
+    backgroundColor: COLORS.cardElevated,
     borderRadius: 10,
     alignSelf: 'flex-start',
   },
   loadingText: {
     fontSize: 11,
-    color: '#94a3b8',
+    color: COLORS.muted,
   },
   inputBar: {
     flexDirection: 'row',
@@ -584,30 +584,30 @@ const styles = StyleSheet.create({
     gap: 8,
     padding: 12,
     borderTopWidth: 1,
-    borderColor: '#1e293b',
-    backgroundColor: '#030712',
+    borderColor: COLORS.border,
+    backgroundColor: COLORS.bgDarker,
   },
   textInput: {
     flex: 1,
-    backgroundColor: '#090d16',
+    backgroundColor: COLORS.cardElevated,
     borderWidth: 1,
-    borderColor: '#1e293b',
+    borderColor: COLORS.border,
     borderRadius: 12,
     paddingHorizontal: 12,
     paddingVertical: 9,
-    color: '#ffffff',
+    color: COLORS.text,
     fontSize: 12,
   },
   sendBtn: {
     width: 38,
     height: 38,
     borderRadius: 10,
-    backgroundColor: '#bca9ef',
+    backgroundColor: COLORS.accent,
     alignItems: 'center',
     justifyContent: 'center',
   },
   sendBtnDisabled: {
-    backgroundColor: '#1e293b',
+    backgroundColor: COLORS.cardElevated,
   },
   settingsContainer: {
     flex: 1,
@@ -620,22 +620,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
-    backgroundColor: 'rgba(188, 169, 239, 0.08)',
+    backgroundColor: 'rgba(223, 138, 58, 0.08)',
     borderWidth: 1,
-    borderColor: 'rgba(188, 169, 239, 0.2)',
+    borderColor: 'rgba(223, 138, 58, 0.2)',
     borderRadius: 12,
     padding: 12,
   },
   settingsDesc: {
     flex: 1,
     fontSize: 11,
-    color: '#94a3b8',
+    color: COLORS.muted,
     lineHeight: 16,
   },
   fieldLabel: {
     fontSize: 11,
     fontWeight: '700',
-    color: '#94a3b8',
+    color: COLORS.muted,
     marginTop: 4,
   },
   providerRow: {
@@ -646,39 +646,39 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: 10,
     borderRadius: 10,
-    backgroundColor: '#0f172a',
+    backgroundColor: COLORS.cardElevated,
     borderWidth: 1,
-    borderColor: '#1e293b',
+    borderColor: COLORS.border,
     alignItems: 'center',
   },
   providerBtnActive: {
-    backgroundColor: 'rgba(188, 169, 239, 0.15)',
-    borderColor: '#bca9ef',
+    backgroundColor: 'rgba(223, 138, 58, 0.16)',
+    borderColor: COLORS.accent,
   },
   providerBtnText: {
     fontSize: 11,
     fontWeight: '700',
-    color: '#64748b',
+    color: COLORS.muted,
   },
   providerBtnTextActive: {
-    color: '#c2d3b6',
+    color: COLORS.accent,
   },
   keyInput: {
-    backgroundColor: '#030712',
+    backgroundColor: COLORS.bgDarker,
     borderWidth: 1,
-    borderColor: '#1e293b',
+    borderColor: COLORS.border,
     borderRadius: 10,
     padding: 12,
-    color: '#ffffff',
+    color: COLORS.text,
     fontSize: 12,
   },
   settingsPrivacyNote: {
     marginTop: 12,
     padding: 10,
     borderRadius: 10,
-    backgroundColor: 'rgba(56,189,248,.06)',
+    backgroundColor: 'rgba(223, 138, 58, 0.06)',
     borderWidth: 1,
-    borderColor: 'rgba(56,189,248,.18)',
+    borderColor: 'rgba(223, 138, 58, 0.18)',
   },
   settingsPrivacyText: {
     fontSize: 9,
