@@ -13,6 +13,7 @@ import {
 import {
   ArchiveRestore,
   Bell,
+  Calendar,
   CheckCircle2,
   Download,
   FileJson,
@@ -40,6 +41,7 @@ import {
   requestNotificationPermission,
   sendTestNotification,
 } from '../utils/notificationUtils';
+import { exportAllToAppleCalendar } from '../utils/calendarHelper';
 import { COLORS } from '../theme';
 
 interface SettingsScreenProps {
@@ -208,6 +210,11 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ onDone }) => {
           ? 'All BioStack local reminders have been rebuilt for the next 30 days.'
           : 'Semua local reminder BioStack dibangun ulang untuk 30 hari ke depan.',
       );
+    });
+
+  const handleExportAllCalendar = () =>
+    run(async () => {
+      await exportAllToAppleCalendar(inventory);
     });
 
   useEffect(() => {
@@ -672,6 +679,26 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ onDone }) => {
 
                 <Text style={styles.rebuildText}>
                   {language === 'en' ? 'Rebuild 30-Day Reminders' : 'Rebuild Reminder 30 Hari' /* Rebuild Reminder 30 Hari */}
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={handleExportAllCalendar}
+                disabled={busy}
+                style={[
+                  styles.calendarSyncBtn,
+                  busy && styles.disabledControl,
+                ]}
+                accessibilityRole="button"
+                accessibilityLabel={language === 'en' ? 'Sync to Apple Calendar' : 'Sinkronkan ke Apple Calendar'}
+              >
+                <Calendar
+                  size={14}
+                  color="#DF8A3A"
+                />
+
+                <Text style={styles.calendarSyncText}>
+                  {language === 'en' ? 'Sync All to Apple Calendar (.ics)' : 'Sinkronkan Semua ke Apple Calendar (.ics)'}
                 </Text>
               </TouchableOpacity>
             </>
@@ -1227,6 +1254,25 @@ const styles = StyleSheet.create({
     fontSize: 9,
     fontWeight: '900',
     color: '#fbbf24',
+  },
+
+  calendarSyncBtn: {
+    marginTop: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
+    paddingVertical: 10,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: 'rgba(223, 138, 58, 0.3)',
+    backgroundColor: 'rgba(223, 138, 58, 0.08)',
+  },
+
+  calendarSyncText: {
+    fontSize: 9,
+    fontWeight: '900',
+    color: '#DF8A3A',
   },
 
   privacyRow: {

@@ -1,6 +1,8 @@
 import { Alert, Platform } from 'react-native';
+import type { InventoryItem } from '../types';
+import { calculateInjectionMetrics } from './injectionCalculations';
 
-interface CalendarSyncParams {
+export interface CalendarSyncParams {
   peptideName: string;
   targetDose: number;
   unit: string;
@@ -21,7 +23,7 @@ const DAY_CODE_MAP: Record<string, string> = {
   Min: 'SU',
 };
 
-function buildIcsContent(params: CalendarSyncParams): { content: string; filename: string } {
+function buildEventBlock(params: CalendarSyncParams): string {
   const {
     peptideName,
     targetDose,
@@ -57,16 +59,12 @@ function buildIcsContent(params: CalendarSyncParams): { content: string; filenam
     rruleString = `FREQ=WEEKLY;BYDAY=${mappedDays.join(',')}`;
   }
 
-  const eventUid = `biostack-${peptideName.toLowerCase().replace(/[^a-z0-9]/g, '')}-${Date.now()}@biostack.pro`;
+  const cleanId = peptideName.toLowerCase().replace(/[^a-z0-9]/g, '');
+  const eventUid = `biostack-${cleanId}-${Date.now()}-${Math.random().toString(36).substring(2, 7)}@biostack.pro`;
   const summary = `BioStack: Injeksi ${peptideName} (${targetDose} ${unit})`;
-  const description = `Protokol Injeksi Peptida BioStack PRO\\\\nSenyawa: ${peptideName}\\\\nTarget Dosis: ${targetDose} ${unit}\\\\nVolume Spuit: ${volumeMl || '0.200'} mL\\\\nDial Pen: ${dialClicks || 20} Klik\\\\nFrekuensi: ${frequencyLabel}\\\\n\\\\nRotasikan lokasi subkutan minimal 2.5 cm dari titik sebelumnya.`;
+  const description = `Protokol Injeksi Peptida BioStack PRO\\nSenyawa: ${peptideName}\\nTarget Dosis: ${targetDose} ${unit}\\nVolume Spuit: ${volumeMl || '0.200'} mL\\nDial Pen: ${dialClicks || 20} Klik\\nFrekuensi: ${frequencyLabel}\\n\\nRotasikan lokasi subkutan minimal 2.5 cm dari titik sebelumnya.`;
 
-  const content = [
-    'BEGIN:VCALENDAR',
-    'VERSION:2.0',
-    'PRODID:-//BioStack PRO//Peptide Protocol//ID',
-    'CALSCALE:GREGORIAN',
-    'METHOD:PUBLISH',
+  return [
     'BEGIN:VEVENT',
     `UID:${eventUid}`,
     `DTSTAMP:${dtStamp}`,
@@ -81,20 +79,13 @@ function buildIcsContent(params: CalendarSyncParams): { content: string; filenam
     'TRIGGER:-PT15M',
     'END:VALARM',
     'END:VEVENT',
-    'END:VCALENDAR',
   ].join('\r\n');
-
-  const cleanFileName = peptideName.replace(/[^a-zA-Z0-9]/g, '_');
-  return { content, filename: `${cleanFileName}_Protocol.ics` };
 }
 
-export async function exportToAppleCalendar(params: CalendarSyncParams) {
+async function shareIcsFile(content: string, filename: string, dialogTitle: string): Promise<boolean> {
   try {
-    const { content, filename } = buildIcsContent(params);
-
     if (Platform.OS === 'web') {
-      // Browser: trigger .ics download via Blob
-      const blob = new Blob([content], { type: 'text/calendar' });
+      const blob = new Blob([content], { type: 'text/calendar;charset=utf-8' });
       const url = URL.createObjectURL(blob);
       const anchor = document.createElement('a');
       anchor.href = url;
@@ -103,10 +94,9 @@ export async function exportToAppleCalendar(params: CalendarSyncParams) {
       anchor.click();
       document.body.removeChild(anchor);
       URL.revokeObjectURL(url);
-      return;
+      return true;
     }
 
-    // Native: write to filesystem and share
     const [FileSystem, Sharing] = await Promise.all([
       import('expo-file-system'),
       import('expo-sharing'),
@@ -121,13 +111,82 @@ export async function exportToAppleCalendar(params: CalendarSyncParams) {
     if (isAvailable) {
       await Sharing.shareAsync(fileUri, {
         mimeType: 'text/calendar',
-        dialogTitle: `Tambahkan ${params.peptideName} ke Kalender`,
+        dialogTitle,
         UTI: 'com.apple.ical.ics',
       });
+      return true;
     } else {
       Alert.alert('Gagal', 'Fitur berbagi sistem tidak tersedia pada perangkat ini.');
+      return false;
     }
   } catch {
     Alert.alert('Gagal mengekspor jadwal', 'Pastikan izin akses file / kalender sistem Anda tidak dibatasi.');
+    return false;
   }
+}
+
+export async function exportToAppleCalendar(params: CalendarSyncParams): Promise<boolean> {
+  const eventBlock = buildEventBlock(params);
+  const content = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//BioStack PRO//Peptide Protocol//ID',
+    'CALSCALE:GREGORIAN',
+    'METHOD:PUBLISH',
+    eventBlock,
+    'END:VCALENDAR',
+  ].join('\r\n');
+
+  const cleanFileName = params.peptideName.replace(/[^a-zA-Z0-9]/g, '_');
+  return shareIcsFile(content, `${cleanFileName}_Protocol.ics`, `Tambahkan ${params.peptideName} ke Kalender`);
+}
+
+export async function exportAllToAppleCalendar(inventory: InventoryItem[]): Promise<{ success: boolean; count: number }> {
+  const activeItems = inventory.filter(
+    (item) =>
+      item.lifecycleStatus !== 'archived' &&
+      item.lifecycleStatus !== 'empty' &&
+      Array.isArray(item.activeDays) &&
+      item.activeDays.length > 0
+  );
+
+  if (activeItems.length === 0) {
+    Alert.alert(
+      'Tidak Ada Protokol Aktif',
+      'Tidak ditemukan botol aktif dengan jadwal hari injeksi di inventaris Anda.'
+    );
+    return { success: false, count: 0 };
+  }
+
+  const eventBlocks = activeItems.map((item) => {
+    const metrics = calculateInjectionMetrics(item);
+    return buildEventBlock({
+      peptideName: item.name,
+      targetDose: item.targetDose,
+      unit: item.doseUnit || item.unit || 'mg',
+      activeDays: item.activeDays,
+      injectionTime: item.injectionTime || '08:00',
+      frequencyLabel: item.frequencyLabel || 'Jadwal Rutin',
+      volumeMl: metrics.volumeMl != null ? String(metrics.volumeMl) : undefined,
+      dialClicks: metrics.dialClicks,
+    });
+  });
+
+  const content = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//BioStack PRO//All Peptide Protocols//ID',
+    'CALSCALE:GREGORIAN',
+    'METHOD:PUBLISH',
+    ...eventBlocks,
+    'END:VCALENDAR',
+  ].join('\r\n');
+
+  const success = await shareIcsFile(
+    content,
+    'BioStack_All_Protocols.ics',
+    `Sinkronkan ${activeItems.length} Protokol Peptida ke Apple Calendar`
+  );
+
+  return { success, count: activeItems.length };
 }

@@ -1,5 +1,6 @@
 import { Platform } from 'react-native';
 import type { InjectionLog, InventoryItem } from '../types';
+import { calculateInjectionMetrics } from './injectionCalculations';
 import { getScheduledOccurrences } from './scheduleUtils';
 
 // ---------------------------------------------------------------------------
@@ -63,6 +64,23 @@ export const sendTestNotification = async (seconds = 60) => {
       title: 'BioStack — Notification Test',
       body: 'Local notification berhasil dijadwalkan.',
       sound: 'default',
+      data: { kind: 'diagnostic' },
+    },
+    trigger: { type: 'date', date: triggerDate } as unknown as import('expo-notifications').NotificationTriggerInput,
+  });
+};
+
+export const sendQuickTestNotification = async (seconds = 5) => {
+  if (Platform.OS === 'web') return null;
+  const Notifications = await getNative();
+  const triggerDate = new Date(Date.now() + Math.max(2, seconds) * 1000);
+
+  return Notifications.scheduleNotificationAsync({
+    content: {
+      title: '💉 BioStack PRO — Tes Notifikasi',
+      body: 'Notifikasi lokal berjalan sempurna di perangkat ini. Alarm injeksi Anda akan berbunyi tepat waktu.',
+      sound: 'default',
+      badge: 1,
       data: { kind: 'diagnostic' },
     },
     trigger: { type: 'date', date: triggerDate } as unknown as import('expo-notifications').NotificationTriggerInput,
@@ -147,11 +165,16 @@ export const scheduleInventoryReminders = async (
 
     const existingIds = idsByInventory.get(item.id) || [];
 
+    const metrics = calculateInjectionMetrics(item);
+    const unitText = item.doseUnit || item.unit || 'mg';
+    const iuText = metrics.iu ? ` (${metrics.iu} Units)` : '';
+    const doseText = `${item.targetDose} ${unitText}${iuText}`;
+
     const notificationId =
       await Notifications.scheduleNotificationAsync({
         content: {
-          title: `${occurrence.peptideName} · ${occurrence.time}`,
-          body: 'Jadwal berikutnya dalam 5 menit • Buka BioStack',
+          title: `💉 BioStack: ${occurrence.peptideName}`,
+          body: `Waktunya injeksi jam ${occurrence.time} • Dosis: ${doseText}`,
           sound: 'default',
           badge: 1,
           data: {

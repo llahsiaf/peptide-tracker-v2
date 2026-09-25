@@ -31,6 +31,7 @@ import { TodayScreen } from './src/screens/TodayScreen';
 import { SettingsScreen } from './src/screens/SettingsScreen';
 import { AnalyticsScreen } from './src/screens/AnalyticsScreen';
 import { GenericDosingCalculatorModal } from './src/components/GenericDosingCalculatorModal';
+import { ReminderHubModal } from './src/components/common/ReminderHubModal';
 import { COLORS, RADIUS, SHADOWS } from './src/theme';
 import { useBioStackStore } from './src/store/useBioStackStore';
 import { getNotificationPermission, rebuildScheduleReminders } from './src/utils/notificationUtils';
@@ -52,6 +53,7 @@ function BioStackApp() {
 
   const [activeTab, setActiveTab] = useState<'today' | 'inventory' | 'history' | 'freezer' | 'analytics' | 'settings'>('today');
   const [isCalculatorOpen, setIsCalculatorOpen] = useState(false);
+  const [isReminderHubOpen, setIsReminderHubOpen] = useState(false);
   const [notificationTarget, setNotificationTarget] = useState<{ inventoryId?: string; date?: string } | null>(null);
   const injectionHistory = useBioStackStore((state) => state.injectionHistory || []);
   const inventory = useBioStackStore((state) => state.inventory || []);
@@ -252,11 +254,11 @@ function BioStackApp() {
             {/* Toolbar Capsule (Bell | Analytics | Settings) */}
             <View style={styles.toolbarCapsule}>
               <TouchableOpacity 
-                onPress={handleManualNotificationRequest} 
-                style={styles.toolbarItem}
-                accessibilityLabel={language === 'en' ? 'Notification status' : 'Status notifikasi'}
+                onPress={() => setIsReminderHubOpen(true)} 
+                style={[styles.toolbarItem, isReminderHubOpen && styles.toolbarItemActive]}
+                accessibilityLabel={language === 'en' ? 'Reminder & Calendar Hub' : 'Pusat Pengingat & Kalender'}
               >
-                <Bell size={15} color="#9c8985" />
+                <Bell size={15} color={isReminderHubOpen ? COLORS.accent : '#9c8985'} />
               </TouchableOpacity>
 
               <View style={styles.toolbarDivider} />
@@ -332,6 +334,12 @@ function BioStackApp() {
       <GenericDosingCalculatorModal
         visible={isCalculatorOpen}
         onClose={() => setIsCalculatorOpen(false)}
+      />
+
+      {/* Modal Pusat Pengingat & Kalender */}
+      <ReminderHubModal
+        visible={isReminderHubOpen}
+        onClose={() => setIsReminderHubOpen(false)}
       />
 
       {/* Tombol AI Chat Assistant Melayang */}
