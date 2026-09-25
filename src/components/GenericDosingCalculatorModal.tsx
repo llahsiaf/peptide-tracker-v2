@@ -75,7 +75,7 @@ export const GenericDosingCalculatorModal: React.FC<GenericDosingCalculatorModal
           <View style={styles.header}>
             <View style={styles.headerTitleRow}>
               <View style={styles.iconBox}>
-                <Calculator size={18} color="#10b981" />
+                <Calculator size={18} color="#bca9ef" />
               </View>
               <View>
                 <Text style={styles.headerTitle}>{t('calculator.title')}</Text>
@@ -238,7 +238,7 @@ export const GenericDosingCalculatorModal: React.FC<GenericDosingCalculatorModal
             {/* HASIL KALKULASI */}
             <View style={styles.resultCard}>
               <View style={styles.resultHeader}>
-                <Syringe size={16} color="#10b981" />
+                <Syringe size={16} color="#bca9ef" />
                 <Text style={styles.resultTitle}>{t('calculator.resultTitle')}</Text>
               </View>
 
@@ -287,7 +287,7 @@ export const GenericDosingCalculatorModal: React.FC<GenericDosingCalculatorModal
 
               {result.valid && (
                 <View style={styles.tipBox}>
-                  <Sparkles size={14} color="#34d399" />
+                  <Sparkles size={14} color="#c2d3b6" />
                   <Text style={styles.tipText}>
                     {t('calculator.summaryFormula', {
                       vial: `${vialSize} ${vialUnit}`,
@@ -344,11 +344,11 @@ const styles = StyleSheet.create({
     width: 34,
     height: 34,
     borderRadius: 10,
-    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+    backgroundColor: 'rgba(188, 169, 239, 0.1)',
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
-    borderColor: 'rgba(16, 185, 129, 0.25)',
+    borderColor: 'rgba(188, 169, 239, 0.25)',
   },
   headerTitle: {
     fontSize: 15,
@@ -412,7 +412,7 @@ const styles = StyleSheet.create({
     borderRadius: 6,
   },
   unitToggleBtnActive: {
-    backgroundColor: '#10b981',
+    backgroundColor: COLORS.accent,
   },
   unitToggleText: {
     fontSize: 10,
@@ -420,12 +420,12 @@ const styles = StyleSheet.create({
     color: '#64748b',
   },
   unitToggleTextActive: {
-    color: '#022c22',
+    color: '#231716',
   },
   textInput: {
-    backgroundColor: '#030712',
+    backgroundColor: COLORS.bgDarker,
     borderWidth: 1,
-    borderColor: '#334155',
+    borderColor: COLORS.border,
     borderRadius: 10,
     color: '#f8fafc',
     fontSize: 18,
@@ -449,8 +449,8 @@ const styles = StyleSheet.create({
     borderColor: '#1e293b',
   },
   quickChipActive: {
-    backgroundColor: 'rgba(16, 185, 129, 0.15)',
-    borderColor: '#10b981',
+    backgroundColor: 'rgba(188, 169, 239, 0.15)',
+    borderColor: '#bca9ef',
   },
   quickChipText: {
     fontSize: 10,
@@ -458,14 +458,14 @@ const styles = StyleSheet.create({
     color: '#94a3b8',
   },
   quickChipTextActive: {
-    color: '#34d399',
+    color: '#c2d3b6',
   },
   resultCard: {
     backgroundColor: '#05131b',
     borderRadius: 16,
     padding: 16,
     borderWidth: 1,
-    borderColor: 'rgba(16, 185, 129, 0.3)',
+    borderColor: 'rgba(188, 169, 239, 0.3)',
     gap: 12,
   },
   resultHeader: {
@@ -476,7 +476,7 @@ const styles = StyleSheet.create({
   resultTitle: {
     fontSize: 12,
     fontWeight: '800',
-    color: '#10b981',
+    color: '#bca9ef',
     letterSpacing: 0.5,
     textTransform: 'uppercase',
   },
@@ -508,7 +508,7 @@ const styles = StyleSheet.create({
   metricValAccent: {
     fontSize: 22,
     fontWeight: '900',
-    color: '#10b981',
+    color: '#bca9ef',
     marginVertical: 4,
   },
   metricSub: {
@@ -554,17 +554,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
-    backgroundColor: 'rgba(16, 185, 129, 0.08)',
+    backgroundColor: 'rgba(188, 169, 239, 0.08)',
     borderRadius: 10,
     padding: 10,
     borderWidth: 1,
-    borderColor: 'rgba(16, 185, 129, 0.2)',
+    borderColor: 'rgba(188, 169, 239, 0.2)',
   },
   tipText: {
     flex: 1,
     fontSize: 10,
     lineHeight: 15,
-    color: '#34d399',
+    color: '#c2d3b6',
   },
   resetBtn: {
     flexDirection: 'row',

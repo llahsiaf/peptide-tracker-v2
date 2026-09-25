@@ -113,9 +113,9 @@ export const InventoryCard: React.FC<InventoryCardProps> = ({
       };
     }
     return {
-      bg: 'rgba(52, 211, 153, 0.16)',
-      border: '#34d399',
-      textColor: '#34d399',
+      bg: 'rgba(194, 211, 182, 0.16)',
+      border: '#c2d3b6',
+      textColor: '#c2d3b6',
       label: language === 'en' ? `${dosesLeft} Shots Left (~${daysLeft}d)` : `Sisa ${dosesLeft}x Suntik (~${daysLeft} hari)`,
       icon: 'check',
     };
@@ -252,7 +252,7 @@ export const InventoryCard: React.FC<InventoryCardProps> = ({
           disabled={isEmpty}
           activeOpacity={0.8}
         >
-          <Syringe size={14} color="#022c22" />
+          <Syringe size={14} color="#231716" />
           <Text style={styles.primaryActionBtnText}>
             {language === 'en' ? 'Log Dose' : 'Catat Suntik'}
           </Text>
@@ -393,9 +393,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
-    backgroundColor: 'rgba(52, 211, 153, 0.1)',
+    backgroundColor: 'rgba(194, 211, 182, 0.12)',
     borderWidth: 1,
-    borderColor: 'rgba(52, 211, 153, 0.25)',
+    borderColor: 'rgba(194, 211, 182, 0.28)',
     paddingHorizontal: 7,
     paddingVertical: 2,
     borderRadius: RADIUS.pill,
@@ -404,9 +404,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
-    backgroundColor: 'rgba(56, 189, 248, 0.1)',
+    backgroundColor: 'rgba(188, 169, 239, 0.12)',
     borderWidth: 1,
-    borderColor: 'rgba(56, 189, 248, 0.25)',
+    borderColor: 'rgba(188, 169, 239, 0.28)',
     paddingHorizontal: 7,
     paddingVertical: 2,
     borderRadius: RADIUS.pill,
@@ -424,12 +424,12 @@ const styles = StyleSheet.create({
   miniPillValueMint: {
     fontSize: 11,
     fontWeight: '900',
-    color: COLORS.mint,
+    color: COLORS.sage,
   },
   miniPillValueCyan: {
     fontSize: 11,
     fontWeight: '900',
-    color: COLORS.cyan,
+    color: COLORS.lilac,
   },
   progressBarBg: {
     height: 4,
@@ -468,7 +468,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 6,
-    backgroundColor: COLORS.mint,
+    backgroundColor: COLORS.accent,
     paddingVertical: 8,
     borderRadius: RADIUS.pill,
     ...SHADOWS.subtle,
@@ -476,7 +476,7 @@ const styles = StyleSheet.create({
   primaryActionBtnText: {
     fontSize: 12,
     fontWeight: '900',
-    color: '#022c22',
+    color: '#231716',
   },
   actionBtnDisabled: {
     backgroundColor: '#334155',

@@ -43,15 +43,15 @@ export const BodyMapRotation: React.FC<BodyMapRotationProps> = ({
       <Svg width="100%" height={260} viewBox="0 0 320 320">
         <Defs>
           <LinearGradient id="torsoGrad" x1="160" y1="20" x2="160" y2="300" gradientUnits="userSpaceOnUse">
-            <Stop offset="0%" stopColor="#0f172a" stopOpacity="0.9" />
-            <Stop offset="50%" stopColor="#111c33" stopOpacity="0.7" />
-            <Stop offset="100%" stopColor="#090d16" stopOpacity="0.95" />
+            <Stop offset="0%" stopColor="#291c1b" stopOpacity="0.9" />
+            <Stop offset="50%" stopColor="#231716" stopOpacity="0.7" />
+            <Stop offset="100%" stopColor="#1a100f" stopOpacity="0.95" />
           </LinearGradient>
 
           <RadialGradient id="targetGlow" cx="50%" cy="50%" r="50%">
-            <Stop offset="0%" stopColor="#10b981" stopOpacity="0.6" />
-            <Stop offset="60%" stopColor="#06b6d4" stopOpacity="0.25" />
-            <Stop offset="100%" stopColor="#06b6d4" stopOpacity="0" />
+            <Stop offset="0%" stopColor="#bca9ef" stopOpacity="0.6" />
+            <Stop offset="60%" stopColor="#bca9ef" stopOpacity="0.25" />
+            <Stop offset="100%" stopColor="#bca9ef" stopOpacity="0" />
           </RadialGradient>
         </Defs>
 
@@ -89,8 +89,8 @@ export const BodyMapRotation: React.FC<BodyMapRotationProps> = ({
         <Circle cx="160" cy="160" r="32" stroke="#f59e0b" strokeWidth="1" strokeDasharray="2 3" opacity="0.4" />
 
         {/* Belly Button (Umbilicus) */}
-        <Circle cx="160" cy="160" r="10" fill="#090d16" stroke="#06b6d4" strokeWidth="2" />
-        <Circle cx="160" cy="160" r="4" fill="#06b6d4" />
+        <Circle cx="160" cy="160" r="10" fill="#1a100f" stroke="#bca9ef" strokeWidth="2" />
+        <Circle cx="160" cy="160" r="4" fill="#bca9ef" />
         <SvgText x="160" y="145" textAnchor="middle" fill="#64748b" fontSize="8" fontWeight="800">
           {language === 'en' ? 'NAVEL' : 'PUSAR'}
         </SvgText>
@@ -108,7 +108,7 @@ export const BodyMapRotation: React.FC<BodyMapRotationProps> = ({
               {isCurrent && (
                 <>
                   <Circle cx={site.cx} cy={site.cy} r="34" fill="url(#targetGlow)" />
-                  <Circle cx={site.cx} cy={site.cy} r="28" stroke="#10b981" strokeWidth="1.5" strokeDasharray="3 3" opacity="0.9" />
+                  <Circle cx={site.cx} cy={site.cy} r="28" stroke="#bca9ef" strokeWidth="1.5" strokeDasharray="3 3" opacity="0.9" />
                 </>
               )}
 
@@ -116,12 +116,12 @@ export const BodyMapRotation: React.FC<BodyMapRotationProps> = ({
                 cx={site.cx}
                 cy={site.cy}
                 r="22"
-                fill={isCurrent ? '#064e3b' : '#0e1424'}
-                stroke={isCurrent ? '#10b981' : '#1e293b'}
+                fill={isCurrent ? '#352423' : '#0e1424'}
+                stroke={isCurrent ? '#bca9ef' : '#1e293b'}
                 strokeWidth={isCurrent ? '2.5' : '1.5'}
               />
 
-              <Circle cx={site.cx} cy={site.cy} r="5" fill={isCurrent ? '#34d399' : '#334155'} />
+              <Circle cx={site.cx} cy={site.cy} r="5" fill={isCurrent ? '#c2d3b6' : '#334155'} />
 
               <SvgText
                 x={site.cx}
@@ -139,7 +139,7 @@ export const BodyMapRotation: React.FC<BodyMapRotationProps> = ({
                 x={site.cx}
                 y={site.cy + 32}
                 textAnchor="middle"
-                fill={isCurrent ? '#34d399' : '#64748b'}
+                fill={isCurrent ? '#c2d3b6' : '#64748b'}
                 fontSize="8"
                 fontWeight="700"
               >
@@ -155,7 +155,7 @@ export const BodyMapRotation: React.FC<BodyMapRotationProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#070b14',
+    backgroundColor: '#231716',
     borderRadius: 24,
     borderWidth: 1,
     borderColor: '#1e293b',

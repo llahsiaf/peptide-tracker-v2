@@ -270,7 +270,7 @@ export const HistoryScreen: React.FC = () => {
         >
           <History
             size={20}
-            color="#10b981"
+            color="#bca9ef"
           />
         </View>
 
@@ -342,7 +342,7 @@ export const HistoryScreen: React.FC = () => {
           onPress={() => setActiveSegment('logs')}
           activeOpacity={0.8}
         >
-          <Activity size={14} color={activeSegment === 'logs' ? '#022c22' : COLORS.textMuted} />
+          <Activity size={14} color={activeSegment === 'logs' ? '#231716' : COLORS.textMuted} />
           <Text style={[styles.segmentBtnText, activeSegment === 'logs' && styles.segmentBtnTextActive]}>
             {language === 'en' ? 'Injection Logs' : 'Riwayat Injeksi'} ({safeHistory.length})
           </Text>
@@ -353,7 +353,7 @@ export const HistoryScreen: React.FC = () => {
           onPress={() => setActiveSegment('vials')}
           activeOpacity={0.8}
         >
-          <FlaskConical size={14} color={activeSegment === 'vials' ? '#022c22' : COLORS.textMuted} />
+          <FlaskConical size={14} color={activeSegment === 'vials' ? '#231716' : COLORS.textMuted} />
           <Text style={[styles.segmentBtnText, activeSegment === 'vials' && styles.segmentBtnTextActive]}>
             {language === 'en' ? 'Vial Journeys' : 'Perjalanan Vial'} ({vialJourneys.length})
           </Text>
@@ -489,7 +489,7 @@ export const HistoryScreen: React.FC = () => {
           >
             <FlaskConical
               size={12}
-              color="#10b981"
+              color="#bca9ef"
             />
 
             <Text
@@ -530,7 +530,7 @@ export const HistoryScreen: React.FC = () => {
           >
             <FlaskConical
               size={14}
-              color="#10b981"
+              color="#bca9ef"
             />
 
             <Text
@@ -878,7 +878,7 @@ const styles = StyleSheet.create({
   },
 
   segmentBtnActive: {
-    backgroundColor: COLORS.mint,
+    backgroundColor: COLORS.accent,
     ...SHADOWS.subtle,
   },
 
@@ -889,7 +889,7 @@ const styles = StyleSheet.create({
   },
 
   segmentBtnTextActive: {
-    color: '#022c22',
+    color: '#231716',
     fontWeight: '900',
   },
 
@@ -897,9 +897,9 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: RADIUS.lg,
-    backgroundColor: 'rgba(52, 211, 153, 0.12)',
+    backgroundColor: 'rgba(188, 169, 239, 0.16)',
     borderWidth: 1,
-    borderColor: 'rgba(52, 211, 153, 0.25)',
+    borderColor: 'rgba(188, 169, 239, 0.32)',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -963,7 +963,7 @@ const styles = StyleSheet.create({
     fontSize: 10,
     color: COLORS.mint,
     fontWeight: '800',
-    backgroundColor: 'rgba(52, 211, 153, 0.12)',
+    backgroundColor: 'rgba(194, 211, 182, 0.12)',
     paddingHorizontal: 8,
     paddingVertical: 3,
     borderRadius: RADIUS.pill,
@@ -1121,8 +1121,8 @@ const styles = StyleSheet.create({
   },
 
   filterChipActive: {
-    backgroundColor: COLORS.mint,
-    borderColor: COLORS.mint,
+    backgroundColor: COLORS.accent,
+    borderColor: COLORS.accent,
     ...SHADOWS.subtle,
   },
 
@@ -1133,7 +1133,7 @@ const styles = StyleSheet.create({
   },
 
   filterChipTextActive: {
-    color: '#022c22',
+    color: '#231716',
     fontWeight: '900',
   },
 
@@ -1260,9 +1260,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
-    backgroundColor: 'rgba(52, 211, 153, 0.12)',
+    backgroundColor: 'rgba(194, 211, 182, 0.12)',
     borderWidth: 1,
-    borderColor: 'rgba(52, 211, 153, 0.3)',
+    borderColor: 'rgba(194, 211, 182, 0.3)',
     paddingHorizontal: 8,
     paddingVertical: 3,
     borderRadius: RADIUS.pill,

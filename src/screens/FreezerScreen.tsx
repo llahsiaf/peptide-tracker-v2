@@ -317,7 +317,7 @@ export const FreezerScreen: React.FC = () => {
       >
         <Plus
           size={18}
-          color="#022c22"
+          color="#231716"
         />
 
         <Text style={styles.addMainBtnText}>
@@ -473,7 +473,7 @@ export const FreezerScreen: React.FC = () => {
                         onPress={() => handleActionOnItem(item)}
                         style={styles.transferActionBtn}
                       >
-                        <ArrowRight size={15} color="#022c22" />
+                        <ArrowRight size={15} color="#231716" />
                         <Text style={styles.reconstituteBtnText} numberOfLines={1}>
                           {t('freezer.moveToFridge')}
                         </Text>
@@ -484,7 +484,7 @@ export const FreezerScreen: React.FC = () => {
                         onPress={() => handleActionOnItem(item)}
                         style={styles.reconstituteBtn}
                       >
-                        <FlaskConical size={15} color="#022c22" />
+                        <FlaskConical size={15} color="#231716" />
                         <Text style={styles.reconstituteBtnText} numberOfLines={1}>
                           {t('freezer.dissolveToFridge')}
                         </Text>
@@ -523,7 +523,7 @@ export const FreezerScreen: React.FC = () => {
               <View style={styles.modalTitleRow}>
                 <FlaskConical
                   size={19}
-                  color="#10b981"
+                  color="#bca9ef"
                 />
 
                 <Text style={styles.modalHeading}>
@@ -668,7 +668,7 @@ export const FreezerScreen: React.FC = () => {
               <View style={styles.modalTitleRow}>
                 <Plus
                   size={19}
-                  color="#10b981"
+                  color="#bca9ef"
                 />
 
                 <Text style={styles.modalHeading}>
@@ -899,7 +899,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
-    backgroundColor: COLORS.mint,
+    backgroundColor: COLORS.accent,
     minHeight: 46,
     paddingHorizontal: 16,
     borderRadius: RADIUS.pill,
@@ -910,7 +910,7 @@ const styles = StyleSheet.create({
   addMainBtnText: {
     fontSize: 13,
     fontWeight: '900',
-    color: '#022c22',
+    color: '#231716',
   },
 
   // =====================================
@@ -1135,7 +1135,7 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     fontSize: 10,
     fontWeight: '900',
-    color: '#022c22',
+    color: '#231716',
   },
 
   // =====================================
@@ -1285,9 +1285,9 @@ const styles = StyleSheet.create({
 
   unitChip: {
     flex: 1,
-    backgroundColor: '#030712',
+    backgroundColor: COLORS.bgDarker,
     borderWidth: 1,
-    borderColor: '#1e293b',
+    borderColor: COLORS.border,
     minHeight: 42,
     borderRadius: 9,
     alignItems: 'center',
@@ -1295,27 +1295,27 @@ const styles = StyleSheet.create({
   },
 
   unitChipActive: {
-    backgroundColor: 'rgba(16, 185, 129, 0.18)',
-    borderColor: '#10b981',
+    backgroundColor: 'rgba(188, 169, 239, 0.16)',
+    borderColor: COLORS.accent,
   },
 
   unitChipText: {
     fontSize: 10,
     fontWeight: '700',
-    color: '#64748b',
+    color: COLORS.textMuted,
   },
 
   unitChipTextActive: {
-    color: '#10b981',
+    color: COLORS.accent,
   },
 
   // =====================================
   // RECON PREVIEW
   // =====================================
   reconPreviewBox: {
-    backgroundColor: '#030712',
+    backgroundColor: COLORS.bgDarker,
     borderWidth: 1,
-    borderColor: 'rgba(16, 185, 129, 0.30)',
+    borderColor: 'rgba(188, 169, 239, 0.30)',
     borderRadius: 11,
     padding: 11,
     gap: 3,
@@ -1324,7 +1324,7 @@ const styles = StyleSheet.create({
   reconPreviewTitle: {
     fontSize: 10,
     fontWeight: '700',
-    color: '#10b981',
+    color: COLORS.accent,
   },
 
   reconPreviewVal: {
@@ -1336,7 +1336,7 @@ const styles = StyleSheet.create({
   reconPreviewSub: {
     fontSize: 9,
     lineHeight: 14,
-    color: '#64748b',
+    color: COLORS.textMuted,
   },
 
   // =====================================
@@ -1350,9 +1350,9 @@ const styles = StyleSheet.create({
 
   modalCancelBtn: {
     flex: 1,
-    backgroundColor: '#030712',
+    backgroundColor: COLORS.bgDarker,
     borderWidth: 1,
-    borderColor: '#1e293b',
+    borderColor: COLORS.border,
     minHeight: 44,
     paddingHorizontal: 10,
     borderRadius: 9,
@@ -1363,12 +1363,12 @@ const styles = StyleSheet.create({
   modalCancelBtnText: {
     fontSize: 11,
     fontWeight: '700',
-    color: '#94a3b8',
+    color: COLORS.textMuted,
   },
 
   modalSaveBtn: {
     flex: 2,
-    backgroundColor: '#10b981',
+    backgroundColor: COLORS.accent,
     minHeight: 44,
     paddingHorizontal: 10,
     borderRadius: 9,
@@ -1379,6 +1379,6 @@ const styles = StyleSheet.create({
   modalSaveBtnText: {
     fontSize: 11,
     fontWeight: '800',
-    color: '#022c22',
+    color: '#231716',
   },
 });

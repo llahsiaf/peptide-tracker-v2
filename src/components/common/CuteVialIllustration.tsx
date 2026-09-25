@@ -48,16 +48,16 @@ export const CuteVialIllustration: React.FC<CuteVialProps> = ({
       return { top: '#fb923c', bottom: '#ea580c', cap: '#f97316', bubble: '#fed7aa' };
     }
     if (cat.includes('heal') || cat.includes('recover') || cat.includes('injury') || cat.includes('gut')) {
-      return { top: '#34d399', bottom: '#059669', cap: '#10b981', bubble: '#a7f3d0' };
+      return { top: '#c2d3b6', bottom: '#95aa88', cap: '#a3be95', bubble: '#eaf2e6' };
     }
     if (cat.includes('gh') || cat.includes('anti-aging') || cat.includes('sleep') || cat.includes('longev')) {
-      return { top: '#c084fc', bottom: '#7c3aed', cap: '#a855f7', bubble: '#e9d5ff' };
+      return { top: '#648cf7', bottom: '#1f4ab2', cap: '#1f4ab2', bubble: '#d6e2ff' };
     }
     if (cat.includes('brain') || cat.includes('neuro') || cat.includes('focus')) {
       return { top: '#fb7185', bottom: '#e11d48', cap: '#f43f5e', bubble: '#fecdd3' };
     }
-    // Default Aqua Sparkle
-    return { top: '#38bdf8', bottom: '#0284c7', cap: '#0ea5e9', bubble: '#bae6fd' };
+    // Default Soft Lilac
+    return { top: '#bca9ef', bottom: '#8f77d4', cap: '#a894e6', bubble: '#ede5fb' };
   };
 
   const theme = getThemeColor();
@@ -84,7 +84,7 @@ export const CuteVialIllustration: React.FC<CuteVialProps> = ({
           {/* Gradien Kaca Vial */}
           <LinearGradient id="glassGrad" x1="0" y1="0" x2="1" y2="0">
             <Stop offset="0%" stopColor="#ffffff" stopOpacity={0.16} />
-            <Stop offset="25%" stopColor="#38bdf8" stopOpacity={0.06} />
+            <Stop offset="25%" stopColor="#bca9ef" stopOpacity={0.06} />
             <Stop offset="75%" stopColor="#ffffff" stopOpacity={0.04} />
             <Stop offset="100%" stopColor="#ffffff" stopOpacity={0.18} />
           </LinearGradient>

@@ -106,7 +106,7 @@ export const TakeFromFreezerModal: React.FC<TakeFromFreezerModalProps> = ({
                   onPress={() => setSelectedItem(null)}
                   style={[styles.backBtn, { flexDirection: 'row', alignItems: 'center', gap: 6 }]}
                 >
-                  <ArrowLeft size={14} color="#10b981" />
+                  <ArrowLeft size={14} color="#bca9ef" />
                   <Text style={styles.backBtnText}>
                     {language === 'en' ? 'Choose another vial' : 'Pilih vial lainnya'}
                   </Text>
@@ -317,11 +317,11 @@ const styles = StyleSheet.create({
   selectedVialCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(56, 189, 248, 0.08)',
+    backgroundColor: 'rgba(188, 169, 239, 0.08)',
     borderRadius: RADIUS.lg,
     padding: 14,
     borderWidth: 1,
-    borderColor: 'rgba(56, 189, 248, 0.25)',
+    borderColor: 'rgba(188, 169, 239, 0.25)',
     marginBottom: SPACING.lg,
   },
   selectedName: {
@@ -375,7 +375,7 @@ const styles = StyleSheet.create({
     color: COLORS.cyan,
     paddingVertical: 10,
     borderWidth: 1.5,
-    borderColor: 'rgba(56, 189, 248, 0.35)',
+    borderColor: 'rgba(188, 169, 239, 0.35)',
   },
   bacUnitTag: {
     fontSize: 16,
@@ -405,11 +405,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
-    backgroundColor: 'rgba(56, 189, 248, 0.08)',
+    backgroundColor: 'rgba(188, 169, 239, 0.08)',
     borderRadius: RADIUS.lg,
     padding: 14,
     borderWidth: 1,
-    borderColor: 'rgba(56, 189, 248, 0.25)',
+    borderColor: 'rgba(188, 169, 239, 0.25)',
     marginBottom: SPACING.lg,
   },
   liquidNoticeText: {
@@ -423,7 +423,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
-    backgroundColor: COLORS.mint,
+    backgroundColor: COLORS.accent,
     paddingVertical: 14,
     borderRadius: RADIUS.pill,
     ...SHADOWS.cardGlow,
@@ -431,7 +431,7 @@ const styles = StyleSheet.create({
   confirmBtnText: {
     fontSize: 15,
     fontWeight: '800',
-    color: '#022c22',
+    color: '#231716',
   },
   emptyBox: {
     alignItems: 'center',

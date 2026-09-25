@@ -397,17 +397,17 @@ const styles = StyleSheet.create({
     letterSpacing: -0.2,
   },
   proBadge: {
-    backgroundColor: 'rgba(52, 211, 153, 0.18)',
+    backgroundColor: 'rgba(194, 211, 182, 0.16)',
     paddingHorizontal: 6,
     paddingVertical: 2,
     borderRadius: RADIUS.sm,
     borderWidth: 1,
-    borderColor: 'rgba(52, 211, 153, 0.35)',
+    borderColor: 'rgba(194, 211, 182, 0.35)',
   },
   proBadgeText: {
     fontSize: 9.5,
     fontWeight: '900',
-    color: COLORS.mint,
+    color: COLORS.sage,
   },
   subtitleRow: {
     flexDirection: 'row',
@@ -417,7 +417,7 @@ const styles = StyleSheet.create({
   },
   appSubtitle: {
     fontSize: 10,
-    color: '#94a3b8',
+    color: COLORS.textMuted,
     fontWeight: '500',
   },
   headerStatus: {
@@ -427,15 +427,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 6,
     paddingVertical: 1.5,
     borderRadius: 6,
-    backgroundColor: 'rgba(52, 211, 153, 0.1)',
+    backgroundColor: 'rgba(194, 211, 182, 0.12)',
     borderWidth: 1,
-    borderColor: 'rgba(52, 211, 153, 0.25)',
+    borderColor: 'rgba(194, 211, 182, 0.28)',
   },
   headerStatusText: {
     fontSize: 8,
     fontWeight: '800',
     letterSpacing: 0.5,
-    color: '#34d399',
+    color: COLORS.sage,
   },
   headerActions: {
     flexDirection: 'row',
@@ -483,7 +483,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   navIconWrapActive: {
-    backgroundColor: 'rgba(16, 185, 129, 0.10)',
+    backgroundColor: 'rgba(188, 169, 239, 0.16)',
   },
   navTabText: {
     fontSize: 9,

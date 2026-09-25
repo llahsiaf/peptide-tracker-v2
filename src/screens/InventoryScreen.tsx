@@ -201,7 +201,7 @@ export const InventoryScreen: React.FC = () => {
           onPress={() => setIsTakeFreezerModalOpen(true)}
           activeOpacity={0.85}
         >
-          <Snowflake size={15} color="#042f2e" />
+          <Snowflake size={15} color="#231716" />
           <Text style={styles.takeFreezerBtnText}>
             {language === 'en' ? 'Take Vial' : 'Ambil Vial'}
           </Text>
@@ -233,7 +233,7 @@ export const InventoryScreen: React.FC = () => {
                 style={styles.emptyTakeBtn}
                 onPress={() => setIsTakeFreezerModalOpen(true)}
               >
-                <Snowflake size={16} color="#042f2e" />
+                <Snowflake size={16} color="#231716" />
                 <Text style={styles.emptyTakeBtnText}>
                   {language === 'en' ? 'Take from Freezer' : 'Ambil dari Freezer'}
                 </Text>
@@ -325,13 +325,13 @@ const styles = StyleSheet.create({
     color: '#94a3b8',
   },
   filterPillTextActive: {
-    color: COLORS.mint,
+    color: COLORS.accent,
   },
   takeFreezerBtn: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
-    backgroundColor: COLORS.mint,
+    backgroundColor: COLORS.accent,
     paddingVertical: 7,
     paddingHorizontal: 14,
     borderRadius: RADIUS.pill,
@@ -340,7 +340,7 @@ const styles = StyleSheet.create({
   takeFreezerBtnText: {
     fontSize: 12,
     fontWeight: '800',
-    color: '#022c22',
+    color: '#231716',
   },
   listContent: {
     padding: SPACING.lg,
@@ -369,7 +369,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
-    backgroundColor: COLORS.mint,
+    backgroundColor: COLORS.accent,
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: RADIUS.pill,
@@ -379,6 +379,6 @@ const styles = StyleSheet.create({
   emptyTakeBtnText: {
     fontSize: 14,
     fontWeight: '800',
-    color: '#022c22',
+    color: '#231716',
   },
 });

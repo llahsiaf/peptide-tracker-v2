@@ -40,6 +40,7 @@ import {
   requestNotificationPermission,
   sendTestNotification,
 } from '../utils/notificationUtils';
+import { COLORS } from '../theme';
 
 interface SettingsScreenProps {
   onDone?: () => void;
@@ -403,7 +404,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ onDone }) => {
         {/* HERO */}
         <View style={styles.hero}>
           <View style={styles.heroIcon}>
-            <SettingsIcon size={20} color="#10b981" />
+            <SettingsIcon size={20} color="#bca9ef" />
           </View>
 
           <View style={styles.heroCopy}>
@@ -424,7 +425,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ onDone }) => {
             >
               <CheckCircle2
                 size={16}
-                color={busy ? '#475569' : '#10b981'}
+                color={busy ? '#475569' : '#bca9ef'}
               />
             </TouchableOpacity>
           )}
@@ -483,7 +484,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ onDone }) => {
                   {active && (
                     <CheckCircle2
                       size={15}
-                      color="#10b981"
+                      color="#bca9ef"
                     />
                   )}
                 </TouchableOpacity>
@@ -526,7 +527,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ onDone }) => {
             icon={
               <Upload
                 size={18}
-                color="#10b981"
+                color="#bca9ef"
               />
             }
             title={t("settings.restoreFromBackup") || "Restore dari backup"}
@@ -682,7 +683,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ onDone }) => {
           icon={
             <ShieldCheck
               size={16}
-              color="#10b981"
+              color="#bca9ef"
             />
           }
           title="Privacy"
@@ -696,7 +697,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ onDone }) => {
                 color={
                   aiNetworkAllowed
                     ? '#64748b'
-                    : '#10b981'
+                    : '#bca9ef'
                 }
               />
             </View>
@@ -1160,7 +1161,7 @@ const styles = StyleSheet.create({
   },
 
   statusPillTextOk: {
-    color: '#34d399',
+    color: '#c2d3b6',
   },
 
   notificationHint: {
@@ -1184,7 +1185,7 @@ const styles = StyleSheet.create({
     gap: 6,
     paddingVertical: 10,
     borderRadius: 10,
-    backgroundColor: '#10b981',
+    backgroundColor: '#bca9ef',
   },
 
   notificationActionPrimaryText: {
@@ -1360,7 +1361,7 @@ const styles = StyleSheet.create({
   },
 
   languageOptionCodeActive: {
-    color: '#10b981',
+    color: '#bca9ef',
   },
 
   languageOptionLabel: {
@@ -1433,12 +1434,12 @@ const styles = StyleSheet.create({
     paddingVertical: 11,
     borderRadius: 10,
     alignItems: 'center',
-    backgroundColor: '#10b981',
+    backgroundColor: COLORS.accent,
   },
 
   primaryText: {
     fontSize: 10,
     fontWeight: '900',
-    color: '#022c22',
+    color: '#231716',
   },
 });

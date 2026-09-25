@@ -392,7 +392,7 @@ export const TodayScreen: React.FC<TodayScreenProps> = ({
           </View>
 
           <TouchableOpacity style={styles.quickLogPillBtn} onPress={openQuickLog} activeOpacity={0.8}>
-            <Syringe size={14} color="#022c22" />
+            <Syringe size={14} color="#231716" />
             <Text style={styles.quickLogPillText}>{language === 'en' ? 'Quick Log' : 'Catat'}</Text>
           </TouchableOpacity>
         </View>
@@ -561,7 +561,7 @@ export const TodayScreen: React.FC<TodayScreenProps> = ({
                         style={styles.actionInjectBtn}
                         activeOpacity={0.8}
                       >
-                        <Syringe size={12} color="#022c22" />
+                        <Syringe size={12} color="#231716" />
                         <Text style={styles.actionInjectText}>
                           {language === 'en' ? 'Inject' : 'Suntik'}
                         </Text>
@@ -791,7 +791,7 @@ export const TodayScreen: React.FC<TodayScreenProps> = ({
                 <Text style={styles.cancelBtnText}>{t('app.cancel') || 'Batal'}</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.saveBtn} onPress={saveQuickLog}>
-                <CheckCircle2 size={16} color="#022c22" />
+                <CheckCircle2 size={16} color="#231716" />
                 <Text style={styles.saveBtnText}>{t('today.confirmLog') || 'Simpan Log'}</Text>
               </TouchableOpacity>
             </View>
@@ -857,21 +857,21 @@ const styles = StyleSheet.create({
     color: COLORS.textMuted,
   },
   heroHighlightText: {
-    color: COLORS.cyan,
+    color: COLORS.lilac,
     fontWeight: '800',
   },
   quickLogPillBtn: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
-    backgroundColor: COLORS.mint,
+    backgroundColor: COLORS.accent,
     borderRadius: RADIUS.pill,
     paddingHorizontal: 12,
     paddingVertical: 9,
     ...SHADOWS.subtle,
   },
   quickLogPillText: {
-    color: '#022c22',
+    color: '#231716',
     fontWeight: '900',
     fontSize: 12,
   },
@@ -913,13 +913,13 @@ const styles = StyleSheet.create({
     borderColor: COLORS.border,
   },
   todayNavBtnActive: {
-    backgroundColor: 'rgba(52, 211, 153, 0.15)',
-    borderColor: COLORS.mint,
+    backgroundColor: 'rgba(188, 169, 239, 0.16)',
+    borderColor: COLORS.accent,
   },
   todayNavBtnText: {
     fontSize: 10,
     fontWeight: '800',
-    color: COLORS.mint,
+    color: COLORS.accent,
   },
   slimWeekRow: {
     gap: 6,
@@ -935,8 +935,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   slimDayCellActive: {
-    borderColor: COLORS.mint,
-    backgroundColor: 'rgba(52, 211, 153, 0.14)',
+    borderColor: COLORS.accent,
+    backgroundColor: 'rgba(188, 169, 239, 0.16)',
   },
   slimDayCellToday: {
     borderColor: 'rgba(251, 191, 36, 0.4)',
@@ -947,7 +947,7 @@ const styles = StyleSheet.create({
     fontWeight: '900',
   },
   slimDayLabelActive: {
-    color: COLORS.mint,
+    color: COLORS.accent,
   },
   slimDayNumber: {
     fontSize: 15,
@@ -956,7 +956,7 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   slimDayNumberActive: {
-    color: COLORS.mint,
+    color: COLORS.accent,
   },
   dotIndicatorRow: {
     flexDirection: 'row',
@@ -1069,7 +1069,7 @@ const styles = StyleSheet.create({
     color: '#ffffff',
   },
   compactRemainingPill: {
-    backgroundColor: 'rgba(52, 211, 153, 0.15)',
+    backgroundColor: 'rgba(194, 211, 182, 0.15)',
     paddingHorizontal: 6,
     paddingVertical: 1,
     borderRadius: RADIUS.pill,
@@ -1091,7 +1091,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 5,
-    backgroundColor: COLORS.mint,
+    backgroundColor: COLORS.accent,
     borderRadius: RADIUS.pill,
     paddingHorizontal: 10,
     paddingVertical: 6,
@@ -1099,7 +1099,7 @@ const styles = StyleSheet.create({
   actionInjectText: {
     fontSize: 11,
     fontWeight: '900',
-    color: '#022c22',
+    color: '#231716',
   },
   statusBadge: {
     paddingHorizontal: 8,
@@ -1110,8 +1110,8 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.card,
   },
   statusBadgeCompleted: {
-    borderColor: COLORS.mint,
-    backgroundColor: 'rgba(52, 211, 153, 0.1)',
+    borderColor: COLORS.sage,
+    backgroundColor: 'rgba(194, 211, 182, 0.12)',
   },
   statusBadgeText: {
     fontSize: 10,
@@ -1142,9 +1142,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 6,
     paddingVertical: 2,
     borderRadius: RADIUS.sm,
-    backgroundColor: 'rgba(56, 189, 248, 0.12)',
+    backgroundColor: 'rgba(188, 169, 239, 0.12)',
     borderWidth: 1,
-    borderColor: 'rgba(56, 189, 248, 0.25)',
+    borderColor: 'rgba(188, 169, 239, 0.25)',
   },
   loggedTagText: {
     fontSize: 9,
@@ -1307,7 +1307,7 @@ const styles = StyleSheet.create({
   },
   vialChipActive: {
     borderColor: COLORS.mint,
-    backgroundColor: 'rgba(52, 211, 153, 0.1)',
+    backgroundColor: 'rgba(194, 211, 182, 0.1)',
   },
   vialChipName: {
     color: '#fff',
@@ -1401,7 +1401,7 @@ const styles = StyleSheet.create({
   },
   siteChipActive: {
     borderColor: COLORS.mint,
-    backgroundColor: 'rgba(52, 211, 153, 0.1)',
+    backgroundColor: 'rgba(194, 211, 182, 0.1)',
   },
   siteChipCode: {
     color: COLORS.textSecondary,
@@ -1441,13 +1441,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     gap: 6,
-    backgroundColor: COLORS.mint,
+    backgroundColor: COLORS.accent,
     borderRadius: RADIUS.pill,
     paddingVertical: 10,
     ...SHADOWS.subtle,
   },
   saveBtnText: {
-    color: '#022c22',
+    color: '#231716',
     fontWeight: '900',
     fontSize: 12,
   },

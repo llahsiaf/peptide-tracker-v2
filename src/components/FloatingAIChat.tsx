@@ -25,6 +25,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useBioStackStore } from '../store/useBioStackStore';
 import { useLanguage } from '../i18n/LanguageContext';
+import { COLORS } from '../theme';
 
 interface ChatMessage {
   id: string;
@@ -249,7 +250,7 @@ export const FloatingAIChat: React.FC = () => {
         }}
         style={styles.floatingButton}
       >
-        <Sparkles size={20} color="#022c22" />
+        <Sparkles size={20} color="#231716" />
       </TouchableOpacity>
 
       <Modal visible={isOpen} animationType="slide" transparent>
@@ -264,7 +265,7 @@ export const FloatingAIChat: React.FC = () => {
                 <View style={styles.chatHeader}>
                   <View style={styles.headerTitleRow}>
                     <View style={styles.botIconWrap}>
-                      <Bot size={18} color="#10b981" />
+                      <Bot size={18} color="#bca9ef" />
                     </View>
                     <View>
                       <Text style={styles.headerTitle}>BioStack AI Expert</Text>
@@ -320,7 +321,7 @@ export const FloatingAIChat: React.FC = () => {
                   ))}
                   {isLoading && (
                     <View style={styles.loadingBubble}>
-                      <ActivityIndicator size="small" color="#10b981" />
+                      <ActivityIndicator size="small" color="#bca9ef" />
                       <Text style={styles.loadingText}>
                         {language === 'en' ? 'Preparing clinical response...' : 'Menyiapkan respon klinis...'}
                       </Text>
@@ -345,7 +346,7 @@ export const FloatingAIChat: React.FC = () => {
                       (!inputText.trim() || isLoading) && styles.sendBtnDisabled,
                     ]}
                   >
-                    <Send size={15} color="#022c22" />
+                    <Send size={15} color="#231716" />
                   </TouchableOpacity>
                 </View>
               </>
@@ -360,7 +361,7 @@ export const FloatingAIChat: React.FC = () => {
                       onPress={() => setActiveView('chat')}
                       style={styles.backBtn}
                     >
-                      <ChevronLeft size={20} color="#10b981" />
+                      <ChevronLeft size={20} color="#bca9ef" />
                     </TouchableOpacity>
                     <View>
                       <Text style={styles.headerTitle}>
@@ -378,7 +379,7 @@ export const FloatingAIChat: React.FC = () => {
 
                 <ScrollView contentContainerStyle={styles.settingsBody} showsVerticalScrollIndicator={false}>
                   <View style={styles.infoBox}>
-                    <Key size={18} color="#10b981" />
+                    <Key size={18} color="#bca9ef" />
                     <Text style={styles.settingsDesc}>
                       {language === 'en'
                         ? 'Enter Google Gemini API Key (or OpenAI). The key is stored locally and securely on your device.'
@@ -428,7 +429,7 @@ export const FloatingAIChat: React.FC = () => {
                   </View>
 
                   <TouchableOpacity onPress={saveSettings} style={styles.saveKeyBtn}>
-                    <Check size={16} color="#022c22" />
+                    <Check size={16} color="#231716" />
                     <Text style={styles.saveKeyBtnText}>
                       {language === 'en' ? 'Save Settings' : 'Simpan Pengaturan'}
                     </Text>
@@ -457,11 +458,11 @@ const styles = StyleSheet.create({
     width: 52,
     height: 52,
     borderRadius: 26,
-    backgroundColor: '#10b981',
+    backgroundColor: COLORS.accent,
     alignItems: 'center',
     justifyContent: 'center',
     elevation: 8,
-    shadowColor: '#10b981',
+    shadowColor: COLORS.accent,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.4,
     shadowRadius: 8,
@@ -474,11 +475,11 @@ const styles = StyleSheet.create({
   },
   chatCard: {
     height: '82%',
-    backgroundColor: '#090d16',
+    backgroundColor: COLORS.card,
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     borderWidth: 1,
-    borderColor: '#1e293b',
+    borderColor: COLORS.border,
   },
   chatHeader: {
     flexDirection: 'row',
@@ -486,7 +487,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 14,
     borderBottomWidth: 1,
-    borderColor: '#1e293b',
+    borderColor: COLORS.border,
   },
   headerTitleRow: {
     flexDirection: 'row',
@@ -497,18 +498,18 @@ const styles = StyleSheet.create({
     width: 34,
     height: 34,
     borderRadius: 10,
-    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+    backgroundColor: 'rgba(188, 169, 239, 0.16)',
     alignItems: 'center',
     justifyContent: 'center',
   },
   headerTitle: {
     fontSize: 14,
     fontWeight: '800',
-    color: '#ffffff',
+    color: COLORS.text,
   },
   headerSubtitle: {
     fontSize: 10,
-    color: '#64748b',
+    color: COLORS.textMuted,
     marginTop: 2,
   },
   headerActions: {
@@ -538,14 +539,14 @@ const styles = StyleSheet.create({
   },
   userBubble: {
     alignSelf: 'flex-end',
-    backgroundColor: '#10b981',
+    backgroundColor: COLORS.accent,
     borderBottomRightRadius: 2,
   },
   aiBubble: {
     alignSelf: 'flex-start',
-    backgroundColor: '#0f172a',
+    backgroundColor: COLORS.cardElevated,
     borderWidth: 1,
-    borderColor: '#1e293b',
+    borderColor: COLORS.border,
     borderBottomLeftRadius: 2,
   },
   messageText: {
@@ -553,8 +554,8 @@ const styles = StyleSheet.create({
     lineHeight: 18,
   },
   userMessageText: {
-    color: '#022c22',
-    fontWeight: '600',
+    color: '#231716',
+    fontWeight: '700',
   },
   aiMessageText: {
     color: '#e2e8f0',
@@ -601,7 +602,7 @@ const styles = StyleSheet.create({
     width: 38,
     height: 38,
     borderRadius: 10,
-    backgroundColor: '#10b981',
+    backgroundColor: '#bca9ef',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -619,9 +620,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
-    backgroundColor: 'rgba(16, 185, 129, 0.08)',
+    backgroundColor: 'rgba(188, 169, 239, 0.08)',
     borderWidth: 1,
-    borderColor: 'rgba(16, 185, 129, 0.2)',
+    borderColor: 'rgba(188, 169, 239, 0.2)',
     borderRadius: 12,
     padding: 12,
   },
@@ -651,8 +652,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   providerBtnActive: {
-    backgroundColor: 'rgba(16, 185, 129, 0.15)',
-    borderColor: '#10b981',
+    backgroundColor: 'rgba(188, 169, 239, 0.15)',
+    borderColor: '#bca9ef',
   },
   providerBtnText: {
     fontSize: 11,
@@ -660,7 +661,7 @@ const styles = StyleSheet.create({
     color: '#64748b',
   },
   providerBtnTextActive: {
-    color: '#34d399',
+    color: '#c2d3b6',
   },
   keyInput: {
     backgroundColor: '#030712',
@@ -689,7 +690,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 6,
-    backgroundColor: '#10b981',
+    backgroundColor: COLORS.accent,
     paddingVertical: 12,
     borderRadius: 12,
     marginTop: 8,
@@ -697,7 +698,7 @@ const styles = StyleSheet.create({
   saveKeyBtnText: {
     fontSize: 12,
     fontWeight: '800',
-    color: '#022c22',
+    color: '#231716',
   },
   cancelSettingsBtn: {
     alignItems: 'center',

@@ -306,14 +306,14 @@ export const RotationScreen: React.FC = () => {
     siteId: string,
   ) =>
     currentSite === siteId
-      ? 'rgba(16, 185, 129, 0.20)'
+      ? 'rgba(188, 169, 239, 0.20)'
       : '#0f172a';
 
   const siteStroke = (
     siteId: string,
   ) =>
     currentSite === siteId
-      ? '#10b981'
+      ? '#bca9ef'
       : '#334155';
 
   const siteStrokeWidth = (
@@ -325,7 +325,7 @@ export const RotationScreen: React.FC = () => {
     siteId: string,
   ) =>
     currentSite === siteId
-      ? '#10b981'
+      ? '#bca9ef'
       : '#ffffff';
 
   const renderInteractiveSite = (siteId: string, cx: number, cy: number) => {
@@ -341,13 +341,13 @@ export const RotationScreen: React.FC = () => {
               cx={cx}
               cy={cy}
               r="27"
-              fill="rgba(16, 185, 129, 0.22)"
+              fill="rgba(188, 169, 239, 0.22)"
             />
             <Circle
               cx={cx}
               cy={cy}
               r="23"
-              stroke="#10b981"
+              stroke="#bca9ef"
               strokeWidth="1.5"
               strokeDasharray="3 3"
               opacity={0.9}
@@ -360,8 +360,8 @@ export const RotationScreen: React.FC = () => {
           cx={cx}
           cy={cy}
           r="18"
-          fill={isSelected ? '#064e3b' : 'rgba(9, 13, 22, 0.82)'}
-          stroke={isSelected ? '#10b981' : '#38bdf8'}
+          fill={isSelected ? '#352423' : 'rgba(35, 23, 22, 0.88)'}
+          stroke={isSelected ? '#bca9ef' : '#1f4ab2'}
           strokeWidth={isSelected ? 2.5 : 1.5}
         />
 
@@ -370,7 +370,7 @@ export const RotationScreen: React.FC = () => {
           cx={cx}
           cy={cy - 7}
           r="2.5"
-          fill={isSelected ? '#34d399' : '#38bdf8'}
+          fill={isSelected ? '#c2d3b6' : '#1f4ab2'}
         />
 
         {/* Kode Titik (RU, LU, KA, KiA, dll) */}
@@ -389,7 +389,7 @@ export const RotationScreen: React.FC = () => {
         <SvgText
           x={cx}
           y={cy + 13}
-          fill={isSelected ? '#34d399' : '#94a3b8'}
+          fill={isSelected ? '#c2d3b6' : '#94a3b8'}
           fontSize="6.5"
           fontWeight="700"
           textAnchor="middle"
@@ -419,7 +419,7 @@ export const RotationScreen: React.FC = () => {
         >
           <Compass
             size={20}
-            color="#10b981"
+            color="#bca9ef"
           />
         </View>
 
@@ -476,7 +476,7 @@ export const RotationScreen: React.FC = () => {
           onPress={handleNextRotation}
           activeOpacity={0.8}
         >
-          <RotateCw size={16} color="#022c22" />
+          <RotateCw size={16} color="#231716" />
           <Text style={styles.rotateActionBtnText}>
             {language === 'en' ? 'Rotate to Next Site' : 'Putar ke Titik Selanjutnya'}
           </Text>
@@ -559,7 +559,7 @@ export const RotationScreen: React.FC = () => {
                   cy="135"
                   r="20"
                   fill="none"
-                  stroke="#38bdf8"
+                  stroke="#1f4ab2"
                   strokeWidth="1"
                   strokeDasharray="2 3"
                   opacity={0.4}
@@ -568,14 +568,14 @@ export const RotationScreen: React.FC = () => {
                   cx="150"
                   cy="135"
                   r="4"
-                  fill="#0284c7"
-                  stroke="#38bdf8"
+                  fill="#1f4ab2"
+                  stroke="#1f4ab2"
                   strokeWidth="1.5"
                 />
                 <SvgText
                   x="150"
                   y="148"
-                  fill="#38bdf8"
+                  fill="#1f4ab2"
                   fontSize="7"
                   fontWeight="bold"
                   textAnchor="middle"
@@ -649,7 +649,7 @@ export const RotationScreen: React.FC = () => {
                   y1="65"
                   x2="104"
                   y2="125"
-                  stroke="#38bdf8"
+                  stroke="#1f4ab2"
                   strokeWidth="1"
                   strokeDasharray="2 3"
                   opacity={0.3}
@@ -659,7 +659,7 @@ export const RotationScreen: React.FC = () => {
                   y1="95"
                   x2="132"
                   y2="95"
-                  stroke="#38bdf8"
+                  stroke="#1f4ab2"
                   strokeWidth="1"
                   strokeDasharray="2 3"
                   opacity={0.3}
@@ -670,7 +670,7 @@ export const RotationScreen: React.FC = () => {
                   y1="65"
                   x2="196"
                   y2="125"
-                  stroke="#38bdf8"
+                  stroke="#1f4ab2"
                   strokeWidth="1"
                   strokeDasharray="2 3"
                   opacity={0.3}
@@ -680,7 +680,7 @@ export const RotationScreen: React.FC = () => {
                   y1="95"
                   x2="224"
                   y2="95"
-                  stroke="#38bdf8"
+                  stroke="#1f4ab2"
                   strokeWidth="1"
                   strokeDasharray="2 3"
                   opacity={0.3}
@@ -757,7 +757,7 @@ export const RotationScreen: React.FC = () => {
                   {isSelected ? (
                     <CheckCircle2
                       size={16}
-                      color="#10b981"
+                      color="#bca9ef"
                     />
                   ) : (
                     <Clock
@@ -795,7 +795,7 @@ export const RotationScreen: React.FC = () => {
       >
         <ShieldCheck
           size={16}
-          color="#10b981"
+          color="#bca9ef"
         />
 
         <Text
@@ -839,9 +839,9 @@ const styles = StyleSheet.create({
     width: 42,
     height: 42,
     borderRadius: RADIUS.lg,
-    backgroundColor: 'rgba(52, 211, 153, 0.12)',
+    backgroundColor: 'rgba(188, 169, 239, 0.16)',
     borderWidth: 1,
-    borderColor: 'rgba(52, 211, 153, 0.25)',
+    borderColor: 'rgba(188, 169, 239, 0.32)',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -865,7 +865,7 @@ const styles = StyleSheet.create({
   activeTargetCard: {
     backgroundColor: COLORS.card,
     borderWidth: 1,
-    borderColor: 'rgba(52, 211, 153, 0.4)',
+    borderColor: 'rgba(188, 169, 239, 0.4)',
     borderRadius: RADIUS.xl,
     padding: 16,
     gap: 8,
@@ -887,7 +887,7 @@ const styles = StyleSheet.create({
   targetLabel: {
     fontSize: 10,
     fontWeight: '900',
-    color: COLORS.mint,
+    color: COLORS.sage,
     letterSpacing: 0.8,
   },
 
@@ -899,9 +899,9 @@ const styles = StyleSheet.create({
   },
 
   targetCodeBadge: {
-    backgroundColor: 'rgba(52, 211, 153, 0.15)',
+    backgroundColor: 'rgba(188, 169, 239, 0.16)',
     borderWidth: 1,
-    borderColor: COLORS.mint,
+    borderColor: COLORS.accent,
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: RADIUS.pill,
@@ -910,7 +910,7 @@ const styles = StyleSheet.create({
   targetCodeText: {
     fontSize: 13,
     fontWeight: '900',
-    color: COLORS.mint,
+    color: COLORS.accent,
   },
 
   targetSubText: {
@@ -924,7 +924,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
-    backgroundColor: COLORS.mint,
+    backgroundColor: COLORS.accent,
     paddingVertical: 12,
     borderRadius: RADIUS.pill,
     ...SHADOWS.subtle,
@@ -933,7 +933,7 @@ const styles = StyleSheet.create({
   rotateActionBtnText: {
     fontSize: 13,
     fontWeight: '900',
-    color: '#022c22',
+    color: '#231716',
   },
 
   zoneSelectorContainer: {
@@ -954,7 +954,7 @@ const styles = StyleSheet.create({
   },
 
   zoneTabActive: {
-    backgroundColor: COLORS.mint,
+    backgroundColor: COLORS.accent,
     ...SHADOWS.subtle,
   },
 
@@ -965,7 +965,7 @@ const styles = StyleSheet.create({
   },
 
   zoneTabTextActive: {
-    color: '#022c22',
+    color: '#231716',
     fontWeight: '900',
   },
 
@@ -1043,8 +1043,8 @@ const styles = StyleSheet.create({
   },
 
   manualSiteCardActive: {
-    borderColor: COLORS.mint,
-    backgroundColor: 'rgba(52, 211, 153, 0.1)',
+    borderColor: COLORS.accent,
+    backgroundColor: 'rgba(188, 169, 239, 0.12)',
   },
 
   siteCardTop: {
@@ -1060,7 +1060,7 @@ const styles = StyleSheet.create({
   },
 
   siteCardCodeActive: {
-    color: COLORS.mint,
+    color: COLORS.accent,
   },
 
   siteCardName: {
@@ -1078,9 +1078,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
-    backgroundColor: 'rgba(52, 211, 153, 0.08)',
+    backgroundColor: 'rgba(194, 211, 182, 0.10)',
     borderWidth: 1,
-    borderColor: 'rgba(52, 211, 153, 0.25)',
+    borderColor: 'rgba(194, 211, 182, 0.28)',
     padding: 14,
     borderRadius: RADIUS.lg,
   },

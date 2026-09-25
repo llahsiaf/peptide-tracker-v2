@@ -48,12 +48,12 @@ export const SyringeVisualizer: React.FC<SyringeVisualizerProps> = ({
       <Svg width="100%" height={80} viewBox="0 0 300 80">
         <Defs>
           <LinearGradient id="syringeLiquidGrad" x1="0" y1="0" x2="1" y2="0">
-            <Stop offset="0%" stopColor="#059669" stopOpacity="0.85" />
-            <Stop offset="100%" stopColor="#10b981" stopOpacity="0.95" />
+            <Stop offset="0%" stopColor="#8f77d4" stopOpacity="0.85" />
+            <Stop offset="100%" stopColor="#bca9ef" stopOpacity="0.95" />
           </LinearGradient>
           <LinearGradient id="syringeBarrelGrad" x1="0" y1="0" x2="0" y2="1">
-            <Stop offset="0%" stopColor="#0f172a" stopOpacity="0.9" />
-            <Stop offset="100%" stopColor="#090d16" stopOpacity="0.95" />
+            <Stop offset="0%" stopColor="#291c1b" stopOpacity="0.9" />
+            <Stop offset="100%" stopColor="#1a100f" stopOpacity="0.95" />
           </LinearGradient>
         </Defs>
 
@@ -97,7 +97,7 @@ export const SyringeVisualizer: React.FC<SyringeVisualizerProps> = ({
           height={barrelHeight}
           rx="5"
           fill="url(#syringeBarrelGrad)"
-          stroke="#1e293b"
+          stroke="#3d2b29"
           strokeWidth="1.5"
         />
 
@@ -108,7 +108,7 @@ export const SyringeVisualizer: React.FC<SyringeVisualizerProps> = ({
           width="6"
           height={barrelHeight + 10}
           rx="2"
-          fill="#1e293b"
+          fill="#3d2b29"
           stroke="#334155"
           strokeWidth="1.2"
         />
@@ -132,7 +132,7 @@ export const SyringeVisualizer: React.FC<SyringeVisualizerProps> = ({
           width="6"
           height={barrelHeight - 4}
           rx="2"
-          fill="#0f172a"
+          fill="#291c1b"
           stroke="#334155"
           strokeWidth="1.2"
         />
@@ -154,7 +154,7 @@ export const SyringeVisualizer: React.FC<SyringeVisualizerProps> = ({
           width="6"
           height={barrelHeight + 8}
           rx="2"
-          fill="#1e293b"
+          fill="#3d2b29"
           stroke="#334155"
           strokeWidth="1.2"
         />
@@ -198,19 +198,19 @@ export const SyringeVisualizer: React.FC<SyringeVisualizerProps> = ({
               y1={barrelY - 4}
               x2={targetX}
               y2={barrelY + barrelHeight + 4}
-              stroke="#10b981"
+              stroke="#bca9ef"
               strokeWidth="2"
             />
             {/* Pointer segitiga */}
             <Polygon
               points={`${targetX - 4},${barrelY + barrelHeight + 7} ${targetX + 4},${barrelY + barrelHeight + 7} ${targetX},${barrelY + barrelHeight + 2}`}
-              fill="#10b981"
+              fill="#bca9ef"
             />
             {/* Teks Mark X IU */}
             <SvgText
               x={targetX}
               y={barrelY + barrelHeight + 17}
-              fill="#10b981"
+              fill="#bca9ef"
               fontSize="9"
               fontWeight="800"
               textAnchor="middle"
@@ -226,11 +226,11 @@ export const SyringeVisualizer: React.FC<SyringeVisualizerProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#090d16',
+    backgroundColor: '#1a100f',
     borderRadius: 14,
     padding: 12,
     borderWidth: 1,
-    borderColor: '#1e293b',
+    borderColor: '#3d2b29',
     marginVertical: 6,
   },
   inlineContainer: {
@@ -255,7 +255,7 @@ const styles = StyleSheet.create({
   badgeText: {
     fontSize: 10,
     fontWeight: '800',
-    color: '#34d399',
+    color: '#c2d3b6',
     fontFamily: 'Courier',
   },
 });

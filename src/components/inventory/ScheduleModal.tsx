@@ -336,7 +336,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255, 255, 255, 0.06)',
   },
   presetCardActive: {
-    backgroundColor: 'rgba(52, 211, 153, 0.1)',
+    backgroundColor: 'rgba(194, 211, 182, 0.1)',
     borderColor: COLORS.mint,
   },
   presetRadioRow: {
@@ -374,8 +374,8 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255, 255, 255, 0.06)',
   },
   dayChipActive: {
-    backgroundColor: COLORS.mint,
-    borderColor: COLORS.mint,
+    backgroundColor: COLORS.accent,
+    borderColor: COLORS.accent,
   },
   dayChipText: {
     fontSize: 11,
@@ -383,7 +383,7 @@ const styles = StyleSheet.create({
     color: '#94a3b8',
   },
   dayChipTextActive: {
-    color: '#022c22',
+    color: '#231716',
   },
   timeCard: {
     flexDirection: 'row',
@@ -400,7 +400,7 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: 'rgba(56, 189, 248, 0.15)',
+    backgroundColor: 'rgba(188, 169, 239, 0.15)',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -423,7 +423,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     width: 80,
     borderWidth: 1,
-    borderColor: 'rgba(56, 189, 248, 0.3)',
+    borderColor: 'rgba(188, 169, 239, 0.3)',
   },
   cycleCard: {
     backgroundColor: 'rgba(255, 255, 255, 0.04)',
@@ -490,7 +490,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
-    backgroundColor: COLORS.mint,
+    backgroundColor: COLORS.accent,
     paddingVertical: 14,
     borderRadius: RADIUS.pill,
     ...SHADOWS.cardGlow,
@@ -498,6 +498,6 @@ const styles = StyleSheet.create({
   saveBtnText: {
     fontSize: 15,
     fontWeight: '800',
-    color: '#022c22',
+    color: '#231716',
   },
 });

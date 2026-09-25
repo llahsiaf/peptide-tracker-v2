@@ -5,6 +5,7 @@ import { FreezerStockItem, ActiveInventoryItem } from '../types';
 import { DEFAULT_PEPTIDES } from '../database/defaultPeptides';
 import { useLanguage } from '../i18n/LanguageContext';
 import { normalizeDecimalInput, parseDecimal } from '../utils/injectionCalculations';
+import { COLORS } from '../theme';
 
 interface ReconstituteWizardProps {
   visible: boolean;
@@ -85,7 +86,7 @@ export const ReconstituteWizard: React.FC<ReconstituteWizardProps> = ({
           {/* Header */}
           <View style={styles.header}>
             <View style={styles.headerTitleWrap}>
-              <FlaskConical size={18} color="#10b981" />
+              <FlaskConical size={18} color="#bca9ef" />
               <Text style={styles.headerTitle}>
                 {language === 'en' ? 'Reconstitution & Dose Setup' : 'Pelarutan & Penyetelan Dosis'}
               </Text>
@@ -199,7 +200,7 @@ export const ReconstituteWizard: React.FC<ReconstituteWizardProps> = ({
                     </Text>
                   </View>
                   <View style={styles.tipRow}>
-                    <Check size={16} color="#10b981" />
+                    <Check size={16} color="#bca9ef" />
                     <Text style={styles.tipText}>
                       {language === 'en'
                         ? 'Store immediately in fridge at 2°C - 8°C and keep away from direct light.'
@@ -225,11 +226,11 @@ export const ReconstituteWizard: React.FC<ReconstituteWizardProps> = ({
                 <Text style={styles.nextBtnText}>
                   {language === 'en' ? 'Next' : 'Lanjut'}
                 </Text>
-                <ChevronRight size={16} color="#022c22" />
+                <ChevronRight size={16} color="#231716" />
               </TouchableOpacity>
             ) : (
               <TouchableOpacity onPress={handleFinish} style={styles.finishBtn}>
-                <Check size={16} color="#022c22" />
+                <Check size={16} color="#231716" />
                 <Text style={styles.finishBtnText}>
                   {language === 'en' ? 'Move to Fridge' : 'Pindahkan ke Kulkas'}
                 </Text>
@@ -244,30 +245,30 @@ export const ReconstituteWizard: React.FC<ReconstituteWizardProps> = ({
 
 const styles = StyleSheet.create({
   backdrop: { flex: 1, backgroundColor: 'rgba(0,0,0,0.85)', justifyContent: 'flex-end' },
-  container: { backgroundColor: '#0b0f19', borderTopLeftRadius: 24, borderTopRightRadius: 24, borderWidth: 1, borderColor: '#1e293b', maxHeight: '85%', padding: 16 },
-  header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingBottom: 12, borderBottomWidth: 1, borderColor: '#1e293b' },
+  container: { backgroundColor: COLORS.bgSoft, borderTopLeftRadius: 24, borderTopRightRadius: 24, borderWidth: 1, borderColor: COLORS.border, maxHeight: '85%', padding: 16 },
+  header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingBottom: 12, borderBottomWidth: 1, borderColor: COLORS.border },
   headerTitleWrap: { flexDirection: 'row', alignItems: 'center', gap: 8 },
-  headerTitle: { fontSize: 14, fontWeight: '800', color: '#ffffff' },
+  headerTitle: { fontSize: 14, fontWeight: '800', color: COLORS.text },
   stepperRow: { flexDirection: 'row', gap: 6, marginVertical: 12 },
-  stepSegment: { flex: 1, height: 4, borderRadius: 2, backgroundColor: '#1e293b' },
-  stepSegmentActive: { backgroundColor: '#06b6d4' },
-  stepSegmentCurrent: { backgroundColor: '#10b981' },
+  stepSegment: { flex: 1, height: 4, borderRadius: 2, backgroundColor: COLORS.border },
+  stepSegmentActive: { backgroundColor: COLORS.lilac },
+  stepSegmentCurrent: { backgroundColor: COLORS.accent },
   bodyScroll: { paddingVertical: 8, gap: 12 },
   stepContent: { gap: 8 },
-  stepHeader: { fontSize: 13, fontWeight: '800', color: '#ffffff' },
-  stepDesc: { fontSize: 11, color: '#94a3b8', lineHeight: 16 },
-  cardBox: { backgroundColor: '#0f172a', borderRadius: 14, padding: 12, borderWidth: 1, borderColor: '#1e293b', marginTop: 4 },
-  fieldLabel: { fontSize: 11, fontWeight: '700', color: '#94a3b8', marginBottom: 6 },
-  inputField: { backgroundColor: '#090d16', borderRadius: 8, borderWidth: 1, borderColor: '#334155', color: '#ffffff', fontSize: 14, fontWeight: '700', padding: 8, textAlign: 'center', fontFamily: 'Courier' },
-  calcSubtext: { fontSize: 10, color: '#34d399', fontWeight: '700', marginTop: 8, textAlign: 'center' },
+  stepHeader: { fontSize: 13, fontWeight: '800', color: COLORS.text },
+  stepDesc: { fontSize: 11, color: COLORS.textMuted, lineHeight: 16 },
+  cardBox: { backgroundColor: COLORS.card, borderRadius: 14, padding: 12, borderWidth: 1, borderColor: COLORS.border, marginTop: 4 },
+  fieldLabel: { fontSize: 11, fontWeight: '700', color: COLORS.textMuted, marginBottom: 6 },
+  inputField: { backgroundColor: COLORS.bgDarker, borderRadius: 8, borderWidth: 1, borderColor: COLORS.border, color: COLORS.text, fontSize: 14, fontWeight: '700', padding: 8, textAlign: 'center', fontFamily: 'Courier' },
+  calcSubtext: { fontSize: 10, color: COLORS.sage, fontWeight: '700', marginTop: 8, textAlign: 'center' },
   tipsBox: { gap: 8, marginTop: 4 },
-  tipRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 10, backgroundColor: '#0f172a', padding: 10, borderRadius: 12, borderWidth: 1, borderColor: '#1e293b' },
-  tipText: { flex: 1, fontSize: 11, color: '#cbd5e1', lineHeight: 16 },
-  footerRow: { flexDirection: 'row', gap: 8, paddingTop: 12, borderTopWidth: 1, borderColor: '#1e293b' },
-  prevBtn: { flex: 1, paddingVertical: 12, borderRadius: 12, backgroundColor: '#1e293b', alignItems: 'center' },
-  prevBtnText: { color: '#94a3b8', fontWeight: '700', fontSize: 12 },
-  nextBtn: { flex: 2, paddingVertical: 12, borderRadius: 12, backgroundColor: '#10b981', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 4 },
-  nextBtnText: { color: '#022c22', fontWeight: '800', fontSize: 12 },
-  finishBtn: { flex: 2, paddingVertical: 12, borderRadius: 12, backgroundColor: '#10b981', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 6 },
-  finishBtnText: { color: '#022c22', fontWeight: '800', fontSize: 12 },
+  tipRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 10, backgroundColor: COLORS.card, padding: 10, borderRadius: 12, borderWidth: 1, borderColor: COLORS.border },
+  tipText: { flex: 1, fontSize: 11, color: COLORS.textSoft, lineHeight: 16 },
+  footerRow: { flexDirection: 'row', gap: 8, paddingTop: 12, borderTopWidth: 1, borderColor: COLORS.border },
+  prevBtn: { flex: 1, paddingVertical: 12, borderRadius: 12, backgroundColor: COLORS.cardElevated, alignItems: 'center' },
+  prevBtnText: { color: COLORS.textMuted, fontWeight: '700', fontSize: 12 },
+  nextBtn: { flex: 2, paddingVertical: 12, borderRadius: 12, backgroundColor: COLORS.accent, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 4 },
+  nextBtnText: { color: '#231716', fontWeight: '800', fontSize: 12 },
+  finishBtn: { flex: 2, paddingVertical: 12, borderRadius: 12, backgroundColor: COLORS.accent, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 6 },
+  finishBtnText: { color: '#231716', fontWeight: '800', fontSize: 12 },
 });

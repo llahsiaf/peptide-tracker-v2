@@ -5,6 +5,7 @@ import { ActiveInventoryItem } from '../types';
 import { SyringeVisualizer } from './SyringeVisualizer';
 import { useLanguage } from '../i18n/LanguageContext';
 import { normalizeDecimalInput, parseDecimal } from '../utils/injectionCalculations';
+import { COLORS } from '../theme';
 
 interface DoseDetailModalProps {
   visible: boolean;
@@ -125,7 +126,7 @@ export const DoseDetailModal: React.FC<DoseDetailModalProps> = ({ visible, item,
             {/* Precision Metrics Card */}
             <View style={styles.metricsBox}>
               <View style={styles.metricsHeader}>
-                <Activity size={14} color="#10b981" />
+                <Activity size={14} color="#bca9ef" />
                 <Text style={styles.metricsTitle}>
                   {language === 'en' ? 'Precision Calculation Results' : 'Hasil Kalkulasi Presisi'}
                 </Text>
@@ -156,7 +157,7 @@ export const DoseDetailModal: React.FC<DoseDetailModalProps> = ({ visible, item,
 
           {/* Action Button */}
           <TouchableOpacity onPress={handleSave} style={styles.saveButton}>
-            <Check size={16} color="#022c22" />
+            <Check size={16} color="#231716" />
             <Text style={styles.saveButtonText}>
               {language === 'en' ? 'Apply & Save Dose' : 'Terapkan & Simpan Dosis'}
             </Text>
@@ -174,11 +175,11 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   sheetContainer: {
-    backgroundColor: '#0b0f19',
+    backgroundColor: COLORS.card,
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     borderWidth: 1,
-    borderColor: '#1e293b',
+    borderColor: COLORS.border,
     maxHeight: '90%',
     padding: 16,
   },
@@ -188,7 +189,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingBottom: 12,
     borderBottomWidth: 1,
-    borderColor: '#1e293b',
+    borderColor: COLORS.border,
   },
   headerTitle: {
     fontSize: 16,
@@ -204,7 +205,7 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: '#1e293b',
+    backgroundColor: COLORS.cardElevated,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -224,16 +225,16 @@ const styles = StyleSheet.create({
   },
   presetCard: {
     flex: 1,
-    backgroundColor: '#0f172a',
+    backgroundColor: COLORS.cardElevated,
     borderRadius: 12,
     paddingVertical: 10,
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#1e293b',
+    borderColor: COLORS.border,
   },
   presetCardActive: {
-    backgroundColor: '#10b981',
-    borderColor: '#34d399',
+    backgroundColor: COLORS.accent,
+    borderColor: COLORS.accent,
   },
   presetType: {
     fontSize: 9,
@@ -248,7 +249,7 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   presetTextActive: {
-    color: '#022c22',
+    color: '#231716',
   },
   inputGroup: {
     backgroundColor: '#0f172a',
@@ -270,7 +271,7 @@ const styles = StyleSheet.create({
   inputValueHighlight: {
     fontSize: 12,
     fontWeight: '800',
-    color: '#10b981',
+    color: '#bca9ef',
   },
   inputValueHighlightCyan: {
     fontSize: 12,
@@ -281,7 +282,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#090d16',
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#10b981',
+    borderColor: '#bca9ef',
     color: '#ffffff',
     fontSize: 15,
     fontWeight: '800',
@@ -306,7 +307,7 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     padding: 12,
     borderWidth: 1,
-    borderColor: 'rgba(16, 185, 129, 0.4)',
+    borderColor: 'rgba(188, 169, 239, 0.4)',
   },
   metricsHeader: {
     flexDirection: 'row',
@@ -317,7 +318,7 @@ const styles = StyleSheet.create({
   metricsTitle: {
     fontSize: 10,
     fontWeight: '800',
-    color: '#10b981',
+    color: '#bca9ef',
     textTransform: 'uppercase',
   },
   metricsGrid: {
@@ -334,24 +335,24 @@ const styles = StyleSheet.create({
     borderColor: '#1e293b',
   },
   metricColHighlightEmerald: {
-    backgroundColor: 'rgba(16, 185, 129, 0.1)',
-    borderColor: '#10b981',
+    backgroundColor: 'rgba(188, 169, 239, 0.1)',
+    borderColor: '#bca9ef',
   },
   metricColHighlightCyan: {
     backgroundColor: 'rgba(6, 182, 212, 0.1)',
     borderColor: '#06b6d4',
   },
   metricLabel: { fontSize: 8, color: '#64748b', fontWeight: '700' },
-  metricLabelEmerald: { fontSize: 8, color: '#34d399', fontWeight: '700' },
+  metricLabelEmerald: { fontSize: 8, color: '#c2d3b6', fontWeight: '700' },
   metricLabelCyan: { fontSize: 8, color: '#38bdf8', fontWeight: '700' },
   metricValue: { fontSize: 13, fontWeight: '800', color: '#ffffff', fontFamily: 'Courier' },
-  metricValueEmerald: { fontSize: 14, fontWeight: '900', color: '#34d399', fontFamily: 'Courier' },
+  metricValueEmerald: { fontSize: 14, fontWeight: '900', color: '#c2d3b6', fontFamily: 'Courier' },
   metricValueCyan: { fontSize: 14, fontWeight: '900', color: '#38bdf8', fontFamily: 'Courier' },
   metricUnit: { fontSize: 8, color: '#475569' },
-  metricUnitEmerald: { fontSize: 8, color: '#10b981' },
+  metricUnitEmerald: { fontSize: 8, color: '#bca9ef' },
   metricUnitCyan: { fontSize: 8, color: '#06b6d4' },
   saveButton: {
-    backgroundColor: '#10b981',
+    backgroundColor: COLORS.accent,
     borderRadius: 14,
     paddingVertical: 12,
     flexDirection: 'row',
@@ -361,7 +362,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   saveButtonText: {
-    color: '#022c22',
+    color: '#231716',
     fontWeight: '800',
     fontSize: 13,
   },

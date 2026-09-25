@@ -23,7 +23,7 @@ export interface CuteSyringeProps {
 export const CuteSyringeIllustration: React.FC<CuteSyringeProps> = ({
   u100Units = 10,
   volMl = 0.1,
-  color = '#34d399',
+  color = '#bca9ef',
   size = 'md',
 }) => {
   const clampedUnits = Math.min(100, Math.max(0, u100Units));
@@ -66,7 +66,7 @@ export const CuteSyringeIllustration: React.FC<CuteSyringeProps> = ({
           {/* Gradient Tabung Kaca Transparan */}
           <LinearGradient id="syrGlassGrad" x1="0" y1="0" x2="0" y2="1">
             <Stop offset="0%" stopColor="#ffffff" stopOpacity={0.16} />
-            <Stop offset="50%" stopColor="#38bdf8" stopOpacity={0.04} />
+            <Stop offset="50%" stopColor="#bca9ef" stopOpacity={0.06} />
             <Stop offset="100%" stopColor="#ffffff" stopOpacity={0.08} />
           </LinearGradient>
         </Defs>
@@ -219,13 +219,13 @@ export const CuteSyringeIllustration: React.FC<CuteSyringeProps> = ({
         {/* 9. POINTER AKTIF TINGKAT DOSIS (ACTIVE DOSE PIN / POINTER) */}
         {clampedUnits > 0 && (
           <G>
-            {/* Garis penunjuk vertikal merah muda / kuning neon */}
+            {/* Garis penunjuk vertikal lilac */}
             <Line
               x1={plungerX}
               y1={barrelTop - 14}
               x2={plungerX}
               y2={barrelBottom + 2}
-              stroke="#38bdf8"
+              stroke="#bca9ef"
               strokeWidth="2"
               strokeDasharray="2 2"
               opacity={0.85}
@@ -237,14 +237,14 @@ export const CuteSyringeIllustration: React.FC<CuteSyringeProps> = ({
               width="44"
               height="16"
               rx="8"
-              fill="#0b0f19"
-              stroke="#38bdf8"
+              fill="#231716"
+              stroke="#bca9ef"
               strokeWidth="1.5"
             />
             <SvgText
               x={Math.max(barrelStart - 5, Math.min(plungerX - 22, barrelEnd - 25)) + 22}
               y={barrelTop - 14}
-              fill="#38bdf8"
+              fill="#bca9ef"
               fontSize="9"
               fontWeight="900"
               textAnchor="middle"

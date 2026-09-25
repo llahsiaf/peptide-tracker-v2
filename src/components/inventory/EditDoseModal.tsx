@@ -230,7 +230,7 @@ export const EditDoseModal: React.FC<EditDoseModalProps> = ({
               <CuteSyringeIllustration
                 u100Units={liveMetrics.iu}
                 volMl={liveMetrics.volumeMlNumber}
-                color={COLORS.mint}
+                color={COLORS.accent}
               />
             </View>
 
@@ -382,7 +382,7 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.sm - 2,
   },
   unitToggleBtnActive: {
-    backgroundColor: COLORS.mint,
+    backgroundColor: COLORS.accent,
   },
   unitToggleText: {
     fontSize: 11,
@@ -390,18 +390,18 @@ const styles = StyleSheet.create({
     color: '#94a3b8',
   },
   unitToggleTextActive: {
-    color: '#022c22',
+    color: '#231716',
   },
   textInputMain: {
     backgroundColor: 'rgba(15, 23, 42, 0.75)',
     borderRadius: RADIUS.md,
     fontSize: 22,
     fontWeight: '800',
-    color: COLORS.mint,
+    color: COLORS.accent,
     paddingVertical: 12,
     paddingHorizontal: 16,
     borderWidth: 1.5,
-    borderColor: 'rgba(52, 211, 153, 0.35)',
+    borderColor: 'rgba(188, 169, 239, 0.35)',
   },
   textInputBlue: {
     backgroundColor: 'rgba(15, 23, 42, 0.75)',
@@ -412,7 +412,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 16,
     borderWidth: 1.5,
-    borderColor: 'rgba(56, 189, 248, 0.35)',
+    borderColor: 'rgba(188, 169, 239, 0.35)',
   },
   estimationBanner: {
     flexDirection: 'row',
@@ -501,7 +501,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
-    backgroundColor: COLORS.mint,
+    backgroundColor: COLORS.accent,
     paddingVertical: 14,
     borderRadius: RADIUS.pill,
     marginTop: SPACING.lg,
@@ -510,6 +510,6 @@ const styles = StyleSheet.create({
   saveBtnText: {
     fontSize: 15,
     fontWeight: '800',
-    color: '#022c22',
+    color: '#231716',
   },
 });

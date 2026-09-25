@@ -1,43 +1,46 @@
 export const COLORS = {
-  // Vibrant Dark Backgrounds
-  bg: '#0b0f19',
-  bgSoft: '#0f172a',
-  bgDarker: '#080c16',
-  card: '#151d30',
-  cardElevated: '#1e293b',
-  cardHighlight: '#24334d',
+  // Deep Warm Espresso Backgrounds (Palette 1)
+  bg: '#1a100f',
+  bgSoft: '#231716',
+  bgDarker: '#130b0b',
+  card: '#291c1b',
+  cardElevated: '#352423',
+  cardHighlight: '#422e2c',
   
-  // Borders
-  border: '#23324d',
-  borderSoft: '#1a243a',
-  borderGlow: 'rgba(56, 189, 248, 0.25)',
+  // Warm Borders
+  border: '#3d2b29',
+  borderSoft: '#2d1e1d',
+  borderGlow: 'rgba(188, 169, 239, 0.35)',
 
-  // Typography
-  text: '#f8fafc',
-  textSoft: '#cbd5e1',
-  textSecondary: '#cbd5e1',
-  muted: '#718096',
-  textMuted: '#94a3b8',
+  // Typography (Warm Off-White & Taupe)
+  text: '#fbf9f5',
+  textSoft: '#dcd3ce',
+  textSecondary: '#d5c9c4',
+  muted: '#9c8985',
+  textMuted: '#9c8985',
 
-  // Cheerful Vibrant Accents
-  accent: '#10b981',        // Emerald Green
-  accentStrong: '#34d399',  // Spring Mint
-  mint: '#34d399',          // Playful Mint
-  cyan: '#38bdf8',          // Aqua Sparkle
-  pink: '#fb7185',          // Bubblegum Rose
-  purple: '#c084fc',        // Neon Lavender
-  yellow: '#fbbf24',        // Sunny Gold
-  orange: '#fb923c',        // Warm Peach
+  // Palette 1 Core Accents
+  accent: '#bca9ef',        // Soft Lilac / Wisteria Lavender
+  accentStrong: '#a894e6',
+  lilac: '#bca9ef',
+  sage: '#c2d3b6',          // Sage Cream / Matcha Green
+  mint: '#c2d3b6',          // Map mint -> Sage Cream for harmonious natural tones
+  cobalt: '#1f4ab2',        // Royal Cobalt Blue
+  cyan: '#648cf7',          // Bright Soft Cobalt for high-contrast dark text
+  pink: '#f472b6',          // Soft Rose
+  purple: '#bca9ef',        // Lilac
+  yellow: '#fbbf24',        // Warm Amber / Gold
+  orange: '#fb923c',        // Warm Peach / Orange
   warning: '#f59e0b',
   amber: '#f59e0b',
   danger: '#f43f5e',
 
   // Category specific liquid colors
-  liquidDefault: '#38bdf8',
-  liquidHealing: '#34d399',
-  liquidGlp1: '#fb923c',
-  liquidGh: '#c084fc',
-  liquidCognitive: '#fb7185',
+  liquidDefault: '#bca9ef', // Soft Lilac
+  liquidHealing: '#c2d3b6', // Sage Cream
+  liquidGlp1: '#fb923c',    // Warm Peach
+  liquidGh: '#648cf7',     // Soft Cobalt
+  liquidCognitive: '#f472b6',
 } as const;
 
 export const RADIUS = {
@@ -61,28 +64,28 @@ export const SPACING = {
 export const SHADOWS = {
   card: {
     shadowColor: '#000',
-    shadowOpacity: 0.22,
+    shadowOpacity: 0.30,
     shadowRadius: 12,
     shadowOffset: { width: 0, height: 6 },
     elevation: 6,
   },
   cardGlow: {
-    shadowColor: '#38bdf8',
-    shadowOpacity: 0.15,
+    shadowColor: '#bca9ef',
+    shadowOpacity: 0.22,
     shadowRadius: 14,
     shadowOffset: { width: 0, height: 4 },
     elevation: 8,
   },
   floating: {
     shadowColor: '#000',
-    shadowOpacity: 0.35,
+    shadowOpacity: 0.45,
     shadowRadius: 18,
     shadowOffset: { width: 0, height: 10 },
     elevation: 14,
   },
   subtle: {
     shadowColor: '#000',
-    shadowOpacity: 0.15,
+    shadowOpacity: 0.20,
     shadowRadius: 8,
     shadowOffset: { width: 0, height: 4 },
     elevation: 4,
