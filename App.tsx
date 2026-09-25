@@ -209,7 +209,7 @@ function BioStackApp() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="#030712" />
+      <StatusBar barStyle="light-content" backgroundColor={COLORS.bg} />
 
       {/* Header Utama BioStack PRO */}
       <View style={styles.topHeader}>
@@ -346,14 +346,14 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#030712',
+    backgroundColor: COLORS.bg,
   },
   topHeader: {
-    paddingHorizontal: 12,
+    paddingHorizontal: 16,
     paddingTop: Platform.OS === 'android' ? 12 : 6,
-    paddingBottom: 10,
+    paddingBottom: 12,
     borderBottomWidth: 1,
-    borderBottomColor: COLORS.border,
+    borderBottomColor: 'rgba(255, 255, 255, 0.05)',
     backgroundColor: COLORS.bg,
   },
   headerContent: {
@@ -365,16 +365,16 @@ const styles = StyleSheet.create({
   brandingRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 9,
+    gap: 10,
     flexShrink: 1,
   },
   brandIconBox: {
-    width: 36,
-    height: 36,
+    width: 38,
+    height: 38,
     borderRadius: RADIUS.md,
-    borderWidth: 1,
-    borderColor: 'rgba(16, 185, 129, 0.3)',
-    backgroundColor: COLORS.card,
+    borderWidth: 1.5,
+    borderColor: 'rgba(52, 211, 153, 0.4)',
+    backgroundColor: COLORS.cardElevated,
     overflow: 'hidden',
   },
   brandIconImage: {
@@ -390,21 +390,23 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   appTitle: {
-    fontSize: 16,
+    fontSize: 17,
     fontWeight: '900',
     color: COLORS.text,
-    letterSpacing: 0.3,
+    letterSpacing: -0.2,
   },
   proBadge: {
-    backgroundColor: 'rgba(16, 185, 129, 0.2)',
-    paddingHorizontal: 5,
-    paddingVertical: 1.5,
-    borderRadius: 5,
+    backgroundColor: 'rgba(52, 211, 153, 0.18)',
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: RADIUS.sm,
+    borderWidth: 1,
+    borderColor: 'rgba(52, 211, 153, 0.35)',
   },
   proBadgeText: {
-    fontSize: 9,
-    fontWeight: '800',
-    color: '#10b981',
+    fontSize: 9.5,
+    fontWeight: '900',
+    color: COLORS.mint,
   },
   subtitleRow: {
     flexDirection: 'row',
@@ -413,22 +415,23 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   appSubtitle: {
-    fontSize: 9,
-    color: COLORS.muted,
+    fontSize: 10,
+    color: '#94a3b8',
+    fontWeight: '500',
   },
   headerStatus: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 3,
-    paddingHorizontal: 5,
-    paddingVertical: 1,
-    borderRadius: 4,
-    backgroundColor: 'rgba(16, 185, 129, 0.08)',
+    paddingHorizontal: 6,
+    paddingVertical: 1.5,
+    borderRadius: 6,
+    backgroundColor: 'rgba(52, 211, 153, 0.1)',
     borderWidth: 1,
-    borderColor: 'rgba(16, 185, 129, 0.2)',
+    borderColor: 'rgba(52, 211, 153, 0.25)',
   },
   headerStatusText: {
-    fontSize: 7.5,
+    fontSize: 8,
     fontWeight: '800',
     letterSpacing: 0.5,
     color: '#34d399',
@@ -436,14 +439,14 @@ const styles = StyleSheet.create({
   headerActions: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 5,
+    gap: 6,
   },
   notificationBtn: {
-    padding: 7,
-    backgroundColor: '#090d16',
-    borderRadius: 9,
+    padding: 8,
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    borderRadius: RADIUS.md,
     borderWidth: 1,
-    borderColor: '#1e293b',
+    borderColor: 'rgba(255, 255, 255, 0.08)',
   },
   navBar: {
     flexDirection: 'row',

@@ -25,6 +25,9 @@ import { useBioStackStore, FreezerItem } from '../store/useBioStackStore';
 import { getPeptideAutofillData } from '../database/defaultPeptides';
 import { useLanguage } from '../i18n/LanguageContext';
 import { normalizeDecimalInput, parseDecimal } from '../utils/injectionCalculations';
+import { CuteVialIllustration } from '../components/common/CuteVialIllustration';
+import { FrostyFreezerBadge } from '../components/common/FrostyFreezerBadge';
+import { COLORS, RADIUS, SHADOWS } from '../theme';
 
 export const FreezerScreen: React.FC = () => {
   const { language, t } = useLanguage();
@@ -288,12 +291,10 @@ export const FreezerScreen: React.FC = () => {
           BANNER FREEZER
       ===================================== */}
       <View style={styles.bannerCard}>
-        <View style={styles.bannerIconBox}>
-          <Snowflake
-            size={21}
-            color="#38bdf8"
-          />
-        </View>
+        <FrostyFreezerBadge
+          count={totalVials}
+          size={52}
+        />
 
         <View style={styles.bannerContent}>
           <Text style={styles.bannerTitle}>
@@ -388,166 +389,109 @@ export const FreezerScreen: React.FC = () => {
 
           return (
             <View style={styles.freezerCard}>
+              <View style={styles.cardMainRow}>
+                {/* Cute Cartoon Vial */}
+                <View style={styles.vialWrapper}>
+                  <CuteVialIllustration
+                    size="sm"
+                    isPowder={!isLiquid}
+                    progress={isLiquid ? 100 : 0}
+                    category={item.category}
+                    colorOverride={isLiquid ? COLORS.cyan : undefined}
+                    showTicks={false}
+                  />
+                </View>
 
-              {/* =================================
-                  HEADER CARD
-              ================================= */}
-              <View style={styles.cardHeader}>
-                <View style={styles.titleRow}>
-                  <Text
-                    style={styles.peptideName}
-                    numberOfLines={1}
-                  >
-                    {item.name}
-                  </Text>
+                {/* Info Container */}
+                <View style={styles.cardInfo}>
+                  <View style={styles.cardHeader}>
+                    <View style={styles.titleRow}>
+                      <Text style={styles.peptideName} numberOfLines={1}>{item.name}</Text>
+                      <View style={styles.sizeBadge}>
+                        <Text style={styles.sizeBadgeText}>{item.vialSize} {item.unit}</Text>
+                      </View>
+                    </View>
 
-                  <View style={styles.sizeBadge}>
-                    <Text style={styles.sizeBadgeText}>
-                      {item.vialSize} {item.unit}
-                    </Text>
+                    <TouchableOpacity
+                      activeOpacity={0.7}
+                      onPress={() => {
+                        const confirmMsg = language === 'en'
+                          ? `Delete ${item.name} from freezer?`
+                          : `Hapus ${item.name} dari freezer?`;
+
+                        if (Platform.OS === 'web') {
+                          // eslint-disable-next-line no-alert
+                          if (window.confirm(confirmMsg)) removeFreezerItem(item.id);
+                          return;
+                        }
+
+                        Alert.alert(
+                          language === 'en' ? 'Delete Compound' : 'Hapus Senyawa',
+                          confirmMsg,
+                          [
+                            { text: t('app.cancel'), style: 'cancel' },
+                            { text: language === 'en' ? 'Delete' : 'Hapus', style: 'destructive', onPress: () => removeFreezerItem(item.id) },
+                          ]
+                        );
+                      }}
+                      style={styles.deleteBtn}
+                    >
+                      <Trash2 size={16} color={COLORS.muted} />
+                    </TouchableOpacity>
+                  </View>
+
+                  <Text style={styles.categoryText}>{item.category}</Text>
+
+                  {/* Action Row */}
+                  <View style={styles.actionRow}>
+                    <View style={styles.qtyControl}>
+                      <TouchableOpacity
+                        activeOpacity={0.7}
+                        onPress={() => updateFreezerQuantity(item.id, Math.max(0, item.quantity - 1))}
+                        style={styles.qtyBtn}
+                      >
+                        <Text style={styles.qtyBtnText}>−</Text>
+                      </TouchableOpacity>
+
+                      <Text style={styles.qtyValueText}>
+                        {item.quantity}{' '}
+                        <Text style={styles.qtyUnitText}>{t('freezer.vialUnitLabel')}</Text>
+                      </Text>
+
+                      <TouchableOpacity
+                        activeOpacity={0.7}
+                        onPress={() => updateFreezerQuantity(item.id, item.quantity + 1)}
+                        style={styles.qtyBtn}
+                      >
+                        <Text style={styles.qtyBtnText}>+</Text>
+                      </TouchableOpacity>
+                    </View>
+
+                    {isLiquid ? (
+                      <TouchableOpacity
+                        activeOpacity={0.8}
+                        onPress={() => handleActionOnItem(item)}
+                        style={styles.transferActionBtn}
+                      >
+                        <ArrowRight size={15} color="#022c22" />
+                        <Text style={styles.reconstituteBtnText} numberOfLines={1}>
+                          {t('freezer.moveToFridge')}
+                        </Text>
+                      </TouchableOpacity>
+                    ) : (
+                      <TouchableOpacity
+                        activeOpacity={0.8}
+                        onPress={() => handleActionOnItem(item)}
+                        style={styles.reconstituteBtn}
+                      >
+                        <FlaskConical size={15} color="#022c22" />
+                        <Text style={styles.reconstituteBtnText} numberOfLines={1}>
+                          {t('freezer.dissolveToFridge')}
+                        </Text>
+                      </TouchableOpacity>
+                    )}
                   </View>
                 </View>
-
-                <TouchableOpacity
-                  activeOpacity={0.7}
-                  onPress={() => {
-                    const confirmMsg = language === 'en'
-                      ? `Delete ${item.name} from freezer?`
-                      : `Hapus ${item.name} dari freezer?`;
-
-                    if (Platform.OS === 'web') {
-                      // window.confirm works correctly on web; Alert.alert 2-button does not
-                      // eslint-disable-next-line no-alert
-                      if (window.confirm(confirmMsg)) removeFreezerItem(item.id);
-                      return;
-                    }
-
-                    Alert.alert(
-                      language === 'en' ? 'Delete Compound' : 'Hapus Senyawa',
-                      confirmMsg,
-                      [
-                        {
-                          text: t('app.cancel'),
-                          style: 'cancel',
-                        },
-                        {
-                          text: language === 'en' ? 'Delete' : 'Hapus',
-                          style: 'destructive',
-                          onPress: () =>
-                            removeFreezerItem(item.id),
-                        },
-                      ]
-                    );
-                  }}
-                  style={styles.deleteBtn}
-                >
-                  <Trash2
-                    size={18}
-                    color="#64748b"
-                  />
-                </TouchableOpacity>
-              </View>
-
-              {/* =================================
-                  CATEGORY
-              ================================= */}
-              <Text style={styles.categoryText}>
-                {item.category}
-              </Text>
-
-              {/* =================================
-                  ACTION ROW
-              ================================= */}
-              <View style={styles.actionRow}>
-
-                {/* QUANTITY */}
-                <View style={styles.qtyControl}>
-
-                  <TouchableOpacity
-                    activeOpacity={0.7}
-                    onPress={() =>
-                      updateFreezerQuantity(
-                        item.id,
-                        Math.max(
-                          0,
-                          item.quantity - 1
-                        )
-                      )
-                    }
-                    style={styles.qtyBtn}
-                  >
-                    <Text style={styles.qtyBtnText}>
-                      −
-                    </Text>
-                  </TouchableOpacity>
-
-                  <Text style={styles.qtyValueText}>
-                    {item.quantity}{' '}
-                    <Text style={styles.qtyUnitText}>
-                      {t('freezer.vialUnitLabel')}
-                    </Text>
-                  </Text>
-
-                  <TouchableOpacity
-                    activeOpacity={0.7}
-                    onPress={() =>
-                      updateFreezerQuantity(
-                        item.id,
-                        item.quantity + 1
-                      )
-                    }
-                    style={styles.qtyBtn}
-                  >
-                    <Text style={styles.qtyBtnText}>
-                      +
-                    </Text>
-                  </TouchableOpacity>
-
-                </View>
-
-                {/* ACTION */}
-                {isLiquid ? (
-                  <TouchableOpacity
-                    activeOpacity={0.8}
-                    onPress={() =>
-                      handleActionOnItem(item)
-                    }
-                    style={styles.transferActionBtn}
-                  >
-                    <ArrowRight
-                      size={16}
-                      color="#022c22"
-                    />
-
-                    <Text
-                      style={styles.reconstituteBtnText}
-                      numberOfLines={1}
-                    >
-                      {t('freezer.moveToFridge')}
-                    </Text>
-                  </TouchableOpacity>
-                ) : (
-                  <TouchableOpacity
-                    activeOpacity={0.8}
-                    onPress={() =>
-                      handleActionOnItem(item)
-                    }
-                    style={styles.reconstituteBtn}
-                  >
-                    <FlaskConical
-                      size={16}
-                      color="#022c22"
-                    />
-
-                    <Text
-                      style={styles.reconstituteBtnText}
-                      numberOfLines={1}
-                    >
-                      {t('freezer.dissolveToFridge')}
-                    </Text>
-                  </TouchableOpacity>
-                )}
-
               </View>
             </View>
           );
@@ -608,6 +552,17 @@ export const FreezerScreen: React.FC = () => {
                 keyboardShouldPersistTaps="handled"
                 showsVerticalScrollIndicator={false}
               >
+                <View style={styles.reconIllustrationRow}>
+                  <View style={styles.reconVialCol}>
+                    <CuteVialIllustration size="sm" isPowder={true} category={selectedFreezerItem.category} />
+                    <Text style={styles.reconVialLabel}>{language === 'en' ? 'Powder' : 'Bubuk'}</Text>
+                  </View>
+                  <ArrowRight size={20} color={COLORS.cyan} />
+                  <View style={styles.reconVialCol}>
+                    <CuteVialIllustration size="sm" progress={100} category={selectedFreezerItem.category} colorOverride={COLORS.mint} />
+                    <Text style={styles.reconVialLabel}>{language === 'en' ? '+ BAC Water' : '+ Air BAC'}</Text>
+                  </View>
+                </View>
 
                 <Text style={styles.reconPeptideName}>
                   {selectedFreezerItem.name} (
@@ -898,7 +853,7 @@ const styles = StyleSheet.create({
   // =====================================
   container: {
     flex: 1,
-    backgroundColor: '#030712',
+    backgroundColor: COLORS.bg,
     paddingHorizontal: 14,
     paddingTop: 10,
   },
@@ -909,23 +864,15 @@ const styles = StyleSheet.create({
   bannerCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#090d16',
+    backgroundColor: COLORS.card,
     borderWidth: 1,
-    borderColor: '#1e293b',
-    borderRadius: 15,
-    paddingHorizontal: 14,
-    paddingVertical: 13,
-    gap: 11,
-    marginBottom: 10,
-  },
-
-  bannerIconBox: {
-    width: 40,
-    height: 40,
-    borderRadius: 11,
-    backgroundColor: 'rgba(56, 189, 248, 0.10)',
-    alignItems: 'center',
-    justifyContent: 'center',
+    borderColor: COLORS.border,
+    borderRadius: RADIUS.xl,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    gap: 14,
+    marginBottom: 12,
+    ...SHADOWS.cardGlow,
   },
 
   bannerContent: {
@@ -933,14 +880,14 @@ const styles = StyleSheet.create({
   },
 
   bannerTitle: {
-    fontSize: 14,
-    fontWeight: '800',
+    fontSize: 16,
+    fontWeight: '900',
     color: '#ffffff',
   },
 
   bannerSubtitle: {
-    fontSize: 10,
-    color: '#64748b',
+    fontSize: 11,
+    color: COLORS.textMuted,
     marginTop: 3,
   },
 
@@ -952,16 +899,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
-    backgroundColor: '#10b981',
+    backgroundColor: COLORS.mint,
     minHeight: 46,
-    paddingHorizontal: 14,
-    borderRadius: 13,
-    marginBottom: 10,
+    paddingHorizontal: 16,
+    borderRadius: RADIUS.pill,
+    marginBottom: 12,
+    ...SHADOWS.subtle,
   },
 
   addMainBtnText: {
     fontSize: 13,
-    fontWeight: '800',
+    fontWeight: '900',
     color: '#022c22',
   },
 
@@ -971,20 +919,20 @@ const styles = StyleSheet.create({
   searchBar: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#090d16',
+    backgroundColor: COLORS.card,
     borderWidth: 1,
-    borderColor: '#1e293b',
-    borderRadius: 11,
-    paddingHorizontal: 13,
-    minHeight: 44,
-    gap: 9,
-    marginBottom: 10,
+    borderColor: COLORS.border,
+    borderRadius: RADIUS.lg,
+    paddingHorizontal: 14,
+    minHeight: 46,
+    gap: 10,
+    marginBottom: 12,
   },
 
   searchInput: {
     flex: 1,
     color: '#ffffff',
-    fontSize: 12,
+    fontSize: 13,
     paddingVertical: 0,
   },
 
@@ -993,31 +941,31 @@ const styles = StyleSheet.create({
   // =====================================
   listContainer: {
     paddingBottom: 104,
-    gap: 10,
+    gap: 12,
   },
 
   emptyCard: {
-    backgroundColor: '#090d16',
+    backgroundColor: COLORS.card,
     borderWidth: 1,
-    borderColor: '#1e293b',
-    borderRadius: 15,
+    borderColor: COLORS.border,
+    borderRadius: RADIUS.xl,
     paddingHorizontal: 24,
-    paddingVertical: 28,
+    paddingVertical: 32,
     alignItems: 'center',
-    gap: 9,
+    gap: 10,
     marginTop: 20,
   },
 
   emptyTitle: {
-    fontSize: 14,
-    fontWeight: '800',
+    fontSize: 15,
+    fontWeight: '900',
     color: '#ffffff',
   },
 
   emptySub: {
-    fontSize: 10,
-    lineHeight: 15,
-    color: '#64748b',
+    fontSize: 11,
+    lineHeight: 16,
+    color: COLORS.textMuted,
     textAlign: 'center',
   },
 
@@ -1025,12 +973,29 @@ const styles = StyleSheet.create({
   // FREEZER CARD
   // =====================================
   freezerCard: {
-    backgroundColor: '#090d16',
-    borderRadius: 12,
+    backgroundColor: COLORS.card,
+    borderRadius: RADIUS.xl,
     borderWidth: 1,
-    borderColor: '#1e293b',
-    paddingHorizontal: 11,
-    paddingVertical: 9,
+    borderColor: COLORS.border,
+    paddingHorizontal: 14,
+    paddingVertical: 14,
+    ...SHADOWS.card,
+  },
+
+  cardMainRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+
+  vialWrapper: {
+    width: 48,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  cardInfo: {
+    flex: 1,
     gap: 5,
   },
 
@@ -1045,42 +1010,42 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
+    gap: 8,
     paddingRight: 5,
   },
 
   peptideName: {
     flexShrink: 1,
-    fontSize: 13,
-    fontWeight: '800',
+    fontSize: 14,
+    fontWeight: '900',
     color: '#ffffff',
   },
 
   sizeBadge: {
-    backgroundColor: '#111827',
-    paddingHorizontal: 6,
+    backgroundColor: COLORS.cardHighlight,
+    paddingHorizontal: 7,
     paddingVertical: 3,
-    borderRadius: 6,
+    borderRadius: RADIUS.sm,
   },
 
   sizeBadgeText: {
-    fontSize: 8,
-    fontWeight: '700',
-    color: '#94a3b8',
+    fontSize: 9,
+    fontWeight: '800',
+    color: COLORS.cyan,
   },
 
   deleteBtn: {
-    width: 28,
-    height: 28,
+    width: 30,
+    height: 30,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 8,
+    borderRadius: RADIUS.md,
   },
 
   categoryText: {
-    fontSize: 9,
-    lineHeight: 12,
-    color: '#64748b',
+    fontSize: 10,
+    lineHeight: 14,
+    color: COLORS.textMuted,
   },
 
   // =====================================
@@ -1089,8 +1054,8 @@ const styles = StyleSheet.create({
   actionRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 7,
-    marginTop: 1,
+    gap: 8,
+    marginTop: 4,
   },
 
   // =====================================
@@ -1100,40 +1065,41 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    minWidth: 112,
-    height: 34,
-    backgroundColor: '#030712',
-    borderRadius: 8,
+    minWidth: 105,
+    height: 36,
+    backgroundColor: COLORS.bgDarker,
+    borderRadius: RADIUS.pill,
     borderWidth: 1,
-    borderColor: '#1e293b',
-    paddingHorizontal: 2,
+    borderColor: COLORS.border,
+    paddingHorizontal: 4,
   },
 
   qtyBtn: {
-    width: 31,
-    height: 30,
+    width: 28,
+    height: 28,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 7,
+    borderRadius: RADIUS.pill,
+    backgroundColor: COLORS.cardHighlight,
   },
 
   qtyBtnText: {
     fontSize: 16,
     lineHeight: 18,
-    fontWeight: '800',
-    color: '#94a3b8',
+    fontWeight: '900',
+    color: COLORS.textSecondary,
   },
 
   qtyValueText: {
-    fontSize: 10,
-    fontWeight: '800',
+    fontSize: 11,
+    fontWeight: '900',
     color: '#ffffff',
   },
 
   qtyUnitText: {
-    fontSize: 8,
-    fontWeight: '400',
-    color: '#64748b',
+    fontSize: 9,
+    fontWeight: '500',
+    color: COLORS.textMuted,
   },
 
   // =====================================
@@ -1141,32 +1107,34 @@ const styles = StyleSheet.create({
   // =====================================
   reconstituteBtn: {
     flex: 1,
-    minHeight: 34,
+    minHeight: 36,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 6,
-    backgroundColor: '#10b981',
-    paddingHorizontal: 8,
-    borderRadius: 8,
+    backgroundColor: COLORS.mint,
+    paddingHorizontal: 10,
+    borderRadius: RADIUS.pill,
+    ...SHADOWS.subtle,
   },
 
   transferActionBtn: {
     flex: 1,
-    minHeight: 34,
+    minHeight: 36,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 6,
-    backgroundColor: '#38bdf8',
-    paddingHorizontal: 8,
-    borderRadius: 8,
+    backgroundColor: COLORS.cyan,
+    paddingHorizontal: 10,
+    borderRadius: RADIUS.pill,
+    ...SHADOWS.subtle,
   },
 
   reconstituteBtnText: {
     flexShrink: 1,
-    fontSize: 9,
-    fontWeight: '800',
+    fontSize: 10,
+    fontWeight: '900',
     color: '#022c22',
   },
 
@@ -1181,12 +1149,37 @@ const styles = StyleSheet.create({
   },
 
   modalBox: {
-    backgroundColor: '#090d16',
-    borderRadius: 17,
+    backgroundColor: COLORS.card,
+    borderRadius: RADIUS.xl,
     borderWidth: 1,
-    borderColor: '#1e293b',
-    padding: 16,
+    borderColor: COLORS.border,
+    padding: 18,
     maxHeight: '85%',
+    ...SHADOWS.floating,
+  },
+
+  reconIllustrationRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 16,
+    marginVertical: 10,
+    paddingVertical: 10,
+    backgroundColor: COLORS.bgDarker,
+    borderRadius: RADIUS.lg,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+  },
+
+  reconVialCol: {
+    alignItems: 'center',
+    gap: 4,
+  },
+
+  reconVialLabel: {
+    fontSize: 9,
+    fontWeight: '800',
+    color: COLORS.textMuted,
   },
 
   modalLargeBox: {

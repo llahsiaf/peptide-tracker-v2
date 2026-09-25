@@ -2,6 +2,7 @@ export const COLORS = {
   // Vibrant Dark Backgrounds
   bg: '#0b0f19',
   bgSoft: '#0f172a',
+  bgDarker: '#080c16',
   card: '#151d30',
   cardElevated: '#1e293b',
   cardHighlight: '#24334d',
@@ -14,7 +15,9 @@ export const COLORS = {
   // Typography
   text: '#f8fafc',
   textSoft: '#cbd5e1',
+  textSecondary: '#cbd5e1',
   muted: '#718096',
+  textMuted: '#94a3b8',
 
   // Cheerful Vibrant Accents
   accent: '#10b981',        // Emerald Green
@@ -75,5 +78,12 @@ export const SHADOWS = {
     shadowRadius: 18,
     shadowOffset: { width: 0, height: 10 },
     elevation: 14,
+  },
+  subtle: {
+    shadowColor: '#000',
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 4,
   },
 } as const;

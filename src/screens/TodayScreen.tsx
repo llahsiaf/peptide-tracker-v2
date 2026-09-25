@@ -37,8 +37,10 @@ import {
   WEEKDAY_LABELS,
 } from '../utils/scheduleUtils';
 import { getDashboardAnalytics, getLogsForLocalDate, getOccurrenceStatusLabel } from '../utils/dashboardUtils';
-import { calculateInjectionMetrics, normalizeDecimalInput } from '../utils/injectionCalculations';
+import { calculateInjectionMetrics, getLiquidStatus, normalizeDecimalInput } from '../utils/injectionCalculations';
 import { getSiteLabel, getSiteCode, getTrackerSuggestedSite, ROTATION_SITE_ORDER } from '../utils/rotationUtils';
+import { CuteVialIllustration } from '../components/common/CuteVialIllustration';
+import { COLORS, RADIUS, SHADOWS } from '../theme';
 import type { InventoryItem } from '../types';
 import { useLanguage } from '../i18n/LanguageContext';
 import { getLanguage } from '../i18n/translations';
@@ -402,6 +404,17 @@ export const TodayScreen: React.FC<{
                 .sort((a, b) => String(a.timestamp).localeCompare(String(b.timestamp)))[0];
               const statusLabel = getOccurrenceStatusLabel(occurrence, language);
               const canLog = isToday && (occurrence.status === 'due' || occurrence.status === 'missed');
+              const matchedVial = safeInventory.find((v) => v.id === occurrence.inventoryId);
+
+              // Dose depletion estimate for this vial
+              const vialSize = Number(matchedVial?.vialSize || 0);
+              const dose = Number(matchedVial?.targetDose || 0);
+              const totalVol = Number(matchedVial?.bacWater || matchedVial?.currentVolumeMl || 1);
+              const currentVol = Number(matchedVial?.currentVolumeMl ?? totalVol);
+              const concentration = totalVol > 0 ? vialSize / totalVol : 0;
+              const volPerDose = concentration > 0 && dose > 0 ? dose / concentration : 0;
+              const remainingDoses = volPerDose > 0 && currentVol > 0 ? Math.floor(currentVol / volPerDose) : null;
+              const progressPercent = totalVol > 0 ? Math.min(100, Math.max(0, (currentVol / totalVol) * 100)) : 100;
 
               return (
                 <View
@@ -414,11 +427,38 @@ export const TodayScreen: React.FC<{
                     highlightedInventoryId === occurrence.inventoryId && styles.activityRowHighlighted,
                   ]}
                 >
-                  <View style={styles.statusIcon}>{statusIcon(occurrence.status)}</View>
+                  <View style={styles.activityVialWrap}>
+                    {matchedVial ? (
+                      <CuteVialIllustration
+                        size="sm"
+                        progress={progressPercent}
+                        category={matchedVial.category}
+                        dosesLeft={remainingDoses ?? undefined}
+                      />
+                    ) : (
+                      <View style={styles.statusIcon}>{statusIcon(occurrence.status)}</View>
+                    )}
+                  </View>
+
                   <View style={styles.activityMain}>
-                    <Text style={[styles.activityTitle, occurrence.status === 'completed' && styles.activityTitleCompleted, occurrence.status === 'missed' && styles.activityTitleMissed]}>
-                      {occurrence.peptideName}
-                    </Text>
+                    <View style={styles.activityTitleRow}>
+                      <Text style={[styles.activityTitle, occurrence.status === 'completed' && styles.activityTitleCompleted, occurrence.status === 'missed' && styles.activityTitleMissed]}>
+                        {occurrence.peptideName}
+                      </Text>
+                      {remainingDoses !== null && (
+                        <View style={[
+                          styles.depletionPill,
+                          remainingDoses <= 3 ? styles.depletionAlert : remainingDoses <= 7 ? styles.depletionWarning : styles.depletionSafe
+                        ]}>
+                          <Text style={[
+                            styles.depletionPillText,
+                            remainingDoses <= 3 ? styles.depletionAlertText : remainingDoses <= 7 ? styles.depletionWarningText : styles.depletionSafeText
+                          ]}>
+                            🎯 ~{remainingDoses}x
+                          </Text>
+                        </View>
+                      )}
+                    </View>
                     <Text style={styles.activitySub}>
                       {occurrenceLog ? `${occurrenceLog.timeStr || occurrence.time} • ${language === 'en' ? 'Logged' : 'Dicatat'}` : `${occurrence.time} • ${statusLabel}`}
                     </Text>
@@ -540,6 +580,45 @@ export const TodayScreen: React.FC<{
               })}
             </ScrollView>
 
+            {selectedQuickVial && (
+              <View style={styles.quickVialPreviewCard}>
+                {(() => {
+                  const bWater = Number(selectedQuickVial.bacWater || 1);
+                  const cVol = Number(selectedQuickVial.currentVolumeMl ?? bWater);
+                  const prog = bWater > 0 ? Math.min(100, Math.max(0, (cVol / bWater) * 100)) : 100;
+                  const d = Number(quickLogDose || selectedQuickVial.targetDose || 0);
+                  const vSize = Number(selectedQuickVial.vialSize || 0);
+                  const conc = bWater > 0 ? vSize / bWater : 0;
+                  const vPerDose = conc > 0 && d > 0 ? d / conc : 0;
+                  const rem = vPerDose > 0 && cVol > 0 ? Math.floor(cVol / vPerDose) : null;
+
+                  return (
+                    <>
+                      <CuteVialIllustration
+                        size="sm"
+                        progress={prog}
+                        category={selectedQuickVial.category}
+                        dosesLeft={rem ?? undefined}
+                      />
+                      <View style={styles.quickVialPreviewInfo}>
+                        <Text style={styles.quickVialPreviewName}>{selectedQuickVial.name}</Text>
+                        <Text style={styles.quickVialPreviewSub}>
+                          {language === 'en' ? 'Remaining Volume:' : 'Sisa Volume:'} {cVol.toFixed(2)} mL / {bWater.toFixed(2)} mL
+                        </Text>
+                        {rem !== null && (
+                          <View style={[styles.depletionPill, rem <= 3 ? styles.depletionAlert : rem <= 7 ? styles.depletionWarning : styles.depletionSafe, { marginTop: 4, alignSelf: 'flex-start' }]}>
+                            <Text style={[styles.depletionPillText, rem <= 3 ? styles.depletionAlertText : rem <= 7 ? styles.depletionWarningText : styles.depletionSafeText]}>
+                              🎯 {language === 'en' ? `~${rem} injections left` : `Sisa ~${rem}x suntikan lagi`}
+                            </Text>
+                          </View>
+                        )}
+                      </View>
+                    </>
+                  );
+                })()}
+              </View>
+            )}
+
             <View style={styles.inputCard}>
               <Text style={styles.inputLabel}>{t('inventory.injectionDose') || 'NILAI DOSIS YANG DICATAT'}</Text>
               <TextInput
@@ -614,62 +693,111 @@ const LegendDot = ({ label, style }: { label: string; style: object }) => <View 
 const EmptyState = ({ text }: { text: string }) => <View style={styles.emptyState}><Text style={styles.emptyStateText}>{text}</Text></View>;
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#030712' },
-  content: { padding: 14, paddingBottom: 34, gap: 10 },
-  heroCard: { backgroundColor: '#090d16', borderWidth: 1, borderColor: '#1e293b', borderRadius: 16, padding: 14 },
+  container: { flex: 1, backgroundColor: COLORS.bg },
+  content: { padding: 14, paddingBottom: 34, gap: 12 },
+  heroCard: { backgroundColor: COLORS.card, borderWidth: 1, borderColor: COLORS.border, borderRadius: RADIUS.xl, padding: 16, ...SHADOWS.cardGlow },
   heroTopRow: { flexDirection: 'row', alignItems: 'center', gap: 10 },
-  heroIconBox: { width: 40, height: 40, borderRadius: 12, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(16,185,129,0.10)' },
+  heroIconBox: { width: 44, height: 44, borderRadius: RADIUS.lg, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(52, 211, 153, 0.12)', borderWidth: 1, borderColor: 'rgba(52, 211, 153, 0.25)' },
   heroCopy: { flex: 1 },
-  eyebrow: { fontSize: 9, letterSpacing: 1.2, color: '#10b981', fontWeight: '900' },
-  heroTitle: { fontSize: 17, color: '#fff', fontWeight: '900', marginTop: 2 },
-  heroSubtitle: { fontSize: 10, color: '#64748b', marginTop: 3 },
-  quickLogBtn: { flexDirection: 'row', alignItems: 'center', gap: 4, backgroundColor: '#10b981', borderRadius: 9, paddingHorizontal: 10, paddingVertical: 8 },
-  quickLogText: { color: '#022c22', fontWeight: '900', fontSize: 11 },
-  metricRow: { flexDirection: 'row', gap: 8, marginTop: 12 },
-  metricCard: { flex: 1, borderWidth: 1, borderColor: '#1e293b', borderRadius: 10, backgroundColor: '#030712', padding: 9 },
-  metricIcon: { marginBottom: 4 }, metricValue: { color: '#fff', fontSize: 18, fontWeight: '900' }, metricLabel: { color: '#64748b', fontSize: 9, marginTop: 1 },
-  sectionCard: { backgroundColor: '#090d16', borderWidth: 1, borderColor: '#1e293b', borderRadius: 14, padding: 12 },
-  sectionHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 9 },
-  sectionTitleRow: { flexDirection: 'row', alignItems: 'center', gap: 7 }, sectionTitle: { color: '#fff', fontSize: 12, fontWeight: '900' }, sectionMeta: { color: '#64748b', fontSize: 9, fontWeight: '800' },
-  weekControls: { flexDirection: 'row', gap: 5 }, smallIconBtn: { width: 28, height: 28, borderRadius: 8, borderWidth: 1, borderColor: '#1e293b', alignItems: 'center', justifyContent: 'center', backgroundColor: '#030712' },
-  weekRow: { gap: 6, paddingVertical: 2 }, dayCell: { width: 48, paddingVertical: 8, borderRadius: 10, borderWidth: 1, borderColor: '#1e293b', backgroundColor: '#030712', alignItems: 'center' }, dayCellActive: { borderColor: '#10b981', backgroundColor: 'rgba(16,185,129,0.12)' },
-  dayLabel: { fontSize: 9, color: '#64748b', fontWeight: '900' }, dayLabelActive: { color: '#10b981' }, dayNumber: { fontSize: 17, color: '#fff', fontWeight: '900', marginTop: 2 }, dayNumberActive: { color: '#10b981' },
-  dotRow: { flexDirection: 'row', alignItems: 'center', gap: 3, height: 8, marginTop: 4 }, dot: { width: 5, height: 5, borderRadius: 3 }, dotSchedule: { backgroundColor: '#38bdf8' }, dotLog: { backgroundColor: '#10b981' }, todayRing: { width: 5, height: 5, borderRadius: 3, borderWidth: 1, borderColor: '#f59e0b' },
-  legendRow: { flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 9 }, legendItem: { flexDirection: 'row', alignItems: 'center', gap: 4 }, legendText: { color: '#64748b', fontSize: 8 }, currentDateText: { color: '#94a3b8', fontSize: 9, marginLeft: 'auto', fontWeight: '700' },
-  activityList: { gap: 5 }, activityRow: { flexDirection: 'row', alignItems: 'center', gap: 9, paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: '#111827', borderRadius: 9 }, activityRowDue: { backgroundColor: 'rgba(245,158,11,0.07)', borderColor: 'rgba(245,158,11,0.22)', borderWidth: 1, paddingHorizontal: 7 }, activityRowMissed: { backgroundColor: 'rgba(239,68,68,0.08)', borderColor: 'rgba(239,68,68,0.28)', borderWidth: 1, paddingHorizontal: 7 }, activityRowCompleted: { opacity: 0.62 }, activityRowHighlighted: { borderColor: '#38bdf8', borderWidth: 1, paddingHorizontal: 7 }, statusIcon: { width: 28, height: 28, borderRadius: 8, backgroundColor: '#030712', alignItems: 'center', justifyContent: 'center' }, activityMain: { flex: 1 }, activityTitle: { color: '#fff', fontSize: 12, fontWeight: '900' }, activityTitleCompleted: { color: '#cbd5e1' }, activityTitleMissed: { color: '#fecaca' }, activitySub: { color: '#64748b', fontSize: 9, marginTop: 2 }, statusBadge: { borderWidth: 1, borderColor: '#334155', borderRadius: 7, paddingHorizontal: 6, paddingVertical: 4 }, statusBadgeDone: { borderColor: 'rgba(16,185,129,0.35)', backgroundColor: 'rgba(16,185,129,0.08)' }, statusBadgeMissed: { borderColor: 'rgba(239,68,68,0.35)', backgroundColor: 'rgba(239,68,68,0.08)' }, statusBadgeText: { color: '#94a3b8', fontSize: 8, fontWeight: '900' }, statusBadgeTextMissed: { color: '#fca5a5' }, activityActionBtn: { flexDirection: 'row', alignItems: 'center', gap: 4, backgroundColor: '#10b981', borderRadius: 8, paddingHorizontal: 8, paddingVertical: 7 }, activityActionBtnMissed: { backgroundColor: '#f59e0b' }, activityActionText: { color: '#022c22', fontSize: 8, fontWeight: '900' }, loggedBadge: { borderWidth: 1, borderColor: 'rgba(56,189,248,0.35)', backgroundColor: 'rgba(56,189,248,0.08)', borderRadius: 7, paddingHorizontal: 6, paddingVertical: 4 }, loggedBadgeText: { color: '#38bdf8', fontSize: 8, fontWeight: '900' },
-  upcomingRow: { flexDirection: 'row', alignItems: 'center', gap: 9, paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: '#111827' }, dateBlock: { width: 34, alignItems: 'center' }, dateBlockDay: { color: '#fff', fontSize: 13, fontWeight: '900' }, dateBlockMonth: { color: '#64748b', fontSize: 8, marginTop: 1 }, upcomingStatus: { color: '#38bdf8', fontSize: 8, fontWeight: '900' }, upcomingDone: { color: '#10b981' },
-  gridRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 }, summaryTile: { width: '48.8%', backgroundColor: '#090d16', borderWidth: 1, borderColor: '#1e293b', borderRadius: 12, padding: 10 }, summaryTileIcon: { marginBottom: 5 }, summaryTileValue: { color: '#fff', fontSize: 18, fontWeight: '900' }, summaryTileLabel: { color: '#64748b', fontSize: 9, marginTop: 2 },
-  analyticsGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 }, analyticsMetric: { width: '48.8%', borderRadius: 10, borderWidth: 1, borderColor: '#1e293b', padding: 9, backgroundColor: '#030712' }, analyticsMetricValue: { color: '#fff', fontSize: 18, fontWeight: '900' }, analyticsMetricLabel: { color: '#64748b', fontSize: 8, marginTop: 2 }, analyticsDivider: { height: 1, backgroundColor: '#1e293b', marginVertical: 10 }, analyticsCaption: { color: '#94a3b8', fontSize: 9, fontWeight: '800', marginBottom: 6 }, analyticsEmpty: { color: '#64748b', fontSize: 9 }, rankRow: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 6, borderBottomWidth: 1, borderBottomColor: '#111827' }, rankName: { color: '#fff', fontSize: 9, fontWeight: '700' }, rankCount: { color: '#64748b', fontSize: 9 },
-  nextCard: { flexDirection: 'row', alignItems: 'center', gap: 9, backgroundColor: '#090d16', borderWidth: 1, borderColor: '#1e293b', borderRadius: 14, padding: 11 }, nextIcon: { width: 32, height: 32, borderRadius: 9, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(56,189,248,0.08)' }, nextMain: { flex: 1 }, nextLabel: { color: '#38bdf8', fontSize: 8, fontWeight: '900', letterSpacing: 1 }, nextTitle: { color: '#fff', fontSize: 11, fontWeight: '900', marginTop: 2 }, nextSub: { color: '#64748b', fontSize: 9, marginTop: 1 },
-  emptyState: { borderWidth: 1, borderColor: '#1e293b', borderRadius: 10, backgroundColor: '#030712', padding: 14, alignItems: 'center' }, emptyStateText: { color: '#64748b', fontSize: 9, textAlign: 'center' },
-  modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.72)', justifyContent: 'flex-end' },
-  quickLogModal: { backgroundColor: '#090d16', borderTopLeftRadius: 20, borderTopRightRadius: 20, borderWidth: 1, borderColor: '#1e293b', padding: 16, maxHeight: '88%' },
+  eyebrow: { fontSize: 10, letterSpacing: 1.2, color: COLORS.mint, fontWeight: '900' },
+  heroTitle: { fontSize: 18, color: '#fff', fontWeight: '900', marginTop: 2 },
+  heroSubtitle: { fontSize: 11, color: COLORS.textMuted, marginTop: 3 },
+  quickLogBtn: { flexDirection: 'row', alignItems: 'center', gap: 6, backgroundColor: COLORS.mint, borderRadius: RADIUS.pill, paddingHorizontal: 12, paddingVertical: 9, ...SHADOWS.subtle },
+  quickLogText: { color: '#022c22', fontWeight: '900', fontSize: 12 },
+  metricRow: { flexDirection: 'row', gap: 8, marginTop: 14 },
+  metricCard: { flex: 1, borderWidth: 1, borderColor: COLORS.border, borderRadius: RADIUS.lg, backgroundColor: COLORS.bgDarker, padding: 10 },
+  metricIcon: { marginBottom: 4 }, metricValue: { color: '#fff', fontSize: 20, fontWeight: '900' }, metricLabel: { color: COLORS.textMuted, fontSize: 10, marginTop: 1 },
+  sectionCard: { backgroundColor: COLORS.card, borderWidth: 1, borderColor: COLORS.border, borderRadius: RADIUS.xl, padding: 14, ...SHADOWS.subtle },
+  sectionHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 },
+  sectionTitleRow: { flexDirection: 'row', alignItems: 'center', gap: 8 }, sectionTitle: { color: '#fff', fontSize: 14, fontWeight: '900' }, sectionMeta: { color: COLORS.textMuted, fontSize: 10, fontWeight: '800' },
+  weekControls: { flexDirection: 'row', gap: 6 }, smallIconBtn: { width: 30, height: 30, borderRadius: RADIUS.md, borderWidth: 1, borderColor: COLORS.border, alignItems: 'center', justifyContent: 'center', backgroundColor: COLORS.bgDarker },
+  weekRow: { gap: 8, paddingVertical: 2 }, dayCell: { width: 50, paddingVertical: 10, borderRadius: RADIUS.lg, borderWidth: 1, borderColor: COLORS.border, backgroundColor: COLORS.bgDarker, alignItems: 'center' }, dayCellActive: { borderColor: COLORS.mint, backgroundColor: 'rgba(52, 211, 153, 0.12)' },
+  dayLabel: { fontSize: 10, color: COLORS.textMuted, fontWeight: '900' }, dayLabelActive: { color: COLORS.mint }, dayNumber: { fontSize: 18, color: '#fff', fontWeight: '900', marginTop: 2 }, dayNumberActive: { color: COLORS.mint },
+  dotRow: { flexDirection: 'row', alignItems: 'center', gap: 3, height: 8, marginTop: 4 }, dot: { width: 5, height: 5, borderRadius: 3 }, dotSchedule: { backgroundColor: COLORS.cyan }, dotLog: { backgroundColor: COLORS.mint }, todayRing: { width: 5, height: 5, borderRadius: 3, borderWidth: 1, borderColor: COLORS.yellow },
+  legendRow: { flexDirection: 'row', alignItems: 'center', gap: 12, marginTop: 10 }, legendItem: { flexDirection: 'row', alignItems: 'center', gap: 5 }, legendText: { color: COLORS.textMuted, fontSize: 9 }, currentDateText: { color: COLORS.textSecondary, fontSize: 10, marginLeft: 'auto', fontWeight: '700' },
+  activityList: { gap: 8 },
+  activityRow: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingVertical: 10, paddingHorizontal: 8, borderBottomWidth: 1, borderBottomColor: COLORS.border, borderRadius: RADIUS.lg, backgroundColor: 'rgba(21, 29, 48, 0.4)' },
+  activityRowDue: { backgroundColor: 'rgba(251, 191, 36, 0.08)', borderColor: 'rgba(251, 191, 36, 0.3)', borderWidth: 1 },
+  activityRowMissed: { backgroundColor: 'rgba(244, 63, 94, 0.08)', borderColor: 'rgba(244, 63, 94, 0.3)', borderWidth: 1 },
+  activityRowCompleted: { opacity: 0.65 },
+  activityRowHighlighted: { borderColor: COLORS.cyan, borderWidth: 1 },
+  activityVialWrap: { width: 34, height: 44, alignItems: 'center', justifyContent: 'center' },
+  statusIcon: { width: 32, height: 32, borderRadius: RADIUS.md, backgroundColor: COLORS.bgDarker, alignItems: 'center', justifyContent: 'center' },
+  activityMain: { flex: 1 },
+  activityTitleRow: { flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: 6 },
+  activityTitle: { color: '#fff', fontSize: 13, fontWeight: '900' },
+  activityTitleCompleted: { color: COLORS.textSecondary },
+  activityTitleMissed: { color: '#fecaca' },
+  activitySub: { color: COLORS.textMuted, fontSize: 10, marginTop: 3 },
+  depletionPill: { paddingHorizontal: 7, paddingVertical: 2, borderRadius: RADIUS.pill, borderWidth: 1 },
+  depletionPillText: { fontSize: 9, fontWeight: '900' },
+  depletionSafe: { backgroundColor: 'rgba(52, 211, 153, 0.12)', borderColor: 'rgba(52, 211, 153, 0.35)' },
+  depletionSafeText: { color: COLORS.mint },
+  depletionWarning: { backgroundColor: 'rgba(251, 191, 36, 0.12)', borderColor: 'rgba(251, 191, 36, 0.35)' },
+  depletionWarningText: { color: COLORS.yellow },
+  depletionAlert: { backgroundColor: 'rgba(244, 63, 94, 0.14)', borderColor: 'rgba(244, 63, 94, 0.40)' },
+  depletionAlertText: { color: COLORS.pink },
+  statusBadge: { borderWidth: 1, borderColor: COLORS.border, borderRadius: RADIUS.md, paddingHorizontal: 8, paddingVertical: 4 },
+  statusBadgeDone: { borderColor: 'rgba(52, 211, 153, 0.4)', backgroundColor: 'rgba(52, 211, 153, 0.1)' },
+  statusBadgeMissed: { borderColor: 'rgba(244, 63, 94, 0.4)', backgroundColor: 'rgba(244, 63, 94, 0.1)' },
+  statusBadgeText: { color: COLORS.textSecondary, fontSize: 9, fontWeight: '900' },
+  statusBadgeTextMissed: { color: '#fca5a5' },
+  activityActionBtn: { flexDirection: 'row', alignItems: 'center', gap: 4, backgroundColor: COLORS.mint, borderRadius: RADIUS.pill, paddingHorizontal: 10, paddingVertical: 7 },
+  activityActionBtnMissed: { backgroundColor: COLORS.yellow },
+  activityActionText: { color: '#022c22', fontSize: 9, fontWeight: '900' },
+  loggedBadge: { borderWidth: 1, borderColor: 'rgba(56, 189, 248, 0.35)', backgroundColor: 'rgba(56, 189, 248, 0.08)', borderRadius: RADIUS.md, paddingHorizontal: 7, paddingVertical: 4 },
+  loggedBadgeText: { color: COLORS.cyan, fontSize: 9, fontWeight: '900' },
+  upcomingRow: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingVertical: 9, borderBottomWidth: 1, borderBottomColor: COLORS.border },
+  dateBlock: { width: 36, alignItems: 'center' }, dateBlockDay: { color: '#fff', fontSize: 14, fontWeight: '900' }, dateBlockMonth: { color: COLORS.textMuted, fontSize: 9, marginTop: 1 },
+  upcomingStatus: { color: COLORS.cyan, fontSize: 9, fontWeight: '900' }, upcomingDone: { color: COLORS.mint },
+  gridRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+  summaryTile: { width: '48.8%', backgroundColor: COLORS.card, borderWidth: 1, borderColor: COLORS.border, borderRadius: RADIUS.lg, padding: 12 },
+  summaryTileIcon: { marginBottom: 6 }, summaryTileValue: { color: '#fff', fontSize: 20, fontWeight: '900' }, summaryTileLabel: { color: COLORS.textMuted, fontSize: 10, marginTop: 2 },
+  analyticsGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+  analyticsMetric: { width: '48.8%', borderRadius: RADIUS.lg, borderWidth: 1, borderColor: COLORS.border, padding: 10, backgroundColor: COLORS.bgDarker },
+  analyticsMetricValue: { color: '#fff', fontSize: 20, fontWeight: '900' }, analyticsMetricLabel: { color: COLORS.textMuted, fontSize: 9, marginTop: 2 },
+  analyticsDivider: { height: 1, backgroundColor: COLORS.border, marginVertical: 12 },
+  analyticsCaption: { color: COLORS.textSecondary, fontSize: 10, fontWeight: '800', marginBottom: 8 },
+  analyticsEmpty: { color: COLORS.textMuted, fontSize: 10 },
+  rankRow: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 7, borderBottomWidth: 1, borderBottomColor: COLORS.border },
+  rankName: { color: '#fff', fontSize: 10, fontWeight: '700' }, rankCount: { color: COLORS.textMuted, fontSize: 10 },
+  nextCard: { flexDirection: 'row', alignItems: 'center', gap: 10, backgroundColor: COLORS.card, borderWidth: 1, borderColor: COLORS.border, borderRadius: RADIUS.xl, padding: 12 },
+  nextIcon: { width: 36, height: 36, borderRadius: RADIUS.md, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(56, 189, 248, 0.1)' },
+  nextMain: { flex: 1 }, nextLabel: { color: COLORS.cyan, fontSize: 9, fontWeight: '900', letterSpacing: 1 }, nextTitle: { color: '#fff', fontSize: 12, fontWeight: '900', marginTop: 2 }, nextSub: { color: COLORS.textMuted, fontSize: 10, marginTop: 1 },
+  emptyState: { borderWidth: 1, borderColor: COLORS.border, borderRadius: RADIUS.lg, backgroundColor: COLORS.bgDarker, padding: 16, alignItems: 'center' },
+  emptyStateText: { color: COLORS.textMuted, fontSize: 10, textAlign: 'center' },
+  modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.75)', justifyContent: 'flex-end' },
+  quickLogModal: { backgroundColor: COLORS.card, borderTopLeftRadius: RADIUS.xl, borderTopRightRadius: RADIUS.xl, borderWidth: 1, borderColor: COLORS.border, padding: 16, maxHeight: '90%' },
   modalHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 },
-  modalEyebrow: { color: '#10b981', fontSize: 9, fontWeight: '900', letterSpacing: 1 },
-  modalTitle: { color: '#fff', fontSize: 18, fontWeight: '900', marginTop: 2 },
-  modalClose: { width: 32, height: 32, borderRadius: 10, backgroundColor: '#030712', borderWidth: 1, borderColor: '#1e293b', alignItems: 'center', justifyContent: 'center' },
-  modalCloseText: { color: '#94a3b8', fontSize: 24, lineHeight: 24 },
-  inputLabel: { color: '#64748b', fontSize: 9, fontWeight: '900', letterSpacing: 0.7, marginBottom: 6, marginTop: 5 },
-  vialPickerRow: { gap: 7, paddingBottom: 3 },
-  vialChip: { minWidth: 125, backgroundColor: '#030712', borderWidth: 1, borderColor: '#1e293b', borderRadius: 10, padding: 9 },
-  vialChipActive: { borderColor: '#10b981', backgroundColor: 'rgba(16,185,129,0.08)' },
-  vialChipName: { color: '#fff', fontSize: 11, fontWeight: '800' },
-  vialChipNameActive: { color: '#10b981' },
-  vialChipMeta: { color: '#64748b', fontSize: 8, marginTop: 3 },
-  inputCard: { backgroundColor: '#030712', borderWidth: 1, borderColor: '#1e293b', borderRadius: 11, padding: 10, marginTop: 7 },
-  modalInput: { color: '#fff', fontSize: 15, fontWeight: '800', backgroundColor: '#090d16', borderWidth: 1, borderColor: '#334155', borderRadius: 9, paddingHorizontal: 12, paddingVertical: 10 },
-  notesInput: { minHeight: 72, textAlignVertical: 'top' },
-  calculatedText: { color: '#38bdf8', fontSize: 9, fontWeight: '800', marginTop: 6 },
+  modalEyebrow: { color: COLORS.mint, fontSize: 10, fontWeight: '900', letterSpacing: 1 },
+  modalTitle: { color: '#fff', fontSize: 19, fontWeight: '900', marginTop: 2 },
+  modalClose: { width: 34, height: 34, borderRadius: RADIUS.md, backgroundColor: COLORS.bgDarker, borderWidth: 1, borderColor: COLORS.border, alignItems: 'center', justifyContent: 'center' },
+  modalCloseText: { color: COLORS.textMuted, fontSize: 24, lineHeight: 24 },
+  inputLabel: { color: COLORS.textMuted, fontSize: 10, fontWeight: '900', letterSpacing: 0.7, marginBottom: 6, marginTop: 6 },
+  vialPickerRow: { gap: 8, paddingBottom: 4 },
+  vialChip: { minWidth: 130, backgroundColor: COLORS.bgDarker, borderWidth: 1, borderColor: COLORS.border, borderRadius: RADIUS.lg, padding: 10 },
+  vialChipActive: { borderColor: COLORS.mint, backgroundColor: 'rgba(52, 211, 153, 0.1)' },
+  vialChipName: { color: '#fff', fontSize: 12, fontWeight: '800' },
+  vialChipNameActive: { color: COLORS.mint },
+  vialChipMeta: { color: COLORS.textMuted, fontSize: 9, marginTop: 3 },
+  quickVialPreviewCard: { flexDirection: 'row', alignItems: 'center', gap: 12, backgroundColor: COLORS.bgDarker, borderWidth: 1, borderColor: COLORS.border, borderRadius: RADIUS.lg, padding: 12, marginTop: 10 },
+  quickVialPreviewInfo: { flex: 1 },
+  quickVialPreviewName: { color: '#fff', fontSize: 13, fontWeight: '900' },
+  quickVialPreviewSub: { color: COLORS.textMuted, fontSize: 10, marginTop: 2 },
+  inputCard: { backgroundColor: COLORS.bgDarker, borderWidth: 1, borderColor: COLORS.border, borderRadius: RADIUS.lg, padding: 12, marginTop: 8 },
+  modalInput: { color: '#fff', fontSize: 16, fontWeight: '800', backgroundColor: COLORS.card, borderWidth: 1, borderColor: COLORS.border, borderRadius: RADIUS.md, paddingHorizontal: 12, paddingVertical: 10 },
+  notesInput: { minHeight: 70, textAlignVertical: 'top' },
+  calculatedText: { color: COLORS.cyan, fontSize: 10, fontWeight: '800', marginTop: 6 },
   siteGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 7 },
-  siteChip: { width: '31.8%', backgroundColor: '#030712', borderWidth: 1, borderColor: '#1e293b', borderRadius: 9, padding: 8 },
-  siteChipActive: { borderColor: '#10b981', backgroundColor: 'rgba(16,185,129,0.08)' },
-  siteChipCode: { color: '#94a3b8', fontSize: 10, fontWeight: '900' },
-  siteChipCodeActive: { color: '#10b981' },
-  siteChipName: { color: '#64748b', fontSize: 7, marginTop: 2 },
-  modalActions: { flexDirection: 'row', gap: 8, marginTop: 12 },
-  cancelBtn: { flex: 1, backgroundColor: '#030712', borderWidth: 1, borderColor: '#1e293b', borderRadius: 10, paddingVertical: 11, alignItems: 'center' },
-  cancelBtnText: { color: '#94a3b8', fontWeight: '800', fontSize: 11 },
-  saveBtn: { flex: 1.5, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 6, backgroundColor: '#10b981', borderRadius: 10, paddingVertical: 11 },
-  saveBtnText: { color: '#022c22', fontWeight: '900', fontSize: 11 },
-  disclaimerText: { color: '#475569', fontSize: 8, lineHeight: 12, marginTop: 9, textAlign: 'center' },
+  siteChip: { width: '31.8%', backgroundColor: COLORS.bgDarker, borderWidth: 1, borderColor: COLORS.border, borderRadius: RADIUS.md, padding: 8 },
+  siteChipActive: { borderColor: COLORS.mint, backgroundColor: 'rgba(52, 211, 153, 0.1)' },
+  siteChipCode: { color: COLORS.textSecondary, fontSize: 11, fontWeight: '900' },
+  siteChipCodeActive: { color: COLORS.mint },
+  siteChipName: { color: COLORS.textMuted, fontSize: 8, marginTop: 2 },
+  modalActions: { flexDirection: 'row', gap: 8, marginTop: 14 },
+  cancelBtn: { flex: 1, backgroundColor: COLORS.bgDarker, borderWidth: 1, borderColor: COLORS.border, borderRadius: RADIUS.lg, paddingVertical: 12, alignItems: 'center' },
+  cancelBtnText: { color: COLORS.textSecondary, fontWeight: '800', fontSize: 12 },
+  saveBtn: { flex: 1.5, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 6, backgroundColor: COLORS.mint, borderRadius: RADIUS.lg, paddingVertical: 12, ...SHADOWS.subtle },
+  saveBtnText: { color: '#022c22', fontWeight: '900', fontSize: 12 },
+  disclaimerText: { color: COLORS.textMuted, fontSize: 9, lineHeight: 13, marginTop: 10, textAlign: 'center' },
 });
