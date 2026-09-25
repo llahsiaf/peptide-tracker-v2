@@ -82,6 +82,10 @@ export interface InventoryItem {
   scheduleStartDate?: string;
   scheduleEndDate?: string;
   schedulePaused?: boolean;
+  hasCycle?: boolean;
+  cycleOnWeeks?: number;
+  cycleOffWeeks?: number;
+  cycleStartDate?: string;
 }
 
 export interface FreezerItem {

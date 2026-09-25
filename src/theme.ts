@@ -1,24 +1,47 @@
 export const COLORS = {
-  bg: '#030712',
-  card: '#090d16',
-  cardElevated: '#0f172a',
-  border: '#1e293b',
-  borderSoft: '#111827',
+  // Vibrant Dark Backgrounds
+  bg: '#0b0f19',
+  bgSoft: '#0f172a',
+  card: '#151d30',
+  cardElevated: '#1e293b',
+  cardHighlight: '#24334d',
+  
+  // Borders
+  border: '#23324d',
+  borderSoft: '#1a243a',
+  borderGlow: 'rgba(56, 189, 248, 0.25)',
+
+  // Typography
   text: '#f8fafc',
   textSoft: '#cbd5e1',
-  muted: '#64748b',
-  accent: '#10b981',
-  accentStrong: '#34d399',
-  cyan: '#38bdf8',
+  muted: '#718096',
+
+  // Cheerful Vibrant Accents
+  accent: '#10b981',        // Emerald Green
+  accentStrong: '#34d399',  // Spring Mint
+  mint: '#34d399',          // Playful Mint
+  cyan: '#38bdf8',          // Aqua Sparkle
+  pink: '#fb7185',          // Bubblegum Rose
+  purple: '#c084fc',        // Neon Lavender
+  yellow: '#fbbf24',        // Sunny Gold
+  orange: '#fb923c',        // Warm Peach
   warning: '#f59e0b',
-  danger: '#ef4444',
+  danger: '#f43f5e',
+
+  // Category specific liquid colors
+  liquidDefault: '#38bdf8',
+  liquidHealing: '#34d399',
+  liquidGlp1: '#fb923c',
+  liquidGh: '#c084fc',
+  liquidCognitive: '#fb7185',
 } as const;
 
 export const RADIUS = {
-  sm: 8,
-  md: 12,
-  lg: 16,
-  xl: 22,
+  sm: 10,
+  md: 16,
+  lg: 22,
+  xl: 28,
+  pill: 9999,
 } as const;
 
 export const SPACING = {
@@ -28,21 +51,29 @@ export const SPACING = {
   lg: 16,
   xl: 20,
   xxl: 24,
+  xxxl: 32,
 } as const;
 
 export const SHADOWS = {
   card: {
     shadowColor: '#000',
-    shadowOpacity: 0.18,
-    shadowRadius: 10,
-    shadowOffset: { width: 0, height: 5 },
-    elevation: 5,
+    shadowOpacity: 0.22,
+    shadowRadius: 12,
+    shadowOffset: { width: 0, height: 6 },
+    elevation: 6,
+  },
+  cardGlow: {
+    shadowColor: '#38bdf8',
+    shadowOpacity: 0.15,
+    shadowRadius: 14,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 8,
   },
   floating: {
     shadowColor: '#000',
-    shadowOpacity: 0.25,
-    shadowRadius: 16,
-    shadowOffset: { width: 0, height: 8 },
-    elevation: 12,
+    shadowOpacity: 0.35,
+    shadowRadius: 18,
+    shadowOffset: { width: 0, height: 10 },
+    elevation: 14,
   },
 } as const;
