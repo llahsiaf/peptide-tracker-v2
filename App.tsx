@@ -244,10 +244,10 @@ function BioStackApp() {
           <View style={styles.headerActions}>
             <TouchableOpacity 
               onPress={() => setIsCalculatorOpen(true)} 
-              style={styles.notificationBtn}
+              style={[styles.notificationBtn, styles.notificationBtnAmber]}
               accessibilityLabel={language === 'en' ? 'Dose calculator' : 'Kalkulator dosis'}
             >
-              <Calculator size={18} color={isCalculatorOpen ? COLORS.accent : COLORS.accent} />
+              <Calculator size={18} color={COLORS.accent} />
             </TouchableOpacity>
 
             <TouchableOpacity 
@@ -260,16 +260,15 @@ function BioStackApp() {
 
             <TouchableOpacity
               onPress={() => setActiveTab('analytics')}
-              style={styles.notificationBtn}
+              style={[styles.notificationBtn, activeTab === 'analytics' && styles.notificationBtnAmber]}
               accessibilityLabel={language === 'en' ? 'Open analytics' : 'Buka analytics'}
-              /* Buka analytics */
             >
               <TrendingUp size={18} color={activeTab === 'analytics' ? COLORS.accent : '#94a3b8'} />
             </TouchableOpacity>
 
             <TouchableOpacity 
               onPress={() => setActiveTab('settings')} 
-              style={styles.notificationBtn}
+              style={[styles.notificationBtn, activeTab === 'settings' && styles.notificationBtnAmber]}
               accessibilityLabel={language === 'en' ? 'Open settings' : 'Buka pengaturan'}
             >
               <Settings size={18} color={activeTab === 'settings' ? COLORS.accent : '#94a3b8'} />
@@ -308,17 +307,16 @@ function BioStackApp() {
           return (
             <TouchableOpacity
               key={tab}
-              style={styles.navTab}
+              style={[styles.navTab, active && styles.navTabActive]}
               onPress={() => setActiveTab(tab)}
               accessibilityRole="button"
               accessibilityState={{ selected: active }}
               accessibilityLabel={label}
             >
               <View style={[styles.navIconWrap, active && styles.navIconWrapActive]}>
-                <Icon size={16} color={active ? COLORS.accent : COLORS.muted} />
+                <Icon size={active ? 17 : 16} color={active ? COLORS.accent : COLORS.muted} />
               </View>
               <Text style={[styles.navTabText, active && styles.navTabTextActive]}>{label}</Text>
-              {active && <View style={styles.navActiveDot} />}
             </TouchableOpacity>
           );
         })}
@@ -353,8 +351,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingTop: Platform.OS === 'android' ? 12 : 6,
     paddingBottom: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255, 255, 255, 0.05)',
+    borderBottomWidth: 1.5,
+    borderBottomColor: 'rgba(223, 138, 58, 0.28)',
     backgroundColor: COLORS.bg,
   },
   headerContent: {
@@ -374,7 +372,7 @@ const styles = StyleSheet.create({
     height: 38,
     borderRadius: RADIUS.md,
     borderWidth: 1.5,
-    borderColor: 'rgba(52, 211, 153, 0.4)',
+    borderColor: 'rgba(223, 138, 58, 0.45)',
     backgroundColor: COLORS.cardElevated,
     overflow: 'hidden',
   },
@@ -449,20 +447,24 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.08)',
   },
+  notificationBtnAmber: {
+    backgroundColor: 'rgba(223, 138, 58, 0.13)',
+    borderColor: 'rgba(223, 138, 58, 0.35)',
+  },
   navBar: {
     flexDirection: 'row',
-    paddingHorizontal: 10,
-    paddingTop: 7,
+    paddingHorizontal: 8,
+    paddingTop: 6,
     paddingBottom: 8,
-    gap: 4,
+    gap: 2,
     backgroundColor: COLORS.card,
-    borderTopWidth: 1,
-    borderTopColor: COLORS.border,
-    elevation: 16,
-    shadowColor: '#000',
-    shadowOpacity: 0.22,
-    shadowRadius: 18,
-    shadowOffset: { width: 0, height: -8 },
+    borderTopWidth: 1.5,
+    borderTopColor: 'rgba(223, 138, 58, 0.22)',
+    elevation: 20,
+    shadowColor: COLORS.accent,
+    shadowOpacity: 0.10,
+    shadowRadius: 20,
+    shadowOffset: { width: 0, height: -6 },
     zIndex: 20,
   },
   navTab: {
@@ -470,20 +472,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 2,
-    paddingVertical: 3,
-    borderRadius: RADIUS.md,
+    paddingVertical: 4,
+    borderRadius: RADIUS.lg,
     minHeight: 52,
-    position: 'relative',
+  },
+  navTabActive: {
+    backgroundColor: 'rgba(223, 138, 58, 0.10)',
+    borderWidth: 1,
+    borderColor: 'rgba(223, 138, 58, 0.22)',
   },
   navIconWrap: {
-    width: 30,
+    width: 32,
     height: 28,
     borderRadius: 9,
     alignItems: 'center',
     justifyContent: 'center',
   },
   navIconWrapActive: {
-    backgroundColor: 'rgba(188, 169, 239, 0.16)',
+    backgroundColor: 'rgba(223, 138, 58, 0.15)',
+    borderRadius: 8,
   },
   navTabText: {
     fontSize: 9,
@@ -492,14 +499,7 @@ const styles = StyleSheet.create({
   },
   navTabTextActive: {
     color: COLORS.accent,
-  },
-  navActiveDot: {
-    position: 'absolute',
-    bottom: 0,
-    width: 4,
-    height: 4,
-    borderRadius: 2,
-    backgroundColor: COLORS.accent,
+    fontWeight: '900',
   },
   mainContent: {
     flex: 1,
