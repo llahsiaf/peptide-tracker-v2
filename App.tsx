@@ -283,6 +283,7 @@ function BioStackApp() {
         {activeTab === 'today' && (
           <TodayScreen
             onOpenInventory={() => setActiveTab('inventory')}
+            onNavigateTab={(tab) => setActiveTab(tab as any)}
             notificationTarget={notificationTarget}
           />
         )}

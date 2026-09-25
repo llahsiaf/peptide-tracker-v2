@@ -55,6 +55,34 @@ export const InventoryCard: React.FC<InventoryCardProps> = ({
   const dosesLeft = liquid.dosesLeft;
   const daysLeft = liquid.daysLeft;
 
+  // Format jadwal dengan nama hari eksplisit (contoh: "Senin, 28 Sep • 08:00")
+  const formatNextScheduleWithDay = (dateStr: string, timeStr?: string) => {
+    const [y, m, d] = dateStr.split('-').map(Number);
+    if (!y || !m || !d) return `${dateStr} • ${timeStr || '08:00'}`;
+    const targetDate = new Date(y, m - 1, d);
+    const isToday = targetDate.toDateString() === now.toDateString();
+    const tmr = new Date(now);
+    tmr.setDate(tmr.getDate() + 1);
+    const isTomorrow = targetDate.toDateString() === tmr.toDateString();
+
+    const dayNameId = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'][targetDate.getDay()];
+    const dayNameEn = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][targetDate.getDay()];
+    const monthNameId = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'][targetDate.getMonth()];
+    const monthNameEn = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][targetDate.getMonth()];
+
+    const timePart = timeStr || '08:00';
+
+    if (language === 'en') {
+      if (isToday) return `Today (${dayNameEn}) • ${timePart}`;
+      if (isTomorrow) return `Tomorrow (${dayNameEn}) • ${timePart}`;
+      return `${dayNameEn}, ${monthNameEn} ${d} • ${timePart}`;
+    } else {
+      if (isToday) return `Hari ini (${dayNameId}) • ${timePart}`;
+      if (isTomorrow) return `Besok (${dayNameId}) • ${timePart}`;
+      return `${dayNameId}, ${d} ${monthNameId} • ${timePart}`;
+    }
+  };
+
   // Tentukan badge gaya & warna berdasarkan sisa suntikan
   const getDoseBadgeStyle = () => {
     if (isEmpty) {
@@ -97,7 +125,7 @@ export const InventoryCard: React.FC<InventoryCardProps> = ({
 
   return (
     <View style={[styles.card, isPaused && styles.cardPaused]}>
-      {/* 1. BADGE ESTIMASI SISA SUNTIKAN DI ATAS KARTU */}
+      {/* 1. Header: Pill Sisa Suntik & Volume Meta */}
       <View style={[styles.doseBadgeRow, { backgroundColor: badge.bg, borderColor: badge.border }]}>
         <View style={styles.doseBadgeLeft}>
           <Text style={[styles.doseBadgeText, { color: badge.textColor }]}>
@@ -109,9 +137,8 @@ export const InventoryCard: React.FC<InventoryCardProps> = ({
         </Text>
       </View>
 
-      {/* 2. BODY KARTU: VIAL KARTUN DI KIRI, INFORMASI DI KANAN */}
-      <View style={styles.cardBody}>
-        {/* Kolom Kiri: Ilustrasi Botol Vial Kartun SVG Dinamis */}
+      {/* 2. Main Row: Compact Cute Vial (size="sm") + Info Block */}
+      <View style={styles.cardMainRow}>
         <TouchableOpacity
           activeOpacity={0.8}
           onPress={() => onOpenEditDose(item)}
@@ -120,36 +147,31 @@ export const InventoryCard: React.FC<InventoryCardProps> = ({
           <CuteVialIllustration
             progress={liquid.progressPercent}
             category={item.category}
-            size="md"
+            size="sm"
             dosesLeft={dosesLeft}
           />
-          <Text style={styles.tapToEditHint}>
-            {language === 'en' ? 'Tap to edit' : 'Ubah dosis'}
-          </Text>
         </TouchableOpacity>
 
-        {/* Kolom Kanan: Detail Peptida & Spesifikasi Dosis */}
-        <View style={styles.infoCol}>
-          {/* Header Baris Nama Peptida */}
-          <View style={styles.nameRow}>
-            <TouchableOpacity onPress={() => onOpenEditDose(item)} style={{ flex: 1 }}>
+        <View style={styles.cardInfo}>
+          {/* Baris Nama & Quick Icons */}
+          <View style={styles.nameHeaderRow}>
+            <TouchableOpacity onPress={() => onOpenEditDose(item)} style={{ flex: 1, paddingRight: 6 }}>
               <Text style={styles.peptideName} numberOfLines={1}>
                 {item.name}
               </Text>
               <Text style={styles.categorySub} numberOfLines={1}>
-                {item.category || 'General Peptide'} • {item.vialSize}{item.unit} Vial
+                {item.category || 'General Peptide'} • {item.vialSize}{item.unit}
               </Text>
             </TouchableOpacity>
 
-            {/* Quick Actions (Jadwal & Kalender) */}
-            <View style={styles.headerIcons}>
+            <View style={styles.quickIconRow}>
               {onSyncCalendar && (
                 <TouchableOpacity
                   onPress={() => onSyncCalendar(item)}
                   style={styles.circleIconBtn}
                   accessibilityLabel="Sync Calendar"
                 >
-                  <Calendar size={15} color="#94a3b8" />
+                  <Calendar size={13} color="#94a3b8" />
                 </TouchableOpacity>
               )}
               <TouchableOpacity
@@ -157,46 +179,41 @@ export const InventoryCard: React.FC<InventoryCardProps> = ({
                 style={styles.circleIconBtn}
                 accessibilityLabel="Set Schedule"
               >
-                <Clock size={15} color="#38bdf8" />
+                <Clock size={13} color={COLORS.cyan} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.circleIconDangerBtn}
+                onPress={() => onRemoveItem(item.id, item.name)}
+                accessibilityLabel="Delete Vial"
+              >
+                <Trash2 size={13} color={COLORS.danger} />
               </TouchableOpacity>
             </View>
           </View>
 
-          {/* Kartu Mini Spesifikasi Dosis & Spuit U-100 */}
+          {/* Baris Dosis Ringkas (Inline Pill Badges) */}
           <TouchableOpacity
-            style={styles.doseSpecCard}
+            style={styles.dosePillRow}
             onPress={() => onOpenEditDose(item)}
-            activeOpacity={0.85}
+            activeOpacity={0.8}
           >
-            <View style={styles.doseSpecRow}>
-              <View style={styles.dosePill}>
-                <Text style={styles.dosePillLabel}>{language === 'en' ? 'DOSE' : 'DOSIS'}</Text>
-                <Text style={styles.dosePillVal}>
-                  {item.targetDose} {metrics.doseUnit}
-                </Text>
-              </View>
+            <View style={styles.miniPillDose}>
+              <Text style={styles.miniPillLabel}>{language === 'en' ? 'DOSE' : 'DOSIS'}</Text>
+              <Text style={styles.miniPillValue}>{item.targetDose} {metrics.doseUnit}</Text>
+            </View>
 
-              <View style={styles.specDivider} />
+            <View style={styles.miniPillIu}>
+              <Text style={styles.miniPillLabel}>U-100</Text>
+              <Text style={styles.miniPillValueMint}>{metrics.iu} IU</Text>
+            </View>
 
-              <View style={styles.dosePill}>
-                <Text style={styles.dosePillLabel}>U-100</Text>
-                <Text style={styles.dosePillValGreen}>
-                  {metrics.iu} IU
-                </Text>
-              </View>
-
-              <View style={styles.specDivider} />
-
-              <View style={styles.dosePill}>
-                <Text style={styles.dosePillLabel}>VOL</Text>
-                <Text style={styles.dosePillValCyan}>
-                  {metrics.volumeMl} mL
-                </Text>
-              </View>
+            <View style={styles.miniPillVol}>
+              <Text style={styles.miniPillLabel}>VOL</Text>
+              <Text style={styles.miniPillValueCyan}>{metrics.volumeMl} mL</Text>
             </View>
           </TouchableOpacity>
 
-          {/* Progress Bar Cairan Rounded Ceria */}
+          {/* Progress Bar Ramping */}
           <View style={styles.progressBarBg}>
             <View
               style={[
@@ -210,57 +227,52 @@ export const InventoryCard: React.FC<InventoryCardProps> = ({
             />
           </View>
 
-          {/* Jadwal Injeksi Berikutnya */}
+          {/* Jadwal Hari Eksplisit */}
           <View style={styles.scheduleRow}>
-            {isPaused ? <PauseCircle size={13} color="#94a3b8" /> : <Clock size={13} color="#94a3b8" />}
+            {isPaused ? <PauseCircle size={12} color="#94a3b8" /> : <Calendar size={12} color={COLORS.mint} />}
             <Text style={styles.scheduleText} numberOfLines={1}>
               {isPaused
                 ? (language === 'en' ? 'Schedule Paused' : 'Jadwal Dijeda')
                 : nextOccurrence
-                ? `${nextOccurrence.date === now.toISOString().split('T')[0] ? (language === 'en' ? 'Today' : 'Hari ini') : nextOccurrence.date} • ${nextOccurrence.time || '08:00'}`
+                ? formatNextScheduleWithDay(nextOccurrence.date, nextOccurrence.time)
                 : (language === 'en' ? 'No upcoming schedule' : 'Tidak ada jadwal')}
+              {item.activeDays && item.activeDays.length > 0 && !isPaused
+                ? ` (${item.activeDays.join(', ')})`
+                : ''}
             </Text>
           </View>
         </View>
       </View>
 
-      {/* 3. TOMBOL AKSI BAWAH KARTU (CHUBBY BUTTONS) */}
+      {/* 3. Action Buttons: Log Dose Pill + Pause Pill */}
       <View style={styles.cardActionsRow}>
-        {/* Tombol Catat Dosis Cepat */}
         <TouchableOpacity
           style={[styles.primaryActionBtn, isEmpty && styles.actionBtnDisabled]}
           onPress={() => onQuickLog(item)}
           disabled={isEmpty}
+          activeOpacity={0.8}
         >
-          <Syringe size={16} color="#042f2e" />
+          <Syringe size={14} color="#022c22" />
           <Text style={styles.primaryActionBtnText}>
             {language === 'en' ? 'Log Dose' : 'Catat Suntik'}
           </Text>
         </TouchableOpacity>
 
-        {/* Tombol Pause/Resume */}
         <TouchableOpacity
           style={styles.secondaryActionBtn}
           onPress={() => onTogglePause(item.id, isPaused)}
+          activeOpacity={0.8}
         >
           {isPaused ? (
-            <PlayCircle size={15} color="#34d399" />
+            <PlayCircle size={13} color={COLORS.mint} />
           ) : (
-            <PauseCircle size={15} color="#94a3b8" />
+            <PauseCircle size={13} color="#94a3b8" />
           )}
-          <Text style={[styles.secondaryActionBtnText, isPaused && { color: '#34d399' }]}>
+          <Text style={[styles.secondaryActionBtnText, isPaused && { color: COLORS.mint }]}>
             {isPaused
               ? (language === 'en' ? 'Resume' : 'Lanjut')
               : (language === 'en' ? 'Pause' : 'Jeda')}
           </Text>
-        </TouchableOpacity>
-
-        {/* Tombol Hapus / Buang */}
-        <TouchableOpacity
-          style={styles.dangerActionBtn}
-          onPress={() => onRemoveItem(item.id, item.name)}
-        >
-          <Trash2 size={15} color="#f43f5e" />
         </TouchableOpacity>
       </View>
     </View>
@@ -271,9 +283,9 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: COLORS.card,
     borderRadius: RADIUS.xl,
-    padding: SPACING.md,
-    marginBottom: SPACING.lg,
-    borderWidth: 1.5,
+    padding: 12,
+    marginBottom: 12,
+    borderWidth: 1,
     borderColor: COLORS.border,
     ...SHADOWS.card,
   },
@@ -285,131 +297,146 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-    borderRadius: RADIUS.md,
+    paddingVertical: 4,
+    paddingHorizontal: 10,
+    borderRadius: RADIUS.pill,
     borderWidth: 1,
-    marginBottom: SPACING.md,
+    marginBottom: 8,
   },
   doseBadgeLeft: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   doseBadgeText: {
-    fontSize: 12,
-    fontWeight: '800',
+    fontSize: 11,
+    fontWeight: '900',
     letterSpacing: 0.2,
   },
   liquidVolMeta: {
-    fontSize: 11,
+    fontSize: 10,
     color: '#94a3b8',
-    fontWeight: '600',
+    fontWeight: '700',
   },
-  cardBody: {
+  cardMainRow: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   vialWrapper: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: SPACING.md,
-    paddingVertical: 4,
+    marginRight: 10,
   },
-  tapToEditHint: {
-    fontSize: 10,
-    color: '#64748b',
-    marginTop: 4,
-    fontWeight: '600',
-  },
-  infoCol: {
+  cardInfo: {
     flex: 1,
   },
-  nameRow: {
+  nameHeaderRow: {
     flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'space-between',
-    marginBottom: 6,
+    marginBottom: 4,
   },
   peptideName: {
-    fontSize: 17,
-    fontWeight: '800',
+    fontSize: 15,
+    fontWeight: '900',
     color: COLORS.text,
     letterSpacing: -0.2,
   },
   categorySub: {
-    fontSize: 12,
-    color: '#94a3b8',
+    fontSize: 11,
+    color: COLORS.textMuted,
     marginTop: 1,
-    fontWeight: '500',
+    fontWeight: '600',
   },
-  headerIcons: {
+  quickIconRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
+    gap: 4,
   },
   circleIconBtn: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
+    width: 28,
+    height: 28,
+    borderRadius: RADIUS.pill,
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.08)',
   },
-  doseSpecCard: {
-    backgroundColor: 'rgba(15, 23, 42, 0.65)',
-    borderRadius: RADIUS.md,
-    paddingVertical: 8,
-    paddingHorizontal: 10,
-    marginVertical: 6,
+  circleIconDangerBtn: {
+    width: 28,
+    height: 28,
+    borderRadius: RADIUS.pill,
+    backgroundColor: 'rgba(244, 63, 94, 0.1)',
+    alignItems: 'center',
+    justifyContent: 'center',
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.06)',
+    borderColor: 'rgba(244, 63, 94, 0.2)',
   },
-  doseSpecRow: {
+  dosePillRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-around',
+    gap: 5,
+    marginVertical: 4,
   },
-  dosePill: {
+  miniPillDose: {
+    flexDirection: 'row',
     alignItems: 'center',
+    gap: 4,
+    backgroundColor: 'rgba(251, 191, 36, 0.1)',
+    borderWidth: 1,
+    borderColor: 'rgba(251, 191, 36, 0.25)',
+    paddingHorizontal: 7,
+    paddingVertical: 2,
+    borderRadius: RADIUS.pill,
   },
-  dosePillLabel: {
+  miniPillIu: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    backgroundColor: 'rgba(52, 211, 153, 0.1)',
+    borderWidth: 1,
+    borderColor: 'rgba(52, 211, 153, 0.25)',
+    paddingHorizontal: 7,
+    paddingVertical: 2,
+    borderRadius: RADIUS.pill,
+  },
+  miniPillVol: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    backgroundColor: 'rgba(56, 189, 248, 0.1)',
+    borderWidth: 1,
+    borderColor: 'rgba(56, 189, 248, 0.25)',
+    paddingHorizontal: 7,
+    paddingVertical: 2,
+    borderRadius: RADIUS.pill,
+  },
+  miniPillLabel: {
     fontSize: 9,
-    fontWeight: '700',
-    color: '#64748b',
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
-  },
-  dosePillVal: {
-    fontSize: 13,
     fontWeight: '800',
-    color: '#f8fafc',
-    marginTop: 2,
+    color: COLORS.textMuted,
   },
-  dosePillValGreen: {
-    fontSize: 13,
-    fontWeight: '800',
-    color: '#34d399',
-    marginTop: 2,
+  miniPillValue: {
+    fontSize: 11,
+    fontWeight: '900',
+    color: COLORS.amber,
   },
-  dosePillValCyan: {
-    fontSize: 13,
-    fontWeight: '800',
-    color: '#38bdf8',
-    marginTop: 2,
+  miniPillValueMint: {
+    fontSize: 11,
+    fontWeight: '900',
+    color: COLORS.mint,
   },
-  specDivider: {
-    width: 1,
-    height: 20,
-    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+  miniPillValueCyan: {
+    fontSize: 11,
+    fontWeight: '900',
+    color: COLORS.cyan,
   },
   progressBarBg: {
-    height: 6,
-    backgroundColor: '#1e293b',
+    height: 4,
+    backgroundColor: 'rgba(255, 255, 255, 0.08)',
     borderRadius: RADIUS.pill,
     overflow: 'hidden',
-    marginVertical: 6,
+    marginVertical: 4,
   },
   progressBarFill: {
     height: '100%',
@@ -418,20 +445,20 @@ const styles = StyleSheet.create({
   scheduleRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
+    gap: 5,
     marginTop: 2,
   },
   scheduleText: {
     fontSize: 11,
-    color: '#94a3b8',
-    fontWeight: '500',
+    color: COLORS.textMuted,
+    fontWeight: '600',
   },
   cardActionsRow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
-    marginTop: SPACING.md,
-    paddingTop: SPACING.sm,
+    marginTop: 8,
+    paddingTop: 8,
     borderTopWidth: 1,
     borderTopColor: 'rgba(255, 255, 255, 0.06)',
   },
@@ -442,13 +469,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 6,
     backgroundColor: COLORS.mint,
-    paddingVertical: 10,
+    paddingVertical: 8,
     borderRadius: RADIUS.pill,
-    ...SHADOWS.cardGlow,
+    ...SHADOWS.subtle,
   },
   primaryActionBtnText: {
-    fontSize: 13,
-    fontWeight: '800',
+    fontSize: 12,
+    fontWeight: '900',
     color: '#022c22',
   },
   actionBtnDisabled: {
@@ -460,25 +487,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 5,
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    paddingVertical: 10,
-    paddingHorizontal: 14,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
     borderRadius: RADIUS.pill,
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.08)',
   },
   secondaryActionBtnText: {
-    fontSize: 12,
-    fontWeight: '700',
+    fontSize: 11,
+    fontWeight: '800',
     color: '#94a3b8',
-  },
-  dangerActionBtn: {
-    width: 38,
-    height: 38,
-    borderRadius: 19,
-    backgroundColor: 'rgba(244, 63, 94, 0.1)',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 1,
-    borderColor: 'rgba(244, 63, 94, 0.25)',
   },
 });

@@ -81,6 +81,8 @@ export const HistoryScreen: React.FC = () => {
     useBioStackStore();
   const [filterPeptide, setFilterPeptide] =
     useState<string>('all');
+  const [activeSegment, setActiveSegment] =
+    useState<'logs' | 'vials'>('logs');
 
   // Proteksi data jika storage mengembalikan nilai null/undefined
   const safeHistory = Array.isArray(injectionHistory)
@@ -333,10 +335,38 @@ export const HistoryScreen: React.FC = () => {
         </View>
       </View>
 
-      {/* Ringkasan Penggunaan */}
-      <View
-        style={styles.insightCard}
-      >
+      {/* Segmented Switcher */}
+      <View style={styles.segmentContainer}>
+        <TouchableOpacity
+          style={[styles.segmentBtn, activeSegment === 'logs' && styles.segmentBtnActive]}
+          onPress={() => setActiveSegment('logs')}
+          activeOpacity={0.8}
+        >
+          <Activity size={14} color={activeSegment === 'logs' ? '#022c22' : COLORS.textMuted} />
+          <Text style={[styles.segmentBtnText, activeSegment === 'logs' && styles.segmentBtnTextActive]}>
+            {language === 'en' ? 'Injection Logs' : 'Riwayat Injeksi'} ({safeHistory.length})
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.segmentBtn, activeSegment === 'vials' && styles.segmentBtnActive]}
+          onPress={() => setActiveSegment('vials')}
+          activeOpacity={0.8}
+        >
+          <FlaskConical size={14} color={activeSegment === 'vials' ? '#022c22' : COLORS.textMuted} />
+          <Text style={[styles.segmentBtnText, activeSegment === 'vials' && styles.segmentBtnTextActive]}>
+            {language === 'en' ? 'Vial Journeys' : 'Perjalanan Vial'} ({vialJourneys.length})
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* VIEW: PERJALANAN VIAL & ANALITIK */}
+      {activeSegment === 'vials' && (
+        <>
+          {/* Ringkasan Penggunaan */}
+          <View
+            style={styles.insightCard}
+          >
         <View
           style={styles.insightHeader}
         >
@@ -591,7 +621,12 @@ export const HistoryScreen: React.FC = () => {
           ))
         )}
       </View>
+      </>
+      )}
 
+      {/* VIEW: RIWAYAT INJEKSI */}
+      {activeSegment === 'logs' && (
+        <>
       {/* Filter Peptida */}
       {uniquePeptides.length >
         0 && (
@@ -790,6 +825,8 @@ export const HistoryScreen: React.FC = () => {
           })
         )}
       </View>
+      </>
+      )}
     </ScrollView>
   );
 };
@@ -817,6 +854,43 @@ const styles = StyleSheet.create({
     gap: 12,
     marginBottom: 12,
     ...SHADOWS.cardGlow,
+  },
+
+  segmentContainer: {
+    flexDirection: 'row',
+    backgroundColor: COLORS.card,
+    borderRadius: RADIUS.pill,
+    padding: 4,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+    marginBottom: 12,
+    gap: 4,
+  },
+
+  segmentBtn: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
+    paddingVertical: 9,
+    borderRadius: RADIUS.pill,
+  },
+
+  segmentBtnActive: {
+    backgroundColor: COLORS.mint,
+    ...SHADOWS.subtle,
+  },
+
+  segmentBtnText: {
+    fontSize: 12,
+    fontWeight: '800',
+    color: COLORS.textMuted,
+  },
+
+  segmentBtnTextActive: {
+    color: '#022c22',
+    fontWeight: '900',
   },
 
   summaryIconBox: {
