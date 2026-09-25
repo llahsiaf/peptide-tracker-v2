@@ -25,6 +25,7 @@ import {
   PackageCheck,
   Snowflake,
   Syringe,
+  Target,
   TrendingUp,
   XCircle,
 } from 'lucide-react-native';
@@ -450,11 +451,15 @@ export const TodayScreen: React.FC<{
                           styles.depletionPill,
                           remainingDoses <= 3 ? styles.depletionAlert : remainingDoses <= 7 ? styles.depletionWarning : styles.depletionSafe
                         ]}>
+                          <Target
+                            size={10}
+                            color={remainingDoses <= 3 ? COLORS.pink : remainingDoses <= 7 ? COLORS.yellow : COLORS.mint}
+                          />
                           <Text style={[
                             styles.depletionPillText,
                             remainingDoses <= 3 ? styles.depletionAlertText : remainingDoses <= 7 ? styles.depletionWarningText : styles.depletionSafeText
                           ]}>
-                            🎯 ~{remainingDoses}x
+                            ~{remainingDoses}x
                           </Text>
                         </View>
                       )}
@@ -606,9 +611,13 @@ export const TodayScreen: React.FC<{
                           {language === 'en' ? 'Remaining Volume:' : 'Sisa Volume:'} {cVol.toFixed(2)} mL / {bWater.toFixed(2)} mL
                         </Text>
                         {rem !== null && (
-                          <View style={[styles.depletionPill, rem <= 3 ? styles.depletionAlert : rem <= 7 ? styles.depletionWarning : styles.depletionSafe, { marginTop: 4, alignSelf: 'flex-start' }]}>
+                          <View style={[styles.depletionPill, rem <= 3 ? styles.depletionAlert : rem <= 7 ? styles.depletionWarning : styles.depletionSafe, { marginTop: 4, alignSelf: 'flex-start', flexDirection: 'row', alignItems: 'center', gap: 4 }]}>
+                            <Target
+                              size={11}
+                              color={rem <= 3 ? COLORS.pink : rem <= 7 ? COLORS.yellow : COLORS.mint}
+                            />
                             <Text style={[styles.depletionPillText, rem <= 3 ? styles.depletionAlertText : rem <= 7 ? styles.depletionWarningText : styles.depletionSafeText]}>
-                              🎯 {language === 'en' ? `~${rem} injections left` : `Sisa ~${rem}x suntikan lagi`}
+                              {language === 'en' ? `~${rem} injections left` : `Sisa ~${rem}x suntikan lagi`}
                             </Text>
                           </View>
                         )}

@@ -21,11 +21,14 @@ import {
   CheckCircle2,
   Clock,
   ShieldCheck,
+  Target,
+  Syringe,
 } from 'lucide-react-native';
 import {
   useBioStackStore,
   ROTATION_SITES,
 } from '../store/useBioStackStore';
+import { COLORS, RADIUS, SHADOWS } from '../theme';
 
 type BodyZone =
   | 'perut'
@@ -442,76 +445,40 @@ export const RotationScreen: React.FC = () => {
       </View>
 
       {/* Kartu Target Titik Aktif */}
-      <View
-        style={
-          styles.activeTargetCard
-        }
-      >
-        <View
-          style={
-            styles.targetHeaderRow
-          }
-        >
-          <View>
-            <Text
-              style={
-                styles.targetLabel
-              }
-            >
-              {language === 'en'
-                ? 'NEXT TARGET SITE'
-                : 'TARGET TITIK BERIKUTNYA'}
-            </Text>
+      <View style={styles.activeTargetCard}>
+        <View style={styles.targetHeaderRow}>
+          <View style={{ flex: 1 }}>
+            <View style={styles.targetLabelRow}>
+              <Target size={12} color={COLORS.mint} />
+              <Text style={styles.targetLabel}>
+                {language === 'en' ? 'RECOMMENDED ROTATION SITE' : 'TITIK ROTASI DIREKOMENDASIKAN'}
+              </Text>
+            </View>
 
-            <Text
-              style={styles.targetName}
-            >
+            <Text style={styles.targetName}>
               {currentPoint.name}
             </Text>
           </View>
 
-          <View
-            style={
-              styles.targetCodeBadge
-            }
-          >
-            <Text
-              style={
-                styles.targetCodeText
-              }
-            >
+          <View style={styles.targetCodeBadge}>
+            <Text style={styles.targetCodeText}>
               {currentPoint.code}
             </Text>
           </View>
         </View>
 
-        <Text
-          style={styles.targetSubText}
-        >
+        <Text style={styles.targetSubText}>
           {currentPoint.subText}
         </Text>
 
         <TouchableOpacity
-          style={
-            styles.rotateActionBtn
-          }
-          onPress={
-            handleNextRotation
-          }
+          style={styles.rotateActionBtn}
+          onPress={handleNextRotation}
+          activeOpacity={0.8}
         >
-          <RotateCw
-            size={16}
-            color="#022c22"
-          />
-
-          <Text
-            style={
-              styles.rotateActionBtnText
-            }
-          >
-            {language === 'en'
-              ? 'Rotate to Next Site'
-              : 'Putar ke Titik Selanjutnya'}
+          <RotateCw size={16} color="#022c22" />
+          <Text style={styles.rotateActionBtnText}>
+            {language === 'en' ? 'Rotate to Next Site' : 'Putar ke Titik Selanjutnya'}
           </Text>
         </TouchableOpacity>
       </View>
@@ -846,7 +813,7 @@ export const RotationScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#030712',
+    backgroundColor: COLORS.bg,
   },
 
   scrollContent: {
@@ -859,20 +826,22 @@ const styles = StyleSheet.create({
   bannerCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#090d16',
+    backgroundColor: COLORS.card,
     borderWidth: 1,
-    borderColor: '#1e293b',
-    borderRadius: 14,
-    padding: 14,
+    borderColor: COLORS.border,
+    borderRadius: RADIUS.xl,
+    padding: 16,
     gap: 12,
+    ...SHADOWS.cardGlow,
   },
 
   bannerIconBox: {
-    width: 38,
-    height: 38,
-    borderRadius: 10,
-    backgroundColor:
-      'rgba(16, 185, 129, 0.1)',
+    width: 42,
+    height: 42,
+    borderRadius: RADIUS.lg,
+    backgroundColor: 'rgba(52, 211, 153, 0.12)',
+    borderWidth: 1,
+    borderColor: 'rgba(52, 211, 153, 0.25)',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -882,142 +851,146 @@ const styles = StyleSheet.create({
   },
 
   bannerTitle: {
-    fontSize: 13,
-    fontWeight: '800',
+    fontSize: 14,
+    fontWeight: '900',
     color: '#ffffff',
   },
 
   bannerDesc: {
-    fontSize: 10,
-    color: '#64748b',
+    fontSize: 11,
+    color: COLORS.textMuted,
     marginTop: 2,
   },
 
   activeTargetCard: {
-    backgroundColor: '#090d16',
+    backgroundColor: COLORS.card,
     borderWidth: 1,
-    borderColor:
-      'rgba(16, 185, 129, 0.3)',
-    borderRadius: 14,
-    padding: 14,
-    gap: 6,
+    borderColor: 'rgba(52, 211, 153, 0.4)',
+    borderRadius: RADIUS.xl,
+    padding: 16,
+    gap: 8,
+    ...SHADOWS.cardGlow,
   },
 
   targetHeaderRow: {
     flexDirection: 'row',
-    justifyContent:
-      'space-between',
+    justifyContent: 'space-between',
     alignItems: 'center',
   },
 
+  targetLabelRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+
   targetLabel: {
-    fontSize: 9,
-    fontWeight: '800',
-    color: '#10b981',
-    letterSpacing: 0.5,
+    fontSize: 10,
+    fontWeight: '900',
+    color: COLORS.mint,
+    letterSpacing: 0.8,
   },
 
   targetName: {
-    fontSize: 15,
-    fontWeight: '800',
+    fontSize: 17,
+    fontWeight: '900',
     color: '#ffffff',
     marginTop: 2,
   },
 
   targetCodeBadge: {
-    backgroundColor:
-      'rgba(16, 185, 129, 0.15)',
+    backgroundColor: 'rgba(52, 211, 153, 0.15)',
     borderWidth: 1,
-    borderColor: '#10b981',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 8,
+    borderColor: COLORS.mint,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: RADIUS.pill,
   },
 
   targetCodeText: {
-    fontSize: 12,
-    fontWeight: '800',
-    color: '#10b981',
+    fontSize: 13,
+    fontWeight: '900',
+    color: COLORS.mint,
   },
 
   targetSubText: {
     fontSize: 11,
-    color: '#94a3b8',
-    marginBottom: 8,
+    color: COLORS.textMuted,
+    marginBottom: 4,
   },
 
   rotateActionBtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent:
-      'center',
-    gap: 6,
-    backgroundColor: '#10b981',
-    paddingVertical: 10,
-    borderRadius: 10,
+    justifyContent: 'center',
+    gap: 8,
+    backgroundColor: COLORS.mint,
+    paddingVertical: 12,
+    borderRadius: RADIUS.pill,
+    ...SHADOWS.subtle,
   },
 
   rotateActionBtnText: {
-    fontSize: 12,
-    fontWeight: '800',
+    fontSize: 13,
+    fontWeight: '900',
     color: '#022c22',
   },
 
   zoneSelectorContainer: {
     flexDirection: 'row',
-    backgroundColor: '#090d16',
-    borderRadius: 10,
-    padding: 3,
+    backgroundColor: COLORS.card,
+    borderRadius: RADIUS.pill,
+    padding: 4,
     borderWidth: 1,
-    borderColor: '#1e293b',
+    borderColor: COLORS.border,
     gap: 4,
   },
 
   zoneTab: {
     flex: 1,
-    paddingVertical: 8,
+    paddingVertical: 9,
     alignItems: 'center',
-    borderRadius: 8,
+    borderRadius: RADIUS.pill,
   },
 
   zoneTabActive: {
-    backgroundColor:
-      'rgba(16, 185, 129, 0.15)',
-    borderWidth: 1,
-    borderColor: '#10b981',
+    backgroundColor: COLORS.mint,
+    ...SHADOWS.subtle,
   },
 
   zoneTabText: {
-    fontSize: 10,
-    fontWeight: '700',
-    color: '#64748b',
+    fontSize: 11,
+    fontWeight: '800',
+    color: COLORS.textMuted,
   },
 
   zoneTabTextActive: {
-    color: '#10b981',
+    color: '#022c22',
+    fontWeight: '900',
   },
 
   visualMapCard: {
-    backgroundColor: '#090d16',
+    backgroundColor: COLORS.card,
     borderWidth: 1,
-    borderColor: '#1e293b',
-    borderRadius: 14,
+    borderColor: COLORS.border,
+    borderRadius: RADIUS.xl,
     padding: 14,
-    gap: 8,
+    gap: 10,
+    ...SHADOWS.card,
   },
 
   mapHeaderTitle: {
     fontSize: 10,
-    fontWeight: '800',
-    color: '#64748b',
-    letterSpacing: 0.5,
+    fontWeight: '900',
+    color: COLORS.textMuted,
+    letterSpacing: 0.8,
   },
 
   svgContainer: {
-    backgroundColor: '#030712',
-    borderRadius: 12,
+    backgroundColor: COLORS.bgDarker,
+    borderRadius: RADIUS.lg,
     borderWidth: 1,
-    borderColor: '#1e293b',
+    borderColor: COLORS.border,
     alignItems: 'center',
     justifyContent: 'center',
     height: 270,
@@ -1047,9 +1020,9 @@ const styles = StyleSheet.create({
 
   sectionHeaderTitle: {
     fontSize: 10,
-    fontWeight: '800',
-    color: '#94a3b8',
-    letterSpacing: 0.5,
+    fontWeight: '900',
+    color: COLORS.textMuted,
+    letterSpacing: 0.8,
     marginTop: 4,
   },
 
@@ -1061,65 +1034,61 @@ const styles = StyleSheet.create({
 
   manualSiteCard: {
     width: '48.5%',
-    backgroundColor: '#090d16',
+    backgroundColor: COLORS.card,
     borderWidth: 1,
-    borderColor: '#1e293b',
-    borderRadius: 12,
+    borderColor: COLORS.border,
+    borderRadius: RADIUS.lg,
     padding: 12,
     gap: 4,
   },
 
   manualSiteCardActive: {
-    borderColor: '#10b981',
-    backgroundColor:
-      'rgba(16, 185, 129, 0.05)',
+    borderColor: COLORS.mint,
+    backgroundColor: 'rgba(52, 211, 153, 0.1)',
   },
 
   siteCardTop: {
     flexDirection: 'row',
-    justifyContent:
-      'space-between',
+    justifyContent: 'space-between',
     alignItems: 'center',
   },
 
   siteCardCode: {
-    fontSize: 12,
-    fontWeight: '800',
-    color: '#64748b',
+    fontSize: 13,
+    fontWeight: '900',
+    color: COLORS.textMuted,
   },
 
   siteCardCodeActive: {
-    color: '#10b981',
+    color: COLORS.mint,
   },
 
   siteCardName: {
     fontSize: 12,
-    fontWeight: '700',
+    fontWeight: '800',
     color: '#ffffff',
   },
 
   siteCardSub: {
-    fontSize: 9,
-    color: '#64748b',
+    fontSize: 10,
+    color: COLORS.textMuted,
   },
 
   safetyCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
-    backgroundColor:
-      'rgba(16, 185, 129, 0.05)',
+    gap: 10,
+    backgroundColor: 'rgba(52, 211, 153, 0.08)',
     borderWidth: 1,
-    borderColor:
-      'rgba(16, 185, 129, 0.2)',
-    padding: 12,
-    borderRadius: 12,
+    borderColor: 'rgba(52, 211, 153, 0.25)',
+    padding: 14,
+    borderRadius: RADIUS.lg,
   },
 
   safetyText: {
     flex: 1,
-    fontSize: 10,
-    color: '#94a3b8',
-    lineHeight: 14,
+    fontSize: 11,
+    color: COLORS.textSecondary,
+    lineHeight: 15,
   },
 });

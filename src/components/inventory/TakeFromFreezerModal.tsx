@@ -10,7 +10,7 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import { X, Snowflake, FlaskConical, Droplet, ArrowRight, Check } from 'lucide-react-native';
+import { X, Snowflake, FlaskConical, Droplet, ArrowRight, ArrowLeft, Check } from 'lucide-react-native';
 import { FreezerItem } from '../../store/useBioStackStore';
 import { normalizeDecimalInput, parseDecimal } from '../../utils/injectionCalculations';
 import { FrostyFreezerBadge } from '../common/FrostyFreezerBadge';
@@ -104,10 +104,11 @@ export const TakeFromFreezerModal: React.FC<TakeFromFreezerModalProps> = ({
               <View>
                 <TouchableOpacity
                   onPress={() => setSelectedItem(null)}
-                  style={styles.backBtn}
+                  style={[styles.backBtn, { flexDirection: 'row', alignItems: 'center', gap: 6 }]}
                 >
+                  <ArrowLeft size={14} color="#10b981" />
                   <Text style={styles.backBtnText}>
-                    {language === 'en' ? '← Choose another vial' : '← Pilih vial lainnya'}
+                    {language === 'en' ? 'Choose another vial' : 'Pilih vial lainnya'}
                   </Text>
                 </TouchableOpacity>
 

@@ -71,7 +71,7 @@ export const InventoryCard: React.FC<InventoryCardProps> = ({
         bg: 'rgba(244, 63, 94, 0.16)',
         border: '#fb7185',
         textColor: '#fb7185',
-        label: language === 'en' ? 'Only 1 Shot Left! ❄️' : 'Tinggal 1x Suntik Lagi! ❄️',
+        label: language === 'en' ? 'Only 1 Shot Left!' : 'Tinggal 1x Suntik Lagi!',
         icon: 'alert',
       };
     }
@@ -212,10 +212,10 @@ export const InventoryCard: React.FC<InventoryCardProps> = ({
 
           {/* Jadwal Injeksi Berikutnya */}
           <View style={styles.scheduleRow}>
-            <Clock size={13} color="#94a3b8" />
+            {isPaused ? <PauseCircle size={13} color="#94a3b8" /> : <Clock size={13} color="#94a3b8" />}
             <Text style={styles.scheduleText} numberOfLines={1}>
               {isPaused
-                ? (language === 'en' ? '⏸️ Schedule Paused' : '⏸️ Jadwal Dijeda')
+                ? (language === 'en' ? 'Schedule Paused' : 'Jadwal Dijeda')
                 : nextOccurrence
                 ? `${nextOccurrence.date === now.toISOString().split('T')[0] ? (language === 'en' ? 'Today' : 'Hari ini') : nextOccurrence.date} • ${nextOccurrence.time || '08:00'}`
                 : (language === 'en' ? 'No upcoming schedule' : 'Tidak ada jadwal')}

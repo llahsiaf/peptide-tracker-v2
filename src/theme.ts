@@ -29,6 +29,7 @@ export const COLORS = {
   yellow: '#fbbf24',        // Sunny Gold
   orange: '#fb923c',        // Warm Peach
   warning: '#f59e0b',
+  amber: '#f59e0b',
   danger: '#f43f5e',
 
   // Category specific liquid colors

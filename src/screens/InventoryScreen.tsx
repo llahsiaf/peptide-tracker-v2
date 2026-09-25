@@ -109,7 +109,7 @@ export const InventoryScreen: React.FC = () => {
       : `Dosis ${item.name} berhasil dicatat (${metrics.volumeMl} mL • ${metrics.iu} IU). Sisa cairan diperbarui!`;
 
     Alert.alert(
-      language === 'en' ? 'Dose Recorded! 🎉' : 'Injeksi Berhasil Dicatat! 🎉',
+      language === 'en' ? 'Dose Recorded' : 'Injeksi Berhasil Dicatat',
       successMsg
     );
   };
@@ -220,7 +220,7 @@ export const InventoryScreen: React.FC = () => {
             <Text style={styles.emptyTitle}>
               {lifecycleFilter === 'empty'
                 ? (language === 'en' ? 'No Empty Vials Yet' : 'Belum Ada Vial Kosong')
-                : (language === 'en' ? 'Fridge is Empty! 🧪' : 'Kulkas Masih Kosong! 🧪')}
+                : (language === 'en' ? 'Fridge is Empty' : 'Kulkas Masih Kosong')}
             </Text>
             <Text style={styles.emptySubtitle}>
               {lifecycleFilter === 'empty'

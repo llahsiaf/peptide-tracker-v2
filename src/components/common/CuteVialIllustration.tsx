@@ -13,7 +13,7 @@ import Svg, {
 
 export interface CuteVialProps {
   progress?: number; // 0 - 100 (% sisa cairan)
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'xs' | 'sm' | 'md' | 'lg';
   category?: string;
   colorOverride?: string;
   isPowder?: boolean; // True jika vial bubuk di freezer
@@ -32,6 +32,7 @@ export const CuteVialIllustration: React.FC<CuteVialProps> = ({
 }) => {
   // Tentukan dimensi sesuai prop size
   const dimensions = {
+    xs: { width: 38, height: 58, scale: 0.53 },
     sm: { width: 52, height: 80, scale: 0.75 },
     md: { width: 72, height: 110, scale: 1 },
     lg: { width: 92, height: 140, scale: 1.28 },
