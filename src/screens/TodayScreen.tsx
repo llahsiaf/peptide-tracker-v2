@@ -529,6 +529,7 @@ export const TodayScreen: React.FC<TodayScreenProps> = ({
                       size="xs"
                       progress={progressPercent}
                       category={matchedVial?.category}
+                      vialId={matchedVial?.id || occurrence.inventoryId}
                       dosesLeft={remainingDoses ?? undefined}
                       showTicks={false}
                     />
@@ -719,6 +720,7 @@ export const TodayScreen: React.FC<TodayScreenProps> = ({
                         size="xs"
                         progress={prog}
                         category={selectedQuickVial.category}
+                        vialId={selectedQuickVial.id}
                         dosesLeft={rem ?? undefined}
                         showTicks={false}
                       />

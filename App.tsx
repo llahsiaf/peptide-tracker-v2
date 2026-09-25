@@ -211,11 +211,11 @@ function BioStackApp() {
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor={COLORS.bg} />
 
-      {/* Header Utama BioStack PRO */}
+      {/* Header Utama BioStack PRO — Command Center Pods */}
       <View style={styles.topHeader}>
         <View style={styles.headerContent}>
-          <View style={styles.brandingRow}>
-            {/* Memanggil icon.png dari direktori root */}
+          {/* Identity Pod (Kiri) */}
+          <View style={styles.identityPod}>
             <View style={styles.brandIconBox}>
               <Image
                 source={require('./icon.png')}
@@ -223,56 +223,64 @@ function BioStackApp() {
                 resizeMode="cover"
               />
             </View>
-            <View style={styles.titleContainer}>
-              <View style={styles.titleWithBadge}>
+            <View style={styles.identityMeta}>
+              <View style={styles.brandTitleRow}>
                 <Text style={styles.appTitle}>BioStack</Text>
                 <View style={styles.proBadge}>
                   <Text style={styles.proBadgeText}>PRO</Text>
                 </View>
               </View>
-              <View style={styles.subtitleRow}>
-                <Text style={styles.appSubtitle}>Personal Tracker</Text>
-                <View style={styles.headerStatus}>
-                  <ShieldCheck size={10} color={COLORS.sage} />
-                  <Text style={styles.headerStatusText}>LOCAL</Text>
-                </View>
+              <View style={styles.statusPill}>
+                <View style={styles.statusDot} />
+                <Text style={styles.statusPillText}>LOCAL SECURE</Text>
               </View>
             </View>
           </View>
 
-          {/* Tombol Pemicu Izin Notifikasi Manual */}
-          <View style={styles.headerActions}>
+          {/* Control Dock (Kanan) */}
+          <View style={styles.controlDock}>
+            {/* Quick Dosing Calc Button */}
             <TouchableOpacity 
               onPress={() => setIsCalculatorOpen(true)} 
-              style={[styles.notificationBtn, styles.notificationBtnAmber]}
+              style={[styles.calcLauncherBtn, isCalculatorOpen && styles.calcLauncherBtnActive]}
               accessibilityLabel={language === 'en' ? 'Dose calculator' : 'Kalkulator dosis'}
             >
-              <Calculator size={18} color={COLORS.accent} />
+              <Calculator size={13} color="#231716" />
+              <Text style={styles.calcLauncherText}>
+                {language === 'en' ? 'Calc' : 'Kalk'}
+              </Text>
             </TouchableOpacity>
 
-            <TouchableOpacity 
-              onPress={handleManualNotificationRequest} 
-              style={styles.notificationBtn}
-              accessibilityLabel={language === 'en' ? 'Notification status' : 'Status notifikasi'}
-            >
-              <Bell size={18} color="#94a3b8" />
-            </TouchableOpacity>
+            {/* Toolbar Capsule (Bell | Analytics | Settings) */}
+            <View style={styles.toolbarCapsule}>
+              <TouchableOpacity 
+                onPress={handleManualNotificationRequest} 
+                style={styles.toolbarItem}
+                accessibilityLabel={language === 'en' ? 'Notification status' : 'Status notifikasi'}
+              >
+                <Bell size={15} color="#9c8985" />
+              </TouchableOpacity>
 
-            <TouchableOpacity
-              onPress={() => setActiveTab('analytics')}
-              style={[styles.notificationBtn, activeTab === 'analytics' && styles.notificationBtnAmber]}
-              accessibilityLabel={language === 'en' ? 'Open analytics' : 'Buka analytics'}
-            >
-              <TrendingUp size={18} color={activeTab === 'analytics' ? COLORS.accent : '#94a3b8'} />
-            </TouchableOpacity>
+              <View style={styles.toolbarDivider} />
 
-            <TouchableOpacity 
-              onPress={() => setActiveTab('settings')} 
-              style={[styles.notificationBtn, activeTab === 'settings' && styles.notificationBtnAmber]}
-              accessibilityLabel={language === 'en' ? 'Open settings' : 'Buka pengaturan'}
-            >
-              <Settings size={18} color={activeTab === 'settings' ? COLORS.accent : '#94a3b8'} />
-            </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => setActiveTab('analytics')}
+                style={[styles.toolbarItem, activeTab === 'analytics' && styles.toolbarItemActive]}
+                accessibilityLabel={language === 'en' ? 'Open analytics' : 'Buka analytics'}
+              >
+                <TrendingUp size={15} color={activeTab === 'analytics' ? COLORS.accent : '#9c8985'} />
+              </TouchableOpacity>
+
+              <View style={styles.toolbarDivider} />
+
+              <TouchableOpacity 
+                onPress={() => setActiveTab('settings')} 
+                style={[styles.toolbarItem, activeTab === 'settings' && styles.toolbarItemActive]}
+                accessibilityLabel={language === 'en' ? 'Open settings' : 'Buka pengaturan'}
+              >
+                <Settings size={15} color={activeTab === 'settings' ? COLORS.accent : '#9c8985'} />
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </View>
@@ -294,32 +302,34 @@ function BioStackApp() {
         {activeTab === 'settings' && <SettingsScreen onDone={() => setActiveTab('today')} />}
       </View>
 
-      {/* Navigasi Utama — bottom tab bar */}
-      <View style={styles.navBar}>
-        {([
-          ['today', t('navigation.today'), Activity],
-          ['inventory', t('navigation.inventory'), FlaskConical],
-          ['rotation', t('navigation.rotation'), RotateCw],
-          ['history', t('navigation.history'), History],
-          ['freezer', t('navigation.freezer'), Snowflake],
-        ] as const).map(([tab, label, Icon]) => {
-          const active = activeTab === tab;
-          return (
-            <TouchableOpacity
-              key={tab}
-              style={[styles.navTab, active && styles.navTabActive]}
-              onPress={() => setActiveTab(tab)}
-              accessibilityRole="button"
-              accessibilityState={{ selected: active }}
-              accessibilityLabel={label}
-            >
-              <View style={[styles.navIconWrap, active && styles.navIconWrapActive]}>
-                <Icon size={active ? 17 : 16} color={active ? COLORS.accent : COLORS.muted} />
-              </View>
-              <Text style={[styles.navTabText, active && styles.navTabTextActive]}>{label}</Text>
-            </TouchableOpacity>
-          );
-        })}
+      {/* Navigasi Utama — Floating Island Dock */}
+      <View style={styles.navBarContainer}>
+        <View style={styles.navBar}>
+          {([
+            ['today', t('navigation.today'), Activity],
+            ['inventory', t('navigation.inventory'), FlaskConical],
+            ['rotation', t('navigation.rotation'), RotateCw],
+            ['history', t('navigation.history'), History],
+            ['freezer', t('navigation.freezer'), Snowflake],
+          ] as const).map(([tab, label, Icon]) => {
+            const active = activeTab === tab;
+            return (
+              <TouchableOpacity
+                key={tab}
+                style={[styles.navTab, active && styles.navTabActive]}
+                onPress={() => setActiveTab(tab)}
+                accessibilityRole="button"
+                accessibilityState={{ selected: active }}
+                accessibilityLabel={label}
+              >
+                <View style={[styles.navIconWrap, active && styles.navIconWrapActive]}>
+                  <Icon size={16} color={active ? '#231716' : COLORS.muted} />
+                </View>
+                <Text style={[styles.navTabText, active && styles.navTabTextActive]}>{label}</Text>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
       </View>
 
       {/* Modal Kalkulator Dosis Presisi Generik Standalone */}
@@ -348,11 +358,11 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.bg,
   },
   topHeader: {
-    paddingHorizontal: 16,
-    paddingTop: Platform.OS === 'android' ? 12 : 6,
-    paddingBottom: 12,
+    paddingHorizontal: 14,
+    paddingTop: Platform.OS === 'android' ? 10 : 6,
+    paddingBottom: 10,
     borderBottomWidth: 1.5,
-    borderBottomColor: 'rgba(223, 138, 58, 0.28)',
+    borderBottomColor: 'rgba(223, 138, 58, 0.25)',
     backgroundColor: COLORS.bg,
   },
   headerContent: {
@@ -361,140 +371,173 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     gap: 8,
   },
-  brandingRow: {
+  identityPod: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
-    flexShrink: 1,
+    gap: 9,
+    paddingHorizontal: 8,
+    paddingVertical: 5,
+    backgroundColor: COLORS.cardElevated,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: 'rgba(223, 138, 58, 0.25)',
   },
   brandIconBox: {
-    width: 38,
-    height: 38,
-    borderRadius: RADIUS.md,
-    borderWidth: 1.5,
-    borderColor: 'rgba(223, 138, 58, 0.45)',
-    backgroundColor: COLORS.cardElevated,
+    width: 32,
+    height: 32,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: 'rgba(223, 138, 58, 0.40)',
+    backgroundColor: COLORS.bg,
     overflow: 'hidden',
   },
   brandIconImage: {
     width: '100%',
     height: '100%',
   },
-  titleContainer: {
+  identityMeta: {
     justifyContent: 'center',
+    gap: 1.5,
   },
-  titleWithBadge: {
+  brandTitleRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
+    gap: 5,
   },
   appTitle: {
-    fontSize: 17,
+    fontSize: 14.5,
     fontWeight: '900',
     color: COLORS.text,
     letterSpacing: -0.2,
   },
   proBadge: {
-    backgroundColor: 'rgba(194, 211, 182, 0.16)',
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: RADIUS.sm,
+    backgroundColor: 'rgba(223, 138, 58, 0.20)',
+    paddingHorizontal: 5,
+    paddingVertical: 1,
+    borderRadius: 4,
     borderWidth: 1,
-    borderColor: 'rgba(194, 211, 182, 0.35)',
+    borderColor: 'rgba(223, 138, 58, 0.45)',
   },
   proBadgeText: {
-    fontSize: 9.5,
+    fontSize: 8.5,
     fontWeight: '900',
-    color: COLORS.sage,
+    color: COLORS.accent,
   },
-  subtitleRow: {
+  statusPill: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
-    marginTop: 2,
+    gap: 4,
   },
-  appSubtitle: {
-    fontSize: 10,
-    color: COLORS.textMuted,
-    fontWeight: '500',
+  statusDot: {
+    width: 5,
+    height: 5,
+    borderRadius: 2.5,
+    backgroundColor: COLORS.sage,
   },
-  headerStatus: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 3,
-    paddingHorizontal: 6,
-    paddingVertical: 1.5,
-    borderRadius: 6,
-    backgroundColor: 'rgba(194, 211, 182, 0.12)',
-    borderWidth: 1,
-    borderColor: 'rgba(194, 211, 182, 0.28)',
-  },
-  headerStatusText: {
+  statusPillText: {
     fontSize: 8,
     fontWeight: '800',
     letterSpacing: 0.5,
     color: COLORS.sage,
   },
-  headerActions: {
+  controlDock: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
   },
-  notificationBtn: {
-    padding: 8,
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    borderRadius: RADIUS.md,
+  calcLauncherBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    paddingHorizontal: 9,
+    paddingVertical: 7,
+    borderRadius: 12,
+    backgroundColor: COLORS.accent,
+    borderWidth: 1,
+    borderColor: '#c97528',
+  },
+  calcLauncherBtnActive: {
+    backgroundColor: '#b45309',
+  },
+  calcLauncherText: {
+    fontSize: 11,
+    fontWeight: '900',
+    color: '#231716',
+  },
+  toolbarCapsule: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: COLORS.cardElevated,
+    borderRadius: 12,
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.08)',
+    paddingHorizontal: 3,
+    paddingVertical: 3,
   },
-  notificationBtnAmber: {
-    backgroundColor: 'rgba(223, 138, 58, 0.13)',
-    borderColor: 'rgba(223, 138, 58, 0.35)',
+  toolbarItem: {
+    paddingHorizontal: 7,
+    paddingVertical: 5,
+    borderRadius: 8,
+  },
+  toolbarItemActive: {
+    backgroundColor: 'rgba(223, 138, 58, 0.15)',
+  },
+  toolbarDivider: {
+    width: 1,
+    height: 14,
+    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+    marginHorizontal: 1,
+  },
+  navBarContainer: {
+    paddingHorizontal: 12,
+    paddingBottom: Platform.OS === 'ios' ? 14 : 12,
+    paddingTop: 4,
+    backgroundColor: COLORS.bg,
   },
   navBar: {
     flexDirection: 'row',
-    paddingHorizontal: 8,
-    paddingTop: 6,
-    paddingBottom: 8,
+    alignItems: 'center',
+    backgroundColor: 'rgba(38, 25, 24, 0.97)',
+    borderRadius: 22,
+    borderWidth: 1.5,
+    borderColor: 'rgba(223, 138, 58, 0.28)',
+    paddingHorizontal: 4,
+    paddingVertical: 4,
     gap: 2,
-    backgroundColor: COLORS.card,
-    borderTopWidth: 1.5,
-    borderTopColor: 'rgba(223, 138, 58, 0.22)',
-    elevation: 20,
+    elevation: 16,
     shadowColor: COLORS.accent,
-    shadowOpacity: 0.10,
-    shadowRadius: 20,
-    shadowOffset: { width: 0, height: -6 },
-    zIndex: 20,
+    shadowOpacity: 0.15,
+    shadowRadius: 16,
+    shadowOffset: { width: 0, height: 4 },
   },
   navTab: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     gap: 2,
-    paddingVertical: 4,
-    borderRadius: RADIUS.lg,
-    minHeight: 52,
+    paddingVertical: 5,
+    borderRadius: 16,
+    minHeight: 48,
   },
   navTabActive: {
-    backgroundColor: 'rgba(223, 138, 58, 0.10)',
+    backgroundColor: 'rgba(223, 138, 58, 0.14)',
     borderWidth: 1,
-    borderColor: 'rgba(223, 138, 58, 0.22)',
+    borderColor: 'rgba(223, 138, 58, 0.35)',
   },
   navIconWrap: {
-    width: 32,
-    height: 28,
-    borderRadius: 9,
+    width: 26,
+    height: 24,
+    borderRadius: 7,
     alignItems: 'center',
     justifyContent: 'center',
   },
   navIconWrapActive: {
-    backgroundColor: 'rgba(223, 138, 58, 0.15)',
-    borderRadius: 8,
+    backgroundColor: COLORS.accent,
+    borderRadius: 7,
   },
   navTabText: {
     fontSize: 9,
-    fontWeight: '800',
+    fontWeight: '700',
     color: COLORS.muted,
   },
   navTabTextActive: {

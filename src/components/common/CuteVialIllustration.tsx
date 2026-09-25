@@ -11,10 +11,59 @@ import Svg, {
   Line,
 } from 'react-native-svg';
 
+export interface VialPalette {
+  name: string;
+  cap: string;
+  top: string;
+  bottom: string;
+  bubble: string;
+}
+
+export const VIAL_PALETTES: VialPalette[] = [
+  { name: 'Electric Cyan', cap: '#06B6D4', top: '#38BDF8', bottom: '#0284C7', bubble: '#e0f7fa' },
+  { name: 'Ruby Crimson', cap: '#E11D48', top: '#FB7185', bottom: '#BE123C', bubble: '#fce4ec' },
+  { name: 'Emerald Jade', cap: '#059669', top: '#34D399', bottom: '#047857', bubble: '#e8f5e9' },
+  { name: 'Royal Sapphire', cap: '#2563EB', top: '#60A5FA', bottom: '#1D4ED8', bubble: '#e3f2fd' },
+  { name: 'Vivid Amethyst', cap: '#7C3AED', top: '#A78BFA', bottom: '#6D28D9', bubble: '#ede7f6' },
+  { name: 'Burnished Amber', cap: '#D97706', top: '#DF8A3A', bottom: '#B45309', bubble: '#fff8e1' },
+  { name: 'Sunset Coral', cap: '#EA580C', top: '#FB923C', bottom: '#C2410C', bubble: '#fbe9e7' },
+  { name: 'Neon Lime', cap: '#65A30D', top: '#A3E635', bottom: '#4D7C0F', bubble: '#f1f8e9' },
+  { name: 'Hot Magenta', cap: '#C026D3', top: '#E879F9', bottom: '#A21CAF', bubble: '#fce4ec' },
+  { name: 'Deep Orchid', cap: '#9333EA', top: '#C084FC', bottom: '#7E22CE', bubble: '#ede7f6' },
+  { name: 'Matcha Sage', cap: '#16A34A', top: '#C2D3B6', bottom: '#95AA88', bubble: '#eaf2e6' },
+  { name: 'Copper Bronze', cap: '#C2410C', top: '#F97316', bottom: '#9A3412', bubble: '#fbe9e7' },
+  { name: 'Bright Gold', cap: '#CA8A04', top: '#FACC15', bottom: '#A16207', bubble: '#fffde7' },
+  { name: 'Deep Indigo', cap: '#4338CA', top: '#818CF8', bottom: '#3730A3', bubble: '#e8eaf6' },
+  { name: 'Teal Laguna', cap: '#0D9488', top: '#2DD4BF', bottom: '#0F766E', bubble: '#e0f2f1' },
+  { name: 'Flamingo Rose', cap: '#DB2777', top: '#F472B6', bottom: '#BE185D', bubble: '#fce4ec' },
+  { name: 'Ice Azure', cap: '#0284C7', top: '#7DD3FC', bottom: '#0369A1', bubble: '#e1f5fe' },
+  { name: 'Mint Frost', cap: '#14B8A6', top: '#5EEAD4', bottom: '#0F766E', bubble: '#e0f7fa' },
+  { name: 'Blood Orange', cap: '#DC2626', top: '#F87171', bottom: '#B91C1C', bubble: '#ffebee' },
+  { name: 'Forest Pine', cap: '#15803D', top: '#4ADE80', bottom: '#166534', bubble: '#e8f5e9' },
+  { name: 'Electric Plum', cap: '#A855F7', top: '#D8B4FE', bottom: '#7E22CE', bubble: '#f3e5f5' },
+  { name: 'Warm Caramel', cap: '#B45309', top: '#F59E0B', bottom: '#78350F', bubble: '#fff8e1' },
+  { name: 'Silver Platinum', cap: '#64748B', top: '#94A3B8', bottom: '#334155', bubble: '#eceff1' },
+  { name: 'Mauve Velvet', cap: '#86198F', top: '#D946EF', bottom: '#701A75', bubble: '#f3e5f5' },
+  { name: 'Turquoise Wave', cap: '#0891B2', top: '#22D3EE', bottom: '#0E7490', bubble: '#e0f7fa' },
+];
+
+export const getVialPalette = (key: string): VialPalette => {
+  if (!key) return VIAL_PALETTES[5]; // Default Burnished Amber
+  let hash = 0;
+  for (let i = 0; i < key.length; i++) {
+    hash = (hash << 5) - hash + key.charCodeAt(i);
+    hash |= 0;
+  }
+  const idx = Math.abs(hash) % VIAL_PALETTES.length;
+  return VIAL_PALETTES[idx];
+};
+
 export interface CuteVialProps {
   progress?: number; // 0 - 100 (% sisa cairan)
   size?: 'xs' | 'sm' | 'md' | 'lg';
   category?: string;
+  vialId?: string; // ID vial untuk hashing 25 warna acak & deterministik
+  seed?: string; // Alternatif seed nama/ID
   colorOverride?: string;
   isPowder?: boolean; // True jika vial bubuk di freezer
   dosesLeft?: number; // Jumlah sisa sesi suntik
@@ -25,6 +74,8 @@ export const CuteVialIllustration: React.FC<CuteVialProps> = ({
   progress = 100,
   size = 'md',
   category = '',
+  vialId,
+  seed,
   colorOverride,
   isPowder = false,
   dosesLeft,
@@ -38,10 +89,21 @@ export const CuteVialIllustration: React.FC<CuteVialProps> = ({
     lg: { width: 92, height: 140, scale: 1.28 },
   }[size];
 
-  // Tentukan palet warna cairan berdasarkan kategori peptida
+  // Tentukan palet warna cairan & tutup cap
   const getThemeColor = () => {
     if (colorOverride) {
       return { top: colorOverride, bottom: colorOverride, cap: colorOverride, bubble: '#ffffff' };
+    }
+    // Jika vialId atau seed diberikan, gunakan 25 database palet acak deterministik
+    const lookupKey = vialId || seed;
+    if (lookupKey) {
+      const palette = getVialPalette(lookupKey);
+      return {
+        top: palette.top,
+        bottom: palette.bottom,
+        cap: palette.cap,
+        bubble: palette.bubble,
+      };
     }
     const cat = (category || '').toLowerCase();
     if (cat.includes('glp') || cat.includes('weight') || cat.includes('fat') || cat.includes('metabol')) {

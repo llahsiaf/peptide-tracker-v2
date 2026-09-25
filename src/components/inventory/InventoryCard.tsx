@@ -55,17 +55,17 @@ export const InventoryCard: React.FC<InventoryCardProps> = ({
   const dosesLeft = liquid.dosesLeft;
   const daysLeft = liquid.daysLeft;
 
-  // Format jadwal dengan nama hari eksplisit (contoh: "Senin, 28 Sep • 08:00")
+  // Format jadwal dengan nama hari eksplisit (contoh: "Today • 19:00" atau "Mon, Sep 28 • 08:00")
   const formatNextScheduleWithDay = (dateStr: string, timeStr?: string) => {
     const [y, m, d] = dateStr.split('-').map(Number);
-    if (!y || !m || !d) return `${dateStr} • ${timeStr || '08:00'}`;
+    if (!y || !m || !d) return `${timeStr || '08:00'}`;
     const targetDate = new Date(y, m - 1, d);
     const isToday = targetDate.toDateString() === now.toDateString();
     const tmr = new Date(now);
     tmr.setDate(tmr.getDate() + 1);
     const isTomorrow = targetDate.toDateString() === tmr.toDateString();
 
-    const dayNameId = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'][targetDate.getDay()];
+    const dayNameId = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'][targetDate.getDay()];
     const dayNameEn = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][targetDate.getDay()];
     const monthNameId = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'][targetDate.getMonth()];
     const monthNameEn = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][targetDate.getMonth()];
@@ -73,12 +73,12 @@ export const InventoryCard: React.FC<InventoryCardProps> = ({
     const timePart = timeStr || '08:00';
 
     if (language === 'en') {
-      if (isToday) return `Today (${dayNameEn}) • ${timePart}`;
-      if (isTomorrow) return `Tomorrow (${dayNameEn}) • ${timePart}`;
+      if (isToday) return `Today • ${timePart}`;
+      if (isTomorrow) return `Tomorrow • ${timePart}`;
       return `${dayNameEn}, ${monthNameEn} ${d} • ${timePart}`;
     } else {
-      if (isToday) return `Hari ini (${dayNameId}) • ${timePart}`;
-      if (isTomorrow) return `Besok (${dayNameId}) • ${timePart}`;
+      if (isToday) return `Hari ini • ${timePart}`;
+      if (isTomorrow) return `Besok • ${timePart}`;
       return `${dayNameId}, ${d} ${monthNameId} • ${timePart}`;
     }
   };
@@ -147,6 +147,7 @@ export const InventoryCard: React.FC<InventoryCardProps> = ({
           <CuteVialIllustration
             progress={liquid.progressPercent}
             category={item.category}
+            vialId={item.id}
             size="sm"
             dosesLeft={dosesLeft}
           />
@@ -227,19 +228,64 @@ export const InventoryCard: React.FC<InventoryCardProps> = ({
             />
           </View>
 
-          {/* Jadwal Hari Eksplisit */}
+          {/* Jadwal Hari Eksplisit — Formula A: 7 Mini Chips + Schedule Badge */}
           <View style={styles.scheduleRow}>
-            {isPaused ? <PauseCircle size={12} color="#94a3b8" /> : <Calendar size={12} color={COLORS.mint} />}
-            <Text style={styles.scheduleText} numberOfLines={1}>
-              {isPaused
-                ? (language === 'en' ? 'Schedule Paused' : 'Jadwal Dijeda')
-                : nextOccurrence
-                ? formatNextScheduleWithDay(nextOccurrence.date, nextOccurrence.time)
-                : (language === 'en' ? 'No upcoming schedule' : 'Tidak ada jadwal')}
-              {item.activeDays && item.activeDays.length > 0 && !isPaused
-                ? ` (${item.activeDays.join(', ')})`
-                : ''}
-            </Text>
+            <View style={styles.dayChipsList}>
+              {[
+                { key: 'Sen', en: 'M', id: 'S' },
+                { key: 'Sel', en: 'T', id: 'S' },
+                { key: 'Rab', en: 'W', id: 'R' },
+                { key: 'Kam', en: 'T', id: 'K' },
+                { key: 'Jum', en: 'F', id: 'J' },
+                { key: 'Sab', en: 'S', id: 'S' },
+                { key: 'Min', en: 'S', id: 'M' },
+              ].map((day) => {
+                const isActive = (item.activeDays || []).includes(day.key);
+                const todayKey = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'][now.getDay()];
+                const isToday = todayKey === day.key;
+                return (
+                  <View
+                    key={day.key}
+                    style={[
+                      styles.dayChip,
+                      isActive && styles.dayChipActive,
+                      isToday && styles.dayChipToday,
+                    ]}
+                  >
+                    <Text
+                      style={[
+                        styles.dayChipText,
+                        isActive && styles.dayChipTextActive,
+                      ]}
+                    >
+                      {language === 'en' ? day.en : day.id}
+                    </Text>
+                  </View>
+                );
+              })}
+            </View>
+
+            {/* Time / Next occurrence badge */}
+            <View style={[styles.scheduleTimeBadge, isPaused && styles.scheduleTimeBadgePaused]}>
+              {isPaused ? (
+                <PauseCircle size={10} color="#94a3b8" />
+              ) : (
+                <Clock size={10} color={COLORS.accent} />
+              )}
+              <Text
+                style={[
+                  styles.scheduleTimeBadgeText,
+                  isPaused && styles.scheduleTimeBadgeTextPaused,
+                ]}
+                numberOfLines={1}
+              >
+                {isPaused
+                  ? (language === 'en' ? 'Paused' : 'Dijeda')
+                  : nextOccurrence
+                  ? formatNextScheduleWithDay(nextOccurrence.date, nextOccurrence.time)
+                  : (language === 'en' ? 'No schedule' : 'Tidak ada jadwal')}
+              </Text>
+            </View>
           </View>
         </View>
       </View>
@@ -445,13 +491,66 @@ const styles = StyleSheet.create({
   scheduleRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 5,
-    marginTop: 2,
+    justifyContent: 'space-between',
+    gap: 6,
+    marginTop: 3,
+    minHeight: 18,
   },
-  scheduleText: {
-    fontSize: 11,
-    color: COLORS.textMuted,
-    fontWeight: '600',
+  dayChipsList: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 3,
+  },
+  dayChip: {
+    width: 17,
+    height: 17,
+    borderRadius: 4,
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.08)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  dayChipActive: {
+    backgroundColor: COLORS.accent,
+    borderColor: '#c97528',
+  },
+  dayChipToday: {
+    borderColor: COLORS.sage,
+    borderWidth: 1.2,
+  },
+  dayChipText: {
+    fontSize: 8.5,
+    fontWeight: '700',
+    color: '#80706d',
+  },
+  dayChipTextActive: {
+    color: '#231716',
+    fontWeight: '900',
+  },
+  scheduleTimeBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 3,
+    paddingHorizontal: 6,
+    paddingVertical: 1.5,
+    borderRadius: RADIUS.pill,
+    backgroundColor: 'rgba(223, 138, 58, 0.12)',
+    borderWidth: 1,
+    borderColor: 'rgba(223, 138, 58, 0.25)',
+    maxWidth: 130,
+  },
+  scheduleTimeBadgePaused: {
+    backgroundColor: 'rgba(148, 163, 184, 0.1)',
+    borderColor: 'rgba(148, 163, 184, 0.2)',
+  },
+  scheduleTimeBadgeText: {
+    fontSize: 9,
+    fontWeight: '800',
+    color: COLORS.accent,
+  },
+  scheduleTimeBadgeTextPaused: {
+    color: '#94a3b8',
   },
   cardActionsRow: {
     flexDirection: 'row',
