@@ -10,7 +10,6 @@ import {
   Platform,
 } from 'react-native';
 import {
-  History,
   Trash2,
   Download,
   Calendar,
@@ -25,6 +24,7 @@ import { useBioStackStore } from '../store/useBioStackStore';
 import { getVialJourneys, getPeptideUsageStats } from '../utils/analyticsUtils';
 import { useLanguage } from '../i18n/LanguageContext';
 import { CuteVialIllustration } from '../components/common/CuteVialIllustration';
+import { CheerfulHistoryBadge } from '../components/common/CheerfulHistoryBadge';
 import { COLORS, RADIUS, SHADOWS, SPACING } from '../theme';
 
 // Pemetaan Nama Titik Anatomi Indonesia
@@ -263,16 +263,7 @@ export const HistoryScreen: React.FC = () => {
       <View
         style={styles.summaryCard}
       >
-        <View
-          style={
-            styles.summaryIconBox
-          }
-        >
-          <History
-            size={20}
-            color={COLORS.accent}
-          />
-        </View>
+        <CheerfulHistoryBadge size={48} />
 
         <View
           style={
@@ -891,17 +882,6 @@ const styles = StyleSheet.create({
   segmentBtnTextActive: {
     color: '#231716',
     fontWeight: '900',
-  },
-
-  summaryIconBox: {
-    width: 44,
-    height: 44,
-    borderRadius: RADIUS.lg,
-    backgroundColor: 'rgba(188, 169, 239, 0.16)',
-    borderWidth: 1,
-    borderColor: 'rgba(188, 169, 239, 0.32)',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 
   summaryContent: {

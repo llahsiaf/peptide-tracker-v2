@@ -361,7 +361,7 @@ export const getOccurrenceForDate = (
   const dateKey =
     formatLocalDate(date);
 
-  const todayKey =
+  const realTodayKey =
     formatLocalDate(now);
 
   const completed =
@@ -380,52 +380,28 @@ export const getOccurrenceForDate = (
     now.getHours() * 60 +
     now.getMinutes();
 
-  const isToday =
-    dateKey === todayKey;
-
-  /**
-   * Jatuh tempo dimulai TEPAT
-   * pada jam yang ditentukan.
-   *
-   * Contoh jadwal 11:00:
-   *
-   * 10:59 → belum jatuh tempo
-   * 11:00 → jatuh tempo
-   */
-  const isDue =
-    !completed &&
-    isToday &&
-    nowMinutes >=
-      scheduledMinutes &&
-    nowMinutes <
-      scheduledMinutes + 180;
-
-  /**
-   * Terlewat baru aktif setelah
-   * window 3 jam selesai.
-   *
-   * Contoh jadwal 11:00:
-   *
-   * 13:59 → masih jatuh tempo
-   * 14:00 → terlewat
-   */
-  const isMissed =
-    !completed &&
-    isToday &&
-    nowMinutes >=
-      scheduledMinutes + 180;
-
-  let status:
-    OccurrenceStatus;
+  let status: OccurrenceStatus;
+  let isMissed = false;
 
   if (completed) {
     status = 'completed';
-  } else if (isMissed) {
-    status = 'missed';
-  } else if (isDue) {
-    status = 'due';
-  } else {
+  } else if (dateKey > realTodayKey) {
+    // Tanggal masa depan -> SELALU upcoming
     status = 'upcoming';
+  } else if (dateKey < realTodayKey) {
+    // Tanggal masa lalu yang belum dicatat -> missed
+    status = 'missed';
+    isMissed = true;
+  } else {
+    // Hari ini (dateKey === realTodayKey)
+    if (nowMinutes >= scheduledMinutes + 180) {
+      status = 'missed';
+      isMissed = true;
+    } else if (nowMinutes >= scheduledMinutes) {
+      status = 'due';
+    } else {
+      status = 'upcoming';
+    }
   }
 
   return {
@@ -460,6 +436,7 @@ export const getScheduledOccurrences = (
   from = new Date(),
   days = 7,
   logs: InjectionLog[] = [],
+  now = new Date(),
 ): ScheduledOccurrence[] => {
   const occurrences:
     ScheduledOccurrence[] =
@@ -497,7 +474,7 @@ export const getScheduledOccurrences = (
           getOccurrenceForDate(
             item,
             date,
-            from,
+            now,
             logs,
           );
 

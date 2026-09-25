@@ -116,8 +116,8 @@ export const TodayScreen: React.FC<TodayScreenProps> = ({
 
   const weekDates = useMemo(() => Array.from({ length: 7 }, (_, index) => addDays(weekStart, index)), [weekStart]);
   const selectedOccurrences = useMemo(
-    () => getScheduledOccurrences(safeInventory, selectedDate, 1, safeLogs),
-    [safeInventory, safeLogs, selectedDate]
+    () => getScheduledOccurrences(safeInventory, selectedDate, 1, safeLogs, now),
+    [safeInventory, safeLogs, selectedDate, now]
   );
   const selectedLogs = useMemo(() => getLogsForLocalDate(safeLogs, selectedDate), [safeLogs, selectedDate]);
   const upcoming = useMemo(() => getScheduledOccurrences(safeInventory, now, 7, safeLogs).slice(0, 6), [safeInventory, safeLogs, now]);
@@ -479,9 +479,6 @@ export const TodayScreen: React.FC<TodayScreenProps> = ({
               {language === 'en' ? 'Activities for This Date' : 'Aktivitas Tanggal Ini'}
             </Text>
           </View>
-          <Text style={styles.sectionBadgeCount}>
-            {selectedOccurrences.length + selectedLogs.length}
-          </Text>
         </View>
 
         {selectedOccurrences.length === 0 && selectedLogs.length === 0 ? (
@@ -606,7 +603,6 @@ export const TodayScreen: React.FC<TodayScreenProps> = ({
                 {language === 'en' ? 'Upcoming Injections' : 'Jadwal Mendatang'}
               </Text>
             </View>
-            <Text style={styles.sectionBadgeCount}>{upcoming.length}</Text>
           </View>
 
           <View style={styles.upcomingCardList}>
@@ -1016,15 +1012,6 @@ const styles = StyleSheet.create({
     fontSize: 12.5,
     fontWeight: '900',
     color: '#ffffff',
-  },
-  sectionBadgeCount: {
-    fontSize: 10,
-    fontWeight: '800',
-    color: COLORS.textMuted,
-    backgroundColor: COLORS.bgDarker,
-    paddingHorizontal: 7,
-    paddingVertical: 1.5,
-    borderRadius: RADIUS.pill,
   },
   emptyFeedCard: {
     backgroundColor: COLORS.bgDarker,
