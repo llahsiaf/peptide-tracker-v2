@@ -501,7 +501,9 @@ export const TodayScreen: React.FC<TodayScreenProps> = ({
               const statusLabel = getOccurrenceStatusLabel(occurrence, language);
               const canLog = isToday && (occurrence.status === 'due' || occurrence.status === 'missed');
 
-              // Depletion calc
+              // Depletion calc & metrics
+              const metrics = matchedVial ? calculateInjectionMetrics(matchedVial) : null;
+              const unitsLabel = metrics && metrics.valid && metrics.iu > 0 ? ` (${metrics.iu} Units)` : '';
               const vialSize = Number(matchedVial?.vialSize || 0);
               const dose = Number(matchedVial?.targetDose || 0);
               const totalVol = Number(matchedVial?.bacWater || matchedVial?.currentVolumeMl || 1);
@@ -550,7 +552,7 @@ export const TodayScreen: React.FC<TodayScreenProps> = ({
                       {occurrenceLog
                         ? `${occurrenceLog.timeStr || occurrence.time} • ${language === 'en' ? 'Logged' : 'Dicatat'}`
                         : `${occurrence.time} • ${statusLabel}`}
-                      {matchedVial ? ` • ${matchedVial.targetDose} ${matchedVial.doseUnit}` : ''}
+                      {matchedVial ? ` • ${matchedVial.targetDose} ${matchedVial.doseUnit}${unitsLabel}` : ''}
                     </Text>
                   </View>
 
@@ -610,6 +612,8 @@ export const TodayScreen: React.FC<TodayScreenProps> = ({
             {upcoming.map((occ) => {
               const matchedVial = safeInventory.find((v) => v.id === occ.inventoryId);
               const statusLabel = getOccurrenceStatusLabel(occ, language);
+              const upMetrics = matchedVial ? calculateInjectionMetrics(matchedVial) : null;
+              const upUnitsLabel = upMetrics && upMetrics.valid && upMetrics.iu > 0 ? ` (${upMetrics.iu} Units)` : '';
               return (
                 <View key={`up-${occ.inventoryId}-${occ.date}`} style={styles.upcomingRowItem}>
                   <View style={styles.upcomingDayBadge}>
@@ -621,7 +625,7 @@ export const TodayScreen: React.FC<TodayScreenProps> = ({
                     <Text style={styles.upcomingNameText} numberOfLines={1}>{occ.peptideName}</Text>
                     {matchedVial ? (
                       <Text style={styles.upcomingDoseText}>
-                        {matchedVial.targetDose} {matchedVial.doseUnit}
+                        {matchedVial.targetDose} {matchedVial.doseUnit}{upUnitsLabel}
                       </Text>
                     ) : null}
                   </View>
