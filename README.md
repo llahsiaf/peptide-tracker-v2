@@ -1,72 +1,163 @@
-# 🧪 Peptide Tracker v2 (BioStack Pro)
+# 🧪 BioStack PRO
 
-A cheerful, friendly, and precise personal peptide protocol and injection tracking application built with **React Native (Expo)**, **TypeScript**, and **custom SVG vector graphics**.
+> **Precision Personal Peptide Protocol Tracker & Smart Ingestion Manager**  
+> *100% Local-First • Offline-Ready • Zero Tracking • Cheerful Scientific Design*
 
-Designed with a **Vibrant Dark** aesthetic (`#0b0f19` obsidian navy base, rounded bubbly card surfaces, soft neon-pastel accents, and cheerful cartoon illustrations).
+BioStack PRO is a modern, high-precision personal peptide protocol and injection tracking application built with **React Native (Expo SDK 51)**, **TypeScript**, and **custom SVG vector graphics**.
 
----
-
-## ✨ Key Features & Redesign Highlights
-
-### 1. 🎯 Dynamic Vial Depletion & Dose Estimator (*Fitur Unggulan*)
-- **Real-Time Remaining Injection Countdown:** Every vial displays exactly how many injection sessions remain (`🎯 Sisa ~X kali suntik (~Y hari lagi)`) based on reconstituted volume, concentration, and prescribed dose.
-- **Dynamic Urgency Alerts:**
-  - 🟢 **Aman / Safe (>7 dosis):** Fresh mint badge
-  - 🟡 **Peringatan / Warning (4-7 dosis):** Sunny amber badge
-  - 🔴 **Kritis / Alert (≤3 dosis):** Bubblegum rose alert to restock from freezer or reorder
-- **Instant Estimation in Edit Dose Modal:** Sliders and inputs calculate the exact yield of 1 vial on the fly.
-
-### 2. 🎨 Cheerful Cartoon SVG Vector Visuals
-- **Cute Vial (`CuteVialIllustration.tsx`):**
-  - Rounded chubby cartoon vial design.
-  - Realistic wavy animated-feel liquid level reflecting remaining volume percentage.
-  - Rising cartoon bubbles and glass reflection shine.
-  - Categorized cap color codes (Mint, Aqua, Warm Peach, Lavender, Rose).
-  - Powder state for freezer vials.
-- **Cute Syringe (`CuteSyringeIllustration.tsx`):**
-  - Friendly cartoon U-100 insulin syringe.
-  - Plunger level moves dynamically according to calculated IU.
-  - Easy-to-read dial tick indicators.
-- **Frosty Freezer Badge (`FrostyFreezerBadge.tsx`):**
-  - Snow-capped mini freezer illustration with cute ice crystals and stock badge.
-
-### 3. 🏗️ Clean Modular Architecture
-- Screen code reduced from monolithic files (3,500+ lines) into clean modular components:
-  - `src/components/inventory/InventoryCard.tsx`
-  - `src/components/inventory/EditDoseModal.tsx`
-  - `src/components/inventory/ScheduleModal.tsx`
-  - `src/components/inventory/TakeFromFreezerModal.tsx`
-  - `src/components/common/CuteVialIllustration.tsx`
-  - `src/components/common/CuteSyringeIllustration.tsx`
-  - `src/components/common/FrostyFreezerBadge.tsx`
-- Fully typed models in `src/types/index.ts`.
-
-### 4. 💉 Medical & Clinical Precision
-- Strict BAC water volume to concentration math (`mg / mL = mg/mL`).
-- Precise U-100 syringe conversion (`1 mL = 100 IU`).
-- Full support for both comma (`,`) and dot (`.`) decimal separators on mobile keyboards.
-- Injection site rotation tracking (Left/Right Abdomen, Thighs, Deltoids).
-- Calendar sync export (`.ics` / device calendar).
+Crafted with a luxurious **Warm Espresso & Burnished Amber** aesthetic, BioStack PRO combines clinical dosing accuracy with charming, playful vector illustrations — turning peptide regimen management into an effortless, delightful daily ritual.
 
 ---
 
-## 🚀 Running Locally
+## ✨ Highlights & Key Features
 
-```bash
-# Install dependencies
-npm install
+### 1. 🎨 Dual-Tone Cartoon Vector Illustrations
+- **Cute Illustrated Vials (`CuteVialIllustration.tsx`):**
+  - High-fidelity 25-color deterministic palette matched to peptide names.
+  - **Dual-tone flip-off caps:** Rubber flip-off caps and liquids use vibrant, harmoniously contrasting color pairings (e.g. Emerald liquid with Sunset Coral cap, Amethyst liquid with Amber Gold cap).
+  - **Lyophilized Powder vs. Liquid State:** Freezer vials display white freeze-dried cake with crystalline frost sparkles; reconstituted fridge vials display animated-feel wavy liquid with rising bubbles and dosage ticks.
+- **Friendly U-100 Syringe (`CuteSyringeIllustration.tsx`):**
+  - Cartoon insulin syringe with a dynamic plunger that moves to the exact calculated IU mark.
+- **Frosty Freezer & Cheerful History Badges:**
+  - Snow-capped mini freezer and cheerful golden pocket-watch logbook badges.
 
-# Start Expo dev server
-npx expo start
+---
 
-# Typecheck & audits
-npm run typecheck
-npm run audit-syntax
-npm run verify-phase10-1
+### 2. 📱 4 Core Management Tabs
+
+#### 📅 **Today Screen (Daily Timeline & Feed)**
+- **Interactive Calendar Strip:** Weekly horizontal picker with quick Jump-to-Today.
+- **Accurate Schedule Status:** Automatically identifies occurrences as `Upcoming`, `Due` (active 3-hour window), `Missed`, or `Completed`. Future dates are cleanly kept as `Upcoming`.
+- **One-Tap Quick Log:** Fast dose logging with auto-calculated volume, IU, and site suggestion.
+- **Upcoming Injections Stream:** Clean chronological preview of scheduled doses for the next 7 days.
+
+#### 🧪 **Inventory Screen (Active Fridge Stock)**
+- **Sleek, Compact Cards:** Designed for high-density daily protocols (supports 8+ peptides/day without scrolling fatigue).
+- **Formula A Active Days:** 7 micro-chips (`M T W T F S S`) with instant visual feedback and current-day highlights.
+- **Real-Time Shots Left Countdown:** Shows exact remaining injections and estimated days remaining (`X Shots Left (~Yd) • Z / W mL`).
+- **Inline Dosing Metrics:** Live readout of target dose, U-100 IU, and injection volume (mL).
+- **Vial Controls:** Quick log dose, pause/resume schedule, edit protocol, and sync to device calendar.
+
+#### 📜 **History Screen (Dosing Logs & Vial Journeys)**
+- **Dual-Mode Records:** Switch seamlessly between individual Injection Logs and comprehensive Vial Journeys.
+- **Vial Lifecycle Tracker:** Monitors total volume logged, progress percentage, and completed dates per vial.
+- **Data Portability:** One-click CSV export (`.csv`) for sharing with healthcare professionals or personal archival.
+
+#### ❄️ **Freezer Screen (Lyophilized Stock Vault)**
+- **Powder Inventory:** Track freeze-dried stock vials (`mg` or `mcg`) safely in long-term storage.
+- **Reconstitution Wizard:** Step-by-step calculator that computes BAC water volume, target concentration, and seamlessly transfers the reconstituted vial to the active fridge.
+
+---
+
+### 3. 🧮 Built-in Quick Dosing Calculator
+- Accessible anywhere from the header launcher.
+- Instantly solves the peptide math triangle:
+  $$\text{Volume per Dose (mL)} = \frac{\text{Target Dose}}{\text{Concentration (mg/mL)}}$$
+  $$\text{U-100 Units (IU)} = \text{Volume (mL)} \times 100$$
+- Includes dial-click calculations (for pen devices: 1 click = 0.01 mL = 1 IU).
+
+---
+
+### 4. 🔒 Privacy & Local-First Philosophy
+- **100% Offline-First:** All inventory, protocols, and injection logs are stored strictly on-device via `AsyncStorage`.
+- **Zero Cloud / Zero Tracking:** No third-party analytics, no tracking cookies, and no cloud server dependencies.
+- **Full Backup & Restore:** Complete JSON import and export functionality to safeguard your protocol data.
+
+---
+
+## 🛠️ Tech Stack & Architecture
+
+- **Framework:** [React Native](https://reactnative.dev/) (v0.74.1) with [Expo](https://expo.dev/) (SDK 51)
+- **Language:** [TypeScript](https://www.typescriptlang.org/) (Strict typing, 0 type errors)
+- **State Management:** [Zustand](https://github.com/pmndrs/zustand) with persistent storage
+- **Vector Graphics:** [react-native-svg](https://github.com/software-mansion/react-native-svg)
+- **Icons:** [Lucide React Native](https://lucide.dev/)
+- **Theme:** Warm Espresso Dark System (`#1a100f`, `#231716`, `#DF8A3A`, `#c2d3b6`)
+
+### Project Structure
+
+```
+peptide-tracker-v2/
+├── App.tsx                     # Main layout with Command Center & Island Dock
+├── src/
+│   ├── components/
+│   │   ├── common/             # SVG illustrations & badges
+│   │   │   ├── CuteVialIllustration.tsx
+│   │   │   ├── CuteSyringeIllustration.tsx
+│   │   │   ├── FrostyFreezerBadge.tsx
+│   │   │   └── CheerfulHistoryBadge.tsx
+│   │   └── inventory/          # Modular inventory components & modals
+│   │       ├── InventoryCard.tsx
+│   │       ├── EditDoseModal.tsx
+│   │       ├── ScheduleModal.tsx
+│   │       └── TakeFromFreezerModal.tsx
+│   ├── screens/                # Core application screens
+│   │   ├── TodayScreen.tsx
+│   │   ├── InventoryScreen.tsx
+│   │   ├── HistoryScreen.tsx
+│   │   └── FreezerScreen.tsx
+│   ├── store/
+│   │   └── useBioStackStore.ts # Central Zustand store with persistence
+│   ├── utils/                  # Medical calculations & schedule logic
+│   │   ├── injectionCalculations.ts
+│   │   ├── scheduleUtils.ts
+│   │   ├── analyticsUtils.ts
+│   │   └── rotationUtils.ts
+│   ├── theme/                  # Design tokens & color constants
+│   └── types/                  # TypeScript interface definitions
+└── package.json
 ```
 
 ---
 
-## 📱 Build & Deployment
-- Automated continuous deployment via **Netlify** (Web export).
-- iOS Unsigned `.ipa` verification workflow ready (`npm run verify-phase10-1`).
+## 🚀 Getting Started
+
+### Prerequisites
+- [Node.js](https://nodejs.org/) (v18 or higher recommended)
+- [Expo Go](https://expo.dev/go) app (for running on physical iOS/Android devices)
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/llahsiaf/peptide-tracker-v2.git
+cd peptide-tracker-v2
+
+# Install dependencies
+npm install
+```
+
+### Running the App
+
+```bash
+# Start the Expo development server
+npx expo start
+
+# Run on Web directly
+npx expo start --web
+
+# Run on Android
+npx expo start --android
+
+# Run on iOS
+npx expo start --ios
+```
+
+### Verification & Quality Checks
+
+```bash
+# Run TypeScript typechecker
+npm run typecheck
+
+# Run syntax diagnostics audit
+npm run audit-syntax
+
+# Export web production bundle
+npx expo export --platform web
+```
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License**.
