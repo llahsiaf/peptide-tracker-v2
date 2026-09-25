@@ -1,0 +1,40 @@
+{
+  "name": "biostack-pro",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "typecheck": "node --stack-size=8192 ./node_modules/typescript/bin/tsc --noEmit",
+    "audit-syntax": "node scripts/audit-syntax.js",
+    "verify-phase5": "node scripts/verify-phase5.js",
+    "verify-phase7": "node scripts/verify-phase7.js",
+    "verify-phase8": "node scripts/verify-phase8.js",
+    "verify-phase10": "node scripts/verify-phase10.js",
+    "verify-phase10-1": "node scripts/verify-phase10-1.js"
+  },
+  "dependencies": {
+    "@expo/metro-runtime": "~3.2.3",
+    "@react-native-async-storage/async-storage": "1.23.1",
+    "expo": "~51.0.0",
+    "expo-document-picker": "~12.0.2",
+    "expo-file-system": "~17.0.1",
+    "expo-notifications": "~0.28.1",
+    "expo-sharing": "~12.0.1",
+    "expo-status-bar": "~1.12.1",
+    "lucide-react-native": "^0.394.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-native": "0.74.1",
+    "react-native-svg": "15.2.0",
+    "react-native-web": "~0.19.10",
+    "zustand": "^4.5.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.20.0",
+    "@types/react": "~18.2.45",
+    "typescript": "~5.3.3"
+  },
+  "private": true
+}

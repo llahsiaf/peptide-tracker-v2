@@ -1,0 +1,40 @@
+{
+  "expo": {
+    "name": "BioStack PRO",
+    "slug": "biostackpro",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./icon.png",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "backgroundColor": "#030712"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.biostack.pro",
+      "icon": "./icon.png"
+    },
+    "web": {
+      "output": "single",
+      "bundler": "metro",
+      "favicon": "./icon.png",
+      "name": "BioStack PRO",
+      "shortName": "BioStack",
+      "description": "Peptide injection tracker & rotation manager. Track your peptide protocols, injection rotation, and dosing schedule.",
+      "themeColor": "#10b981",
+      "backgroundColor": "#030712",
+      "display": "standalone",
+      "orientation": "portrait",
+      "lang": "id"
+    },
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "icon": "./icon.png",
+          "color": "#10b981"
+        }
+      ]
+    ]
+  }
+}

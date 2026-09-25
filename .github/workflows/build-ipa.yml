@@ -1,0 +1,393 @@
+name: Build iOS IPA (Sideloadly Ready)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-ios:
+    runs-on: macos-14
+
+    steps:
+      # ==========================================
+      # CHECKOUT
+      # ==========================================
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # ==========================================
+      # SETUP NODE
+      # ==========================================
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # ==========================================
+      # VERIFY PROJECT
+      # ==========================================
+      - name: Verify Project Files
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          echo "=========================================="
+          echo "BIOSTACK PRO - PROJECT CHECK"
+          echo "=========================================="
+
+          echo ""
+          echo "Working directory:"
+          pwd
+
+          echo ""
+          echo "Repository root:"
+          git rev-parse --show-toplevel
+
+          echo ""
+          echo "Project files:"
+          ls -la
+
+          echo ""
+          echo "Checking required files..."
+
+          test -f package.json || {
+            echo "::error::package.json not found"
+            exit 1
+          }
+
+          test -f app.json || {
+            echo "::error::app.json not found"
+            exit 1
+          }
+
+          echo ""
+          echo "✓ package.json found"
+          echo "✓ app.json found"
+
+          if [[ -f package-lock.json ]]; then
+            echo "✓ package-lock.json found"
+          else
+            echo "ℹ package-lock.json not found"
+            echo "ℹ Using npm install instead of npm ci"
+          fi
+
+      # ==========================================
+      # INSTALL DEPENDENCIES
+      # ==========================================
+      - name: Install Dependencies
+        run: npm install
+
+      # ==========================================
+      # VERIFY SOURCE
+      # ==========================================
+      - name: Verify Source
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          echo "=========================================="
+          echo "SOURCE VERIFICATION"
+          echo "=========================================="
+
+          npm run audit-syntax
+          npm run typecheck
+          npm run verify-phase10
+          npm run verify-phase10-1
+
+          echo ""
+          echo "✓ Source verification passed"
+
+      # ==========================================
+      # GENERATE IOS NATIVE PROJECT
+      # ==========================================
+      - name: Generate iOS Native Project
+        run: |
+          npx expo prebuild \
+            --platform ios \
+            --clean \
+            --non-interactive
+
+      # ==========================================
+      # VERIFY IOS PROJECT
+      # ==========================================
+      - name: Verify iOS Project
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          echo "=========================================="
+          echo "IOS PROJECT VERIFICATION"
+          echo "=========================================="
+
+          if [[ ! -d "ios" ]]; then
+            echo "::error::ios directory was not generated"
+            exit 1
+          fi
+
+          echo ""
+          echo "Contents of ios/:"
+          ls -la ios
+
+          WORKSPACE="$(find ios -maxdepth 1 -type d -name '*.xcworkspace' -print -quit)"
+          if [[ -z "$WORKSPACE" ]]; then
+            WORKSPACE="ios/BioStackPRO.xcworkspace"
+          fi
+
+          if [[ ! -d "$WORKSPACE" ]]; then
+            echo "::error::Expected workspace not found:"
+            echo "$WORKSPACE"
+
+            echo ""
+            echo "Available workspaces:"
+            find ios -maxdepth 2 \
+              -type d \
+              -name "*.xcworkspace" \
+              -print
+
+            exit 1
+          fi
+
+          echo ""
+          echo "✓ Workspace found:"
+          echo "$WORKSPACE"
+
+          echo ""
+          echo "Xcode project information:"
+
+          xcodebuild \
+            -list \
+            -workspace "$WORKSPACE"
+
+      # ==========================================
+      # VERIFY XCODE SCHEME
+      # ==========================================
+      - name: Verify Xcode Scheme
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          WORKSPACE="$(find ios -maxdepth 1 -type d -name '*.xcworkspace' -print -quit)"
+          if [[ -z "$WORKSPACE" ]]; then
+            WORKSPACE="ios/BioStackPRO.xcworkspace"
+          fi
+
+          SCHEME="$(
+            xcodebuild -list -json -workspace "$WORKSPACE" 2>/dev/null |
+            node -e "try { const data = JSON.parse(require('fs').readFileSync(0, 'utf-8')); console.log(data.workspace?.schemes?.[0] || data.project?.schemes?.[0] || ''); } catch { console.log(''); }"
+          )"
+          if [[ -z "$SCHEME" ]]; then
+            SCHEME="BioStackPRO"
+          fi
+
+          echo "=========================================="
+          echo "XCODE SCHEME CHECK"
+          echo "=========================================="
+
+          echo ""
+          echo "Resolved scheme:"
+          echo "$SCHEME"
+
+          echo "WORKSPACE=$WORKSPACE" >> "$GITHUB_ENV"
+          echo "SCHEME=$SCHEME" >> "$GITHUB_ENV"
+
+          echo ""
+          echo "✓ Scheme '$SCHEME' configured"
+
+      # ==========================================
+      # COMPILE UNSIGNED IOS APP
+      # ==========================================
+      - name: Compile Unsigned iOS App
+        shell: bash
+        run: |
+          set -o pipefail
+
+          echo "=========================================="
+          echo "BUILDING UNSIGNED IOS APP"
+          echo "=========================================="
+
+          mkdir -p dist
+
+          xcodebuild \
+            -workspace "$WORKSPACE" \
+            -scheme "$SCHEME" \
+            -configuration Release \
+            -sdk iphoneos \
+            -destination 'generic/platform=iOS' \
+            -derivedDataPath ios/build \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            build 2>&1 | tee dist/xcodebuild.log
+
+      # ==========================================
+      # FIND GENERATED APP
+      # ==========================================
+      - name: Locate Built App
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          APP_DIR="ios/build/Build/Products/Release-iphoneos"
+
+          echo "=========================================="
+          echo "SEARCHING FOR BUILT APP"
+          echo "=========================================="
+
+          if [[ ! -d "$APP_DIR" ]]; then
+            echo "::error::Release product directory not found:"
+            echo "$APP_DIR"
+
+            echo ""
+            echo "Available build products:"
+            find ios/build/Build/Products \
+              -maxdepth 4 \
+              -print || true
+
+            exit 1
+          fi
+
+          echo ""
+          echo "Release directory:"
+          ls -la "$APP_DIR"
+
+          APP_PATH="$(
+            find "$APP_DIR" \
+              -maxdepth 1 \
+              -type d \
+              -name "*.app" \
+              -print \
+              -quit
+          )"
+
+          if [[ -z "$APP_PATH" ]]; then
+            echo "::error::No .app file was produced"
+            exit 1
+          fi
+
+          echo ""
+          echo "✓ Built app found:"
+          echo "$APP_PATH"
+
+          echo "APP_PATH=$APP_PATH" >> "$GITHUB_ENV"
+
+      # ==========================================
+      # PACKAGE IPA
+      # ==========================================
+      - name: Package Unsigned IPA
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          echo "=========================================="
+          echo "PACKAGING IPA"
+          echo "=========================================="
+
+          rm -rf dist/Payload
+          mkdir -p dist/Payload
+
+          cp -R "$APP_PATH" dist/Payload/
+
+          (
+            cd dist
+            zip -r -q BioStack_PRO_iOS_unsigned.ipa Payload
+          )
+
+          rm -rf dist/Payload
+
+          echo ""
+          echo "✓ IPA created:"
+          ls -lh dist/BioStack_PRO_iOS_unsigned.ipa
+
+      # ==========================================
+      # VERIFY IPA
+      # ==========================================
+      - name: Verify IPA Artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          echo "=========================================="
+          echo "IPA VERIFICATION"
+          echo "=========================================="
+
+          IPA="dist/BioStack_PRO_iOS_unsigned.ipa"
+
+          if [[ ! -f "$IPA" ]]; then
+            echo "::error::IPA file does not exist"
+            exit 1
+          fi
+
+          IPA_SIZE="$(stat -f%z "$IPA")"
+
+          echo ""
+          echo "IPA file:"
+          echo "$IPA"
+
+          echo ""
+          echo "IPA size:"
+          echo "$IPA_SIZE bytes"
+
+          if [[ "$IPA_SIZE" -lt 100000 ]]; then
+            echo "::error::IPA is unexpectedly small"
+            exit 1
+          fi
+
+          echo ""
+          echo "Checking IPA archive..."
+
+          unzip -l "$IPA" | head -40
+
+          echo ""
+          echo "✓ IPA artifact looks valid"
+
+      # ==========================================
+      # UPLOAD IPA
+      # ==========================================
+      - name: Upload IPA Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: BioStack-PRO-Sideloadly-${{ github.sha }}
+          path: |
+            dist/BioStack_PRO_iOS_unsigned.ipa
+            dist/xcodebuild.log
+          if-no-files-found: error
+          retention-days: 7
+
+      # ==========================================
+      # UPLOAD BUILD LOG ON FAILURE
+      # ==========================================
+      - name: Upload Build Log on Failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: BioStack-PRO-build-failure-${{ github.run_id }}
+          path: |
+            dist/xcodebuild.log
+          if-no-files-found: ignore
+          retention-days: 7
+
+      # ==========================================
+      # SUCCESS SUMMARY
+      # ==========================================
+      - name: Build Summary
+        if: success()
+        shell: bash
+        run: |
+          echo ""
+          echo "=========================================="
+          echo "BIOSTACK PRO BUILD SUCCESS"
+          echo "=========================================="
+          echo ""
+          echo "IPA:"
+          echo "dist/BioStack_PRO_iOS_unsigned.ipa"
+          echo ""
+          echo "BUILD TYPE:"
+          echo "Unsigned iOS IPA"
+          echo ""
+          echo "NEXT STEP:"
+          echo "Download the artifact and import the IPA"
+          echo "into Sideloadly."
+          echo ""
+          echo "=========================================="
