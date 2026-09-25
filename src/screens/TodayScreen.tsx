@@ -610,21 +610,41 @@ export const TodayScreen: React.FC<TodayScreenProps> = ({
           </View>
 
           <View style={styles.upcomingCardList}>
-            {upcoming.map((occ) => (
-              <View key={`up-${occ.inventoryId}-${occ.date}`} style={styles.upcomingRowItem}>
-                <View style={styles.upcomingDayBadge}>
-                  <Text style={styles.upcomingDayText}>
-                    {formatUpcomingDay(occ.date)}
-                  </Text>
-                  <Text style={styles.upcomingTimeText}>{occ.time}</Text>
-                </View>
+            {upcoming.map((occ) => {
+              const matchedVial = safeInventory.find((v) => v.id === occ.inventoryId);
+              const statusLabel = getOccurrenceStatusLabel(occ, language);
+              return (
+                <View key={`up-${occ.inventoryId}-${occ.date}`} style={styles.upcomingRowItem}>
+                  <View style={styles.upcomingDayBadge}>
+                    <Text style={styles.upcomingDayText}>{formatUpcomingDay(occ.date)}</Text>
+                    <Text style={styles.upcomingTimeText}>{occ.time}</Text>
+                  </View>
 
-                <View style={styles.upcomingInfo}>
-                  <Text style={styles.upcomingNameText} numberOfLines={1}>{occ.peptideName}</Text>
-                  <Text style={styles.upcomingSubText}>{getOccurrenceStatusLabel(occ, language)}</Text>
+                  <View style={styles.upcomingInfo}>
+                    <Text style={styles.upcomingNameText} numberOfLines={1}>{occ.peptideName}</Text>
+                    {matchedVial ? (
+                      <Text style={styles.upcomingDoseText}>
+                        {matchedVial.targetDose} {matchedVial.doseUnit}
+                      </Text>
+                    ) : null}
+                  </View>
+
+                  <View style={[
+                    styles.upcomingStatusBadge,
+                    occ.status === 'due' && styles.upcomingStatusBadgeDue,
+                    occ.status === 'missed' && styles.upcomingStatusBadgeMissed,
+                  ]}>
+                    <Text style={[
+                      styles.upcomingStatusText,
+                      occ.status === 'due' && styles.upcomingStatusTextDue,
+                      occ.status === 'missed' && styles.upcomingStatusTextMissed,
+                    ]}>
+                      {statusLabel}
+                    </Text>
+                  </View>
                 </View>
-              </View>
-            ))}
+              );
+            })}
           </View>
         </View>
       )}
@@ -916,7 +936,7 @@ const styles = StyleSheet.create({
     borderColor: COLORS.border,
   },
   todayNavBtnActive: {
-    backgroundColor: 'rgba(188, 169, 239, 0.16)',
+    backgroundColor: 'rgba(223, 138, 58, 0.16)',
     borderColor: COLORS.accent,
   },
   todayNavBtnText: {
@@ -939,7 +959,7 @@ const styles = StyleSheet.create({
   },
   slimDayCellActive: {
     borderColor: COLORS.accent,
-    backgroundColor: 'rgba(188, 169, 239, 0.16)',
+    backgroundColor: 'rgba(223, 138, 58, 0.16)',
   },
   slimDayCellToday: {
     borderColor: 'rgba(251, 191, 36, 0.4)',
@@ -978,8 +998,8 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.xl,
     borderWidth: 1,
     borderColor: COLORS.border,
-    padding: 14,
-    gap: 10,
+    padding: 10,
+    gap: 7,
     ...SHADOWS.card,
   },
   sectionHeaderRow: {
@@ -993,17 +1013,17 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   sectionTitleText: {
-    fontSize: 13,
+    fontSize: 12.5,
     fontWeight: '900',
     color: '#ffffff',
   },
   sectionBadgeCount: {
-    fontSize: 11,
+    fontSize: 10,
     fontWeight: '800',
     color: COLORS.textMuted,
     backgroundColor: COLORS.bgDarker,
-    paddingHorizontal: 8,
-    paddingVertical: 2,
+    paddingHorizontal: 7,
+    paddingVertical: 1.5,
     borderRadius: RADIUS.pill,
   },
   emptyFeedCard: {
@@ -1011,32 +1031,33 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.lg,
     borderWidth: 1,
     borderColor: COLORS.border,
-    padding: 20,
+    padding: 16,
     alignItems: 'center',
-    gap: 6,
+    gap: 5,
   },
   emptyFeedTitle: {
-    fontSize: 13,
+    fontSize: 12.5,
     fontWeight: '800',
     color: '#ffffff',
   },
   emptyFeedSub: {
-    fontSize: 11,
+    fontSize: 10.5,
     color: COLORS.textMuted,
     textAlign: 'center',
   },
   activityFeedList: {
-    gap: 8,
+    gap: 5,
   },
   actionCard: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: COLORS.bgDarker,
-    borderRadius: RADIUS.lg,
+    borderRadius: RADIUS.md,
     borderWidth: 1,
     borderColor: COLORS.border,
-    padding: 10,
-    gap: 10,
+    paddingVertical: 5,
+    paddingHorizontal: 8,
+    gap: 8,
   },
   actionCardDue: {
     borderColor: 'rgba(251, 191, 36, 0.35)',
@@ -1053,37 +1074,37 @@ const styles = StyleSheet.create({
     borderColor: COLORS.cyan,
   },
   actionCardLeft: {
-    width: 32,
+    width: 28,
     alignItems: 'center',
     justifyContent: 'center',
   },
   actionCardCenter: {
     flex: 1,
-    gap: 3,
+    gap: 1.5,
   },
   actionTitleRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
+    gap: 5,
   },
   actionTitleText: {
-    fontSize: 13,
+    fontSize: 12.5,
     fontWeight: '900',
     color: '#ffffff',
   },
   compactRemainingPill: {
     backgroundColor: 'rgba(194, 211, 182, 0.15)',
-    paddingHorizontal: 6,
+    paddingHorizontal: 5,
     paddingVertical: 1,
     borderRadius: RADIUS.pill,
   },
   compactRemainingText: {
-    fontSize: 9,
+    fontSize: 8.5,
     fontWeight: '900',
     color: COLORS.mint,
   },
   actionMetaText: {
-    fontSize: 10,
+    fontSize: 9.5,
     color: COLORS.textMuted,
     fontWeight: '600',
   },
@@ -1093,20 +1114,20 @@ const styles = StyleSheet.create({
   actionInjectBtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 5,
+    gap: 4,
     backgroundColor: COLORS.accent,
     borderRadius: RADIUS.pill,
-    paddingHorizontal: 10,
-    paddingVertical: 6,
+    paddingHorizontal: 8,
+    paddingVertical: 4.5,
   },
   actionInjectText: {
-    fontSize: 11,
+    fontSize: 10,
     fontWeight: '900',
     color: '#231716',
   },
   statusBadge: {
-    paddingHorizontal: 8,
-    paddingVertical: 4,
+    paddingHorizontal: 7,
+    paddingVertical: 3,
     borderRadius: RADIUS.pill,
     borderWidth: 1,
     borderColor: COLORS.border,
@@ -1117,7 +1138,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(194, 211, 182, 0.12)',
   },
   statusBadgeText: {
-    fontSize: 10,
+    fontSize: 9.5,
     fontWeight: '800',
     color: COLORS.textSecondary,
   },
@@ -1127,30 +1148,30 @@ const styles = StyleSheet.create({
     gap: 8,
     backgroundColor: COLORS.bgDarker,
     borderRadius: RADIUS.md,
-    padding: 10,
+    padding: 8,
     borderWidth: 1,
     borderColor: COLORS.border,
   },
   loggedTitleText: {
-    fontSize: 12,
+    fontSize: 11.5,
     fontWeight: '800',
     color: '#ffffff',
   },
   loggedMetaText: {
-    fontSize: 10,
+    fontSize: 9.5,
     color: COLORS.textMuted,
-    marginTop: 2,
+    marginTop: 1,
   },
   loggedTag: {
-    paddingHorizontal: 6,
-    paddingVertical: 2,
+    paddingHorizontal: 5,
+    paddingVertical: 1.5,
     borderRadius: RADIUS.sm,
     backgroundColor: 'rgba(188, 169, 239, 0.12)',
     borderWidth: 1,
     borderColor: 'rgba(188, 169, 239, 0.25)',
   },
   loggedTagText: {
-    fontSize: 9,
+    fontSize: 8.5,
     fontWeight: '900',
     color: COLORS.cyan,
   },
@@ -1159,12 +1180,12 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.xl,
     borderWidth: 1,
     borderColor: COLORS.border,
-    padding: 14,
-    gap: 10,
+    padding: 10,
+    gap: 7,
     ...SHADOWS.card,
   },
   upcomingCardList: {
-    gap: 6,
+    gap: 4,
   },
   upcomingRowItem: {
     flexDirection: 'row',
@@ -1173,38 +1194,69 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.md,
     borderWidth: 1,
     borderColor: COLORS.border,
-    padding: 8,
-    gap: 10,
+    paddingVertical: 5,
+    paddingHorizontal: 8,
+    gap: 8,
   },
   upcomingDayBadge: {
-    backgroundColor: COLORS.card,
+    backgroundColor: COLORS.cardElevated,
     borderRadius: RADIUS.sm,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
+    paddingHorizontal: 6,
+    paddingVertical: 2.5,
     borderWidth: 1,
     borderColor: COLORS.border,
-    minWidth: 90,
+    minWidth: 78,
   },
   upcomingDayText: {
-    fontSize: 10,
+    fontSize: 9.5,
     fontWeight: '800',
-    color: COLORS.mint,
+    color: COLORS.accent,
   },
   upcomingTimeText: {
-    fontSize: 9,
+    fontSize: 8.5,
     color: COLORS.textMuted,
   },
   upcomingInfo: {
     flex: 1,
+    justifyContent: 'center',
+    gap: 1,
   },
   upcomingNameText: {
-    fontSize: 12,
-    fontWeight: '800',
+    fontSize: 11.5,
+    fontWeight: '900',
     color: '#ffffff',
   },
-  upcomingSubText: {
+  upcomingDoseText: {
     fontSize: 9,
+    fontWeight: '600',
     color: COLORS.textMuted,
+  },
+  upcomingStatusBadge: {
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: RADIUS.pill,
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.08)',
+  },
+  upcomingStatusBadgeDue: {
+    backgroundColor: 'rgba(223, 138, 58, 0.12)',
+    borderColor: 'rgba(223, 138, 58, 0.30)',
+  },
+  upcomingStatusBadgeMissed: {
+    backgroundColor: 'rgba(244, 63, 94, 0.12)',
+    borderColor: 'rgba(244, 63, 94, 0.30)',
+  },
+  upcomingStatusText: {
+    fontSize: 8.5,
+    fontWeight: '800',
+    color: COLORS.muted,
+  },
+  upcomingStatusTextDue: {
+    color: COLORS.accent,
+  },
+  upcomingStatusTextMissed: {
+    color: COLORS.danger,
   },
   glanceTrayContainer: {
     flexDirection: 'row',

@@ -83,7 +83,7 @@ export const CuteVialIllustration: React.FC<CuteVialProps> = ({
 }) => {
   // Tentukan dimensi sesuai prop size
   const dimensions = {
-    xs: { width: 38, height: 58, scale: 0.53 },
+    xs: { width: 32, height: 48, scale: 0.44 },
     sm: { width: 52, height: 80, scale: 0.75 },
     md: { width: 72, height: 110, scale: 1 },
     lg: { width: 92, height: 140, scale: 1.28 },
