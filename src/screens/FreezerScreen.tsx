@@ -397,6 +397,7 @@ export const FreezerScreen: React.FC = () => {
                     isPowder={!isLiquid}
                     progress={isLiquid ? 100 : 0}
                     category={item.category}
+                    peptideName={item.name}
                     vialId={item.id}
                     colorOverride={isLiquid ? COLORS.cyan : undefined}
                     showTicks={false}
@@ -555,12 +556,12 @@ export const FreezerScreen: React.FC = () => {
               >
                 <View style={styles.reconIllustrationRow}>
                   <View style={styles.reconVialCol}>
-                    <CuteVialIllustration size="sm" isPowder={true} category={selectedFreezerItem.category} vialId={selectedFreezerItem.id} />
+                    <CuteVialIllustration size="sm" isPowder={true} category={selectedFreezerItem.category} peptideName={selectedFreezerItem.name} vialId={selectedFreezerItem.id} />
                     <Text style={styles.reconVialLabel}>{language === 'en' ? 'Powder' : 'Bubuk'}</Text>
                   </View>
                   <ArrowRight size={20} color={COLORS.cyan} />
                   <View style={styles.reconVialCol}>
-                    <CuteVialIllustration size="sm" progress={100} category={selectedFreezerItem.category} vialId={selectedFreezerItem.id} />
+                    <CuteVialIllustration size="sm" progress={100} category={selectedFreezerItem.category} peptideName={selectedFreezerItem.name} vialId={selectedFreezerItem.id} />
                     <Text style={styles.reconVialLabel}>{language === 'en' ? '+ BAC Water' : '+ Air BAC'}</Text>
                   </View>
                 </View>

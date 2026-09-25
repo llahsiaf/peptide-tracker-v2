@@ -371,12 +371,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 9,
-    paddingHorizontal: 8,
-    paddingVertical: 5,
-    backgroundColor: COLORS.cardElevated,
-    borderRadius: 14,
-    borderWidth: 1,
-    borderColor: 'rgba(223, 138, 58, 0.25)',
   },
   brandIconBox: {
     width: 32,

@@ -559,6 +559,8 @@ export const HistoryScreen: React.FC = () => {
                     size="xs"
                     progress={Math.max(0, 100 - vial.usagePercent)}
                     category={getPeptideCategory(vial.name)}
+                    peptideName={vial.name}
+                    vialId={vial.id}
                     showTicks={false}
                   />
                 </View>
@@ -720,6 +722,8 @@ export const HistoryScreen: React.FC = () => {
                       size="xs"
                       progress={100}
                       category={getPeptideCategory(item.peptideName)}
+                      peptideName={item.peptideName}
+                      vialId={item.inventoryId}
                       showTicks={false}
                     />
                   </View>

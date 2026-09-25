@@ -116,6 +116,8 @@ export const TakeFromFreezerModal: React.FC<TakeFromFreezerModalProps> = ({
                   <CuteVialIllustration
                     isPowder={selectedItem.unit !== 'mL'}
                     category={selectedItem.category}
+                    peptideName={selectedItem.name}
+                    vialId={selectedItem.id}
                     size="md"
                     progress={100}
                   />
@@ -198,6 +200,8 @@ export const TakeFromFreezerModal: React.FC<TakeFromFreezerModalProps> = ({
                     <CuteVialIllustration
                       isPowder={vial.unit !== 'mL'}
                       category={vial.category}
+                      peptideName={vial.name}
+                      vialId={vial.id}
                       size="sm"
                       progress={100}
                     />

@@ -125,19 +125,7 @@ export const InventoryCard: React.FC<InventoryCardProps> = ({
 
   return (
     <View style={[styles.card, isPaused && styles.cardPaused]}>
-      {/* 1. Header: Pill Sisa Suntik & Volume Meta */}
-      <View style={[styles.doseBadgeRow, { backgroundColor: badge.bg, borderColor: badge.border }]}>
-        <View style={styles.doseBadgeLeft}>
-          <Text style={[styles.doseBadgeText, { color: badge.textColor }]}>
-            {badge.label}
-          </Text>
-        </View>
-        <Text style={styles.liquidVolMeta}>
-          {liquid.currentVol.toFixed(2)} / {liquid.initialVol.toFixed(1)} mL
-        </Text>
-      </View>
-
-      {/* 2. Main Row: Compact Cute Vial (size="sm") + Info Block */}
+      {/* 1. Main Row: Compact Cute Vial (size="sm") + Info Block */}
       <View style={styles.cardMainRow}>
         <TouchableOpacity
           activeOpacity={0.8}
@@ -147,6 +135,7 @@ export const InventoryCard: React.FC<InventoryCardProps> = ({
           <CuteVialIllustration
             progress={liquid.progressPercent}
             category={item.category}
+            peptideName={item.name}
             vialId={item.id}
             size="sm"
             dosesLeft={dosesLeft}
@@ -290,6 +279,18 @@ export const InventoryCard: React.FC<InventoryCardProps> = ({
         </View>
       </View>
 
+      {/* 2. Sisa Suntik & Volume Meta (Di Bawah Hari, Di Atas Tombol Aksi) */}
+      <View style={[styles.doseBadgeRow, { backgroundColor: badge.bg, borderColor: badge.border }]}>
+        <View style={styles.doseBadgeLeft}>
+          <Text style={[styles.doseBadgeText, { color: badge.textColor }]}>
+            {badge.label}
+          </Text>
+        </View>
+        <Text style={styles.liquidVolMeta}>
+          {liquid.currentVol.toFixed(2)} / {liquid.initialVol.toFixed(1)} mL
+        </Text>
+      </View>
+
       {/* 3. Action Buttons: Log Dose Pill + Pause Pill */}
       <View style={styles.cardActionsRow}>
         <TouchableOpacity
@@ -347,6 +348,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: RADIUS.pill,
     borderWidth: 1,
+    marginTop: 9,
     marginBottom: 8,
   },
   doseBadgeLeft: {
