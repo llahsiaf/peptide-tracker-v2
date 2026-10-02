@@ -10,7 +10,7 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import { X, Activity, Droplets, Sparkles, Check } from 'lucide-react-native';
+import { X, Activity, Droplets, Sparkles, Check, CheckCircle2 } from 'lucide-react-native';
 import { InventoryItem } from '../../store/useBioStackStore';
 import {
   calculateInjectionMetrics,
@@ -27,6 +27,7 @@ export interface EditDoseModalProps {
   item: InventoryItem | null;
   onClose: () => void;
   onSave: (id: string, updates: Partial<InventoryItem>) => void;
+  onMarkEmpty?: (id: string, name: string) => void;
 }
 
 export const EditDoseModal: React.FC<EditDoseModalProps> = ({
@@ -34,6 +35,7 @@ export const EditDoseModal: React.FC<EditDoseModalProps> = ({
   item,
   onClose,
   onSave,
+  onMarkEmpty,
 }) => {
   const { language } = useLanguage();
   const [targetDoseInput, setTargetDoseInput] = useState('');
@@ -71,10 +73,18 @@ export const EditDoseModal: React.FC<EditDoseModalProps> = ({
   };
 
   const handleSave = () => {
+    const finalBac = item.unit === 'mL' ? 0 : (parsedBac || item.bacWater);
+    const oldBac = item.initialVolumeMl || item.bacWater || finalBac;
+    const oldCurrent = item.currentVolumeMl !== undefined ? item.currentVolumeMl : oldBac;
+    const used = Math.max(0, oldBac - oldCurrent);
+    const newCurrent = item.unit === 'mL' ? oldCurrent : Math.max(0, finalBac - used);
+
     onSave(item.id, {
       targetDose: parsedDose || item.targetDose,
       doseUnit: doseUnit,
-      bacWater: item.unit === 'mL' ? 0 : (parsedBac || item.bacWater),
+      bacWater: finalBac,
+      initialVolumeMl: item.unit === 'mL' ? item.vialSize : finalBac,
+      currentVolumeMl: newCurrent,
     });
     onClose();
   };
@@ -264,6 +274,22 @@ export const EditDoseModal: React.FC<EditDoseModalProps> = ({
                 {language === 'en' ? 'Save Changes' : 'Simpan Perubahan'}
               </Text>
             </TouchableOpacity>
+
+            {/* 8. TOMBOL KOSONGKAN VIAL */}
+            {item.lifecycleStatus !== 'empty' && onMarkEmpty && (
+              <TouchableOpacity
+                style={styles.markEmptyBtn}
+                onPress={() => {
+                  onClose();
+                  onMarkEmpty(item.id, item.name);
+                }}
+              >
+                <CheckCircle2 size={16} color="#fb7185" />
+                <Text style={styles.markEmptyBtnText}>
+                  {language === 'en' ? 'Mark Vial as Empty' : 'Kosongkan Vial Ini (Sudah Habis)'}
+                </Text>
+              </TouchableOpacity>
+            )}
           </ScrollView>
         </View>
       </KeyboardAvoidingView>
@@ -511,5 +537,22 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '800',
     color: '#231716',
+  },
+  markEmptyBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    backgroundColor: 'rgba(244, 63, 94, 0.08)',
+    borderWidth: 1,
+    borderColor: 'rgba(251, 113, 133, 0.3)',
+    paddingVertical: 12,
+    borderRadius: RADIUS.pill,
+    marginTop: 10,
+  },
+  markEmptyBtnText: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: '#fb7185',
   },
 });

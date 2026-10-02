@@ -31,6 +31,8 @@ export const InventoryScreen: React.FC = () => {
     recordInjection,
     removeInventoryItem,
     updateInventoryItem,
+    markVialAsEmpty,
+    reactivateVial,
     reconstituteToFridge,
     transferLiquidToFridge,
     setSchedulePaused,
@@ -158,6 +160,48 @@ export const InventoryScreen: React.FC = () => {
     ]);
   };
 
+  // Handler Kosongkan Vial (Tandai Habis)
+  const handleMarkEmpty = (id: string, name: string) => {
+    const title = language === 'en' ? 'Mark Vial as Empty' : 'Kosongkan Vial';
+    const msg = language === 'en'
+      ? `Mark ${name} as empty? Remaining liquid will be set to 0 mL and moved to the Empty tab.`
+      : `Kosongkan vial ${name}? Sisa cairan akan disetel ke 0 mL dan botol dipindahkan ke tab Habis.`;
+
+    if (Platform.OS === 'web') {
+      // eslint-disable-next-line no-alert
+      if (window.confirm(`${title}\n\n${msg}`)) {
+        markVialAsEmpty(id);
+      }
+      return;
+    }
+
+    Alert.alert(title, msg, [
+      { text: language === 'en' ? 'Cancel' : 'Batal', style: 'cancel' },
+      { text: language === 'en' ? 'Mark Empty' : 'Kosongkan', style: 'destructive', onPress: () => markVialAsEmpty(id) },
+    ]);
+  };
+
+  // Handler Pulihkan / Aktifkan Kembali Vial
+  const handleReactivate = (id: string, name: string) => {
+    const title = language === 'en' ? 'Reactivate Vial' : 'Aktifkan Kembali Vial';
+    const msg = language === 'en'
+      ? `Restore ${name} to active fridge with full volume?`
+      : `Kembalikan vial ${name} ke kulkas aktif dengan volume penuh?`;
+
+    if (Platform.OS === 'web') {
+      // eslint-disable-next-line no-alert
+      if (window.confirm(`${title}\n\n${msg}`)) {
+        reactivateVial(id);
+      }
+      return;
+    }
+
+    Alert.alert(title, msg, [
+      { text: language === 'en' ? 'Cancel' : 'Batal', style: 'cancel' },
+      { text: language === 'en' ? 'Reactivate' : 'Aktifkan', onPress: () => reactivateVial(id) },
+    ]);
+  };
+
   // Handler Export Kalender
   const handleSyncCalendar = (item: InventoryItem) => {
     exportToAppleCalendar({
@@ -257,6 +301,8 @@ export const InventoryScreen: React.FC = () => {
             onTogglePause={handleTogglePause}
             onRemoveItem={handleRemoveItem}
             onSyncCalendar={handleSyncCalendar}
+            onMarkEmpty={handleMarkEmpty}
+            onReactivate={handleReactivate}
           />
         )}
       />
@@ -268,6 +314,7 @@ export const InventoryScreen: React.FC = () => {
         item={editingItem}
         onClose={() => setIsEditDoseModalOpen(false)}
         onSave={(id, updates) => updateInventoryItem(id, updates)}
+        onMarkEmpty={handleMarkEmpty}
       />
 
       {/* Modal Jadwal & Siklus */}

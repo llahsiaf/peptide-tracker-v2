@@ -11,6 +11,7 @@ import {
   ChevronRight,
   Flame,
   AlertTriangle,
+  RotateCcw,
 } from 'lucide-react-native';
 import { InventoryItem } from '../../store/useBioStackStore';
 import { calculateInjectionMetrics, getLiquidStatus } from '../../utils/injectionCalculations';
@@ -28,6 +29,8 @@ export interface InventoryCardProps {
   onTogglePause: (id: string, currentlyPaused: boolean) => void;
   onRemoveItem: (id: string, name: string) => void;
   onSyncCalendar?: (item: InventoryItem) => void;
+  onMarkEmpty?: (id: string, name: string) => void;
+  onReactivate?: (id: string, name: string) => void;
 }
 
 export const InventoryCard: React.FC<InventoryCardProps> = ({
@@ -39,6 +42,8 @@ export const InventoryCard: React.FC<InventoryCardProps> = ({
   onTogglePause,
   onRemoveItem,
   onSyncCalendar,
+  onMarkEmpty,
+  onReactivate,
 }) => {
   const { language } = useLanguage();
   const metrics = calculateInjectionMetrics(item);
@@ -150,7 +155,7 @@ export const InventoryCard: React.FC<InventoryCardProps> = ({
                 {item.name}
               </Text>
               <Text style={styles.categorySub} numberOfLines={1}>
-                {item.category || 'General Peptide'} • {item.vialSize}{item.unit}
+                {item.category || 'General Peptide'} • {item.vialSize}{item.unit}{item.unit !== 'mL' && item.bacWater ? ` • ${item.bacWater}mL BAC` : ''}
               </Text>
             </TouchableOpacity>
 
@@ -171,6 +176,15 @@ export const InventoryCard: React.FC<InventoryCardProps> = ({
               >
                 <Clock size={13} color={COLORS.cyan} />
               </TouchableOpacity>
+              {onMarkEmpty && !isEmpty && (
+                <TouchableOpacity
+                  style={styles.circleIconWarningBtn}
+                  onPress={() => onMarkEmpty(item.id, item.name)}
+                  accessibilityLabel={language === 'en' ? 'Mark vial as empty' : 'Kosongkan vial'}
+                >
+                  <CheckCircle2 size={13} color="#fb923c" />
+                </TouchableOpacity>
+              )}
               <TouchableOpacity
                 style={styles.circleIconDangerBtn}
                 onPress={() => onRemoveItem(item.id, item.name)}
@@ -198,7 +212,7 @@ export const InventoryCard: React.FC<InventoryCardProps> = ({
             </View>
 
             <View style={styles.miniPillVol}>
-              <Text style={styles.miniPillLabel}>VOL</Text>
+              <Text style={styles.miniPillLabel}>{language === 'en' ? 'PER SHOT' : 'VOL SUNTIK'}</Text>
               <Text style={styles.miniPillValueCyan}>{metrics.volumeMl} mL</Text>
             </View>
           </TouchableOpacity>
@@ -293,17 +307,30 @@ export const InventoryCard: React.FC<InventoryCardProps> = ({
 
       {/* 3. Action Buttons: Log Dose Pill + Pause Pill */}
       <View style={styles.cardActionsRow}>
-        <TouchableOpacity
-          style={[styles.primaryActionBtn, isEmpty && styles.actionBtnDisabled]}
-          onPress={() => onQuickLog(item)}
-          disabled={isEmpty}
-          activeOpacity={0.8}
-        >
-          <Syringe size={14} color="#231716" />
-          <Text style={styles.primaryActionBtnText}>
-            {language === 'en' ? 'Log Dose' : 'Catat Suntik'}
-          </Text>
-        </TouchableOpacity>
+        {isEmpty && onReactivate ? (
+          <TouchableOpacity
+            style={styles.reactivateActionBtn}
+            onPress={() => onReactivate(item.id, item.name)}
+            activeOpacity={0.8}
+          >
+            <RotateCcw size={13} color="#231716" />
+            <Text style={styles.reactivateActionBtnText}>
+              {language === 'en' ? 'Reactivate / Refill' : 'Aktifkan Kembali'}
+            </Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            style={[styles.primaryActionBtn, isEmpty && styles.actionBtnDisabled]}
+            onPress={() => onQuickLog(item)}
+            disabled={isEmpty}
+            activeOpacity={0.8}
+          >
+            <Syringe size={14} color="#231716" />
+            <Text style={styles.primaryActionBtnText}>
+              {language === 'en' ? 'Log Dose' : 'Catat Suntik'}
+            </Text>
+          </TouchableOpacity>
+        )}
 
         <TouchableOpacity
           style={styles.secondaryActionBtn}
@@ -419,6 +446,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderWidth: 1,
     borderColor: 'rgba(244, 63, 94, 0.2)',
+  },
+  circleIconWarningBtn: {
+    width: 28,
+    height: 28,
+    borderRadius: RADIUS.pill,
+    backgroundColor: 'rgba(251, 146, 60, 0.12)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(251, 146, 60, 0.25)',
   },
   dosePillRow: {
     flexDirection: 'row',
@@ -595,5 +632,21 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontWeight: '800',
     color: '#94a3b8',
+  },
+  reactivateActionBtn: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
+    backgroundColor: COLORS.mint,
+    paddingVertical: 6.5,
+    borderRadius: RADIUS.pill,
+    ...SHADOWS.subtle,
+  },
+  reactivateActionBtnText: {
+    fontSize: 12,
+    fontWeight: '900',
+    color: '#231716',
   },
 });

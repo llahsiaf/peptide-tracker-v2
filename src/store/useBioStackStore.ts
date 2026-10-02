@@ -101,30 +101,47 @@ const getInitialLiquidVolume = (item: InventoryItem) =>
       ? sanitizePositiveNumber(item.vialSize)
       : sanitizePositiveNumber(item.bacWater);
 
-const normalizeInventoryItem = (item: InventoryItem): InventoryItem => ({
-  ...item,
-  name: String(item.name || 'Unnamed Peptide'),
-  category: String(item.category || 'General'),
-  vialSize: sanitizePositiveNumber(Number(item.vialSize)),
-  bacWater: sanitizePositiveNumber(Number(item.bacWater)),
-  targetDose: sanitizePositiveNumber(Number(item.targetDose)),
-  activeDays: Array.isArray(item.activeDays) && item.activeDays.length > 0 ? item.activeDays : ['Sen'],
-  injectionTime: /^([01]\d|2[0-3]):[0-5]\d$/.test(String(item.injectionTime || '')) ? item.injectionTime : '08:00',
-  currentVolumeMl: item.currentVolumeMl === undefined ? undefined : sanitizePositiveNumber(Number(item.currentVolumeMl)),
-  initialVolumeMl: item.initialVolumeMl === undefined ? undefined : sanitizePositiveNumber(Number(item.initialVolumeMl)),
-  notificationIds: Array.isArray(item.notificationIds) ? item.notificationIds : [],
-  lifecycleStatus:
-    item.currentVolumeMl !== undefined && item.currentVolumeMl <= 0
-      ? 'empty'
-      : item.lifecycleStatus === 'empty'
+const normalizeInventoryItem = (item: InventoryItem): InventoryItem => {
+  const vialSize = sanitizePositiveNumber(Number(item.vialSize));
+  const bacWater = sanitizePositiveNumber(Number(item.bacWater));
+  let initialVolumeMl = item.initialVolumeMl === undefined ? undefined : sanitizePositiveNumber(Number(item.initialVolumeMl));
+  let currentVolumeMl = item.currentVolumeMl === undefined ? undefined : sanitizePositiveNumber(Number(item.currentVolumeMl));
+
+  // Perbaikan desync: Jika peptida bubuk yang dilarutkan memiliki bacWater berbeda dengan initialVolumeMl,
+  // sinkronkan initialVolumeMl dengan bacWater dan sesuaikan sisa cairan secara proporsional.
+  if (item.unit !== 'mL' && bacWater > 0 && initialVolumeMl !== undefined && initialVolumeMl !== bacWater) {
+    const oldInitial = initialVolumeMl;
+    const oldCurrent = currentVolumeMl !== undefined ? currentVolumeMl : oldInitial;
+    const used = Math.max(0, oldInitial - oldCurrent);
+    initialVolumeMl = bacWater;
+    currentVolumeMl = Math.max(0, bacWater - used);
+  }
+
+  return {
+    ...item,
+    name: String(item.name || 'Unnamed Peptide'),
+    category: String(item.category || 'General'),
+    vialSize,
+    bacWater,
+    targetDose: sanitizePositiveNumber(Number(item.targetDose)),
+    activeDays: Array.isArray(item.activeDays) && item.activeDays.length > 0 ? item.activeDays : ['Sen'],
+    injectionTime: /^([01]\d|2[0-3]):[0-5]\d$/.test(String(item.injectionTime || '')) ? item.injectionTime : '08:00',
+    currentVolumeMl,
+    initialVolumeMl,
+    notificationIds: Array.isArray(item.notificationIds) ? item.notificationIds : [],
+    lifecycleStatus:
+      currentVolumeMl !== undefined && currentVolumeMl <= 0
         ? 'empty'
-        : 'active',
-  // Archive is no longer a user-facing lifecycle. Legacy archived items
-  // are normalized back to active (or empty when their liquid is depleted).
-  archivedAt: undefined,
-  activatedAt: item.activatedAt || (item.reconstitutedDate ? `${item.reconstitutedDate}T00:00:00` : undefined),
-  schedulePaused: Boolean(item.schedulePaused),
-});
+        : item.lifecycleStatus === 'empty'
+          ? 'empty'
+          : 'active',
+    // Archive is no longer a user-facing lifecycle. Legacy archived items
+    // are normalized back to active (or empty when their liquid is depleted).
+    archivedAt: undefined,
+    activatedAt: item.activatedAt || (item.reconstitutedDate ? `${item.reconstitutedDate}T00:00:00` : undefined),
+    schedulePaused: Boolean(item.schedulePaused),
+  };
+};
 
 const normalizeInjectionLog = (log: InjectionLog): InjectionLog => ({
   ...log,
@@ -159,6 +176,8 @@ interface BioStackState {
   transferLiquidToFridge: (freezerItemId: string) => void;
   removeInventoryItem: (id: string) => void;
   updateInventoryItem: (id: string, updates: Partial<InventoryItem>) => void;
+  markVialAsEmpty: (id: string) => void;
+  reactivateVial: (id: string) => void;
   setSchedulePaused: (id: string, paused: boolean) => void;
   updateSettings: (updates: Partial<BioStackSettings>) => void;
   replaceData: (data: BioStackBackupPayload['data']) => void;
@@ -416,11 +435,57 @@ export const useBioStackStore = create<BioStackState>()(
 
       updateInventoryItem: (id, updates) =>
         set((state) => ({
+          inventory: (state.inventory || []).map((inv) => {
+            if (inv.id !== id) return inv;
+            const merged = { ...inv, ...updates };
+
+            // Jika bacWater diubah dan initialVolumeMl belum diset spesifik di updates,
+            // sinkronkan initialVolumeMl dengan bacWater dan sesuaikan sisa cairan secara proporsional.
+            if (updates.bacWater !== undefined && inv.unit !== 'mL' && updates.initialVolumeMl === undefined) {
+              const newBac = sanitizePositiveNumber(Number(updates.bacWater));
+              const oldInitial = inv.initialVolumeMl || inv.bacWater || newBac;
+              const oldCurrent = inv.currentVolumeMl !== undefined ? inv.currentVolumeMl : oldInitial;
+              const used = Math.max(0, oldInitial - oldCurrent);
+              merged.initialVolumeMl = newBac;
+              merged.currentVolumeMl = Math.max(0, newBac - used);
+            }
+
+            const isNowEmpty = merged.currentVolumeMl !== undefined && merged.currentVolumeMl <= 0;
+            return {
+              ...merged,
+              lifecycleStatus: isNowEmpty
+                ? 'empty'
+                : (updates.lifecycleStatus || (inv.lifecycleStatus === 'empty' && !isNowEmpty ? 'active' : inv.lifecycleStatus) || 'active'),
+            };
+          }),
+        })),
+
+      markVialAsEmpty: (id) =>
+        set((state) => ({
           inventory: (state.inventory || []).map((inv) =>
             inv.id === id
-              ? { ...inv, ...updates, lifecycleStatus: updates.currentVolumeMl !== undefined && updates.currentVolumeMl <= 0 ? 'empty' : (updates.lifecycleStatus || inv.lifecycleStatus || 'active') }
+              ? {
+                  ...inv,
+                  currentVolumeMl: 0,
+                  lifecycleStatus: 'empty',
+                  emptiedAt: new Date().toISOString(),
+                }
               : inv
           ),
+        })),
+
+      reactivateVial: (id) =>
+        set((state) => ({
+          inventory: (state.inventory || []).map((inv) => {
+            if (inv.id !== id) return inv;
+            const fullVol = inv.initialVolumeMl || (inv.unit === 'mL' ? inv.vialSize : inv.bacWater) || 2;
+            return {
+              ...inv,
+              currentVolumeMl: fullVol,
+              lifecycleStatus: 'active',
+              emptiedAt: undefined,
+            };
+          }),
         })),
 
       setSchedulePaused: (id, paused) =>
