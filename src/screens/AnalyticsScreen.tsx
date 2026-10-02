@@ -7,11 +7,11 @@ import {
   View,
 } from 'react-native';
 import {
-  Activity,
   BarChart3,
   CalendarRange,
   ChevronDown,
-  FlaskConical,
+  Droplets,
+  FlaskRound,
   Package,
   Syringe,
   TrendingUp,
@@ -424,8 +424,9 @@ export const AnalyticsScreen: React.FC = () => {
 
         <Metric
           icon={
-            <Activity
+            <Droplets
               size={15}
+              strokeWidth={2.4}
               color={COLORS.cyan}
             />
           }
@@ -437,8 +438,9 @@ export const AnalyticsScreen: React.FC = () => {
 
         <Metric
           icon={
-            <FlaskConical
+            <FlaskRound
               size={15}
+              strokeWidth={2.4}
               color={
                 COLORS.accentStrong
               }
@@ -677,8 +679,9 @@ export const AnalyticsScreen: React.FC = () => {
           <View
             style={styles.titleRow}
           >
-            <FlaskConical
+            <FlaskRound
               size={16}
+              strokeWidth={2.4}
               color={
                 COLORS.accentStrong
               }

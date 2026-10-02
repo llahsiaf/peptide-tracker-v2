@@ -8,7 +8,7 @@ import {
   Alert,
   Platform,
 } from 'react-native';
-import { Plus, Snowflake, FlaskConical, Sparkles } from 'lucide-react-native';
+import { Plus, Snowflake, Sparkles } from 'lucide-react-native';
 import { useBioStackStore, InventoryItem, FreezerItem } from '../store/useBioStackStore';
 import { exportToAppleCalendar } from '../utils/calendarHelper';
 import { calculateInjectionMetrics, getLiquidStatus } from '../utils/injectionCalculations';
@@ -245,7 +245,7 @@ export const InventoryScreen: React.FC = () => {
           onPress={() => setIsTakeFreezerModalOpen(true)}
           activeOpacity={0.85}
         >
-          <Snowflake size={15} color="#231716" />
+          <Snowflake size={15} strokeWidth={2.4} color="#231716" />
           <Text style={styles.takeFreezerBtnText}>
             {language === 'en' ? 'Take Vial' : 'Ambil Vial'}
           </Text>
@@ -277,7 +277,7 @@ export const InventoryScreen: React.FC = () => {
                 style={styles.emptyTakeBtn}
                 onPress={() => setIsTakeFreezerModalOpen(true)}
               >
-                <Snowflake size={16} color="#231716" />
+                <Snowflake size={16} strokeWidth={2.4} color="#231716" />
                 <Text style={styles.emptyTakeBtnText}>
                   {language === 'en' ? 'Take from Freezer' : 'Ambil dari Freezer'}
                 </Text>

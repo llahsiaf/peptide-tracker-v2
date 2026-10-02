@@ -75,7 +75,7 @@ export const GenericDosingCalculatorModal: React.FC<GenericDosingCalculatorModal
           <View style={styles.header}>
             <View style={styles.headerTitleRow}>
               <View style={styles.iconBox}>
-                <Calculator size={18} color={COLORS.accent} />
+                <Calculator size={18} strokeWidth={2.4} color={COLORS.accent} />
               </View>
               <View>
                 <Text style={styles.headerTitle}>{t('calculator.title')}</Text>
@@ -84,7 +84,7 @@ export const GenericDosingCalculatorModal: React.FC<GenericDosingCalculatorModal
             </View>
 
             <TouchableOpacity onPress={onClose} style={styles.closeBtn} accessibilityLabel={t('app.close')}>
-              <X size={18} color="#94a3b8" />
+              <X size={18} strokeWidth={2.4} color="#94a3b8" />
             </TouchableOpacity>
           </View>
 
@@ -238,7 +238,7 @@ export const GenericDosingCalculatorModal: React.FC<GenericDosingCalculatorModal
             {/* HASIL KALKULASI */}
             <View style={styles.resultCard}>
               <View style={styles.resultHeader}>
-                <Syringe size={16} color={COLORS.accent} />
+                <Syringe size={16} strokeWidth={2.4} color={COLORS.accent} />
                 <Text style={styles.resultTitle}>{t('calculator.resultTitle')}</Text>
               </View>
 
@@ -287,7 +287,7 @@ export const GenericDosingCalculatorModal: React.FC<GenericDosingCalculatorModal
 
               {result.valid && (
                 <View style={styles.tipBox}>
-                  <Sparkles size={14} color="#c2d3b6" />
+                  <Sparkles size={14} strokeWidth={2.4} color="#c2d3b6" />
                   <Text style={styles.tipText}>
                     {t('calculator.summaryFormula', {
                       vial: `${vialSize} ${vialUnit}`,
@@ -303,7 +303,7 @@ export const GenericDosingCalculatorModal: React.FC<GenericDosingCalculatorModal
 
             {/* Reset Button */}
             <TouchableOpacity onPress={handleReset} style={styles.resetBtn}>
-              <RotateCcw size={14} color="#94a3b8" />
+              <RotateCcw size={14} strokeWidth={2.4} color="#94a3b8" />
               <Text style={styles.resetBtnText}>{t('calculator.resetValues')}</Text>
             </TouchableOpacity>
           </ScrollView>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, View, Text, StyleSheet, TouchableOpacity, TextInput, ScrollView } from 'react-native';
-import { X, Activity, Check } from 'lucide-react-native';
+import { X, Sparkles, Check } from 'lucide-react-native';
 import { ActiveInventoryItem } from '../types';
 import { SyringeVisualizer } from './SyringeVisualizer';
 import { useLanguage } from '../i18n/LanguageContext';
@@ -126,7 +126,7 @@ export const DoseDetailModal: React.FC<DoseDetailModalProps> = ({ visible, item,
             {/* Precision Metrics Card */}
             <View style={styles.metricsBox}>
               <View style={styles.metricsHeader}>
-                <Activity size={14} color={COLORS.accent} />
+                <Sparkles size={14} strokeWidth={2.4} color={COLORS.accent} />
                 <Text style={styles.metricsTitle}>
                   {language === 'en' ? 'Precision Calculation Results' : 'Hasil Kalkulasi Presisi'}
                 </Text>
@@ -157,7 +157,7 @@ export const DoseDetailModal: React.FC<DoseDetailModalProps> = ({ visible, item,
 
           {/* Action Button */}
           <TouchableOpacity onPress={handleSave} style={styles.saveButton}>
-            <Check size={16} color="#231716" />
+            <Check size={16} strokeWidth={2.4} color="#231716" />
             <Text style={styles.saveButtonText}>
               {language === 'en' ? 'Apply & Save Dose' : 'Terapkan & Simpan Dosis'}
             </Text>

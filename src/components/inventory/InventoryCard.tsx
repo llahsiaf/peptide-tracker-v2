@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Platform, Alert } from 'react-native';
 import {
   Calendar,
-  Clock,
+  Clock3,
   PlayCircle,
   PauseCircle,
   Trash2,
@@ -166,7 +166,7 @@ export const InventoryCard: React.FC<InventoryCardProps> = ({
                   style={styles.circleIconBtn}
                   accessibilityLabel="Sync Calendar"
                 >
-                  <Calendar size={13} color="#94a3b8" />
+                  <Calendar size={13} strokeWidth={2.4} color="#94a3b8" />
                 </TouchableOpacity>
               )}
               <TouchableOpacity
@@ -174,7 +174,7 @@ export const InventoryCard: React.FC<InventoryCardProps> = ({
                 style={styles.circleIconBtn}
                 accessibilityLabel="Set Schedule"
               >
-                <Clock size={13} color={COLORS.cyan} />
+                <Clock3 size={13} strokeWidth={2.4} color={COLORS.cyan} />
               </TouchableOpacity>
               {onMarkEmpty && !isEmpty && (
                 <TouchableOpacity
@@ -182,7 +182,7 @@ export const InventoryCard: React.FC<InventoryCardProps> = ({
                   onPress={() => onMarkEmpty(item.id, item.name)}
                   accessibilityLabel={language === 'en' ? 'Mark vial as empty' : 'Kosongkan vial'}
                 >
-                  <CheckCircle2 size={13} color="#fb923c" />
+                  <CheckCircle2 size={13} strokeWidth={2.4} color="#fb923c" />
                 </TouchableOpacity>
               )}
               <TouchableOpacity
@@ -190,7 +190,7 @@ export const InventoryCard: React.FC<InventoryCardProps> = ({
                 onPress={() => onRemoveItem(item.id, item.name)}
                 accessibilityLabel="Delete Vial"
               >
-                <Trash2 size={13} color={COLORS.danger} />
+                <Trash2 size={13} strokeWidth={2.3} color={COLORS.danger} />
               </TouchableOpacity>
             </View>
           </View>
@@ -271,9 +271,9 @@ export const InventoryCard: React.FC<InventoryCardProps> = ({
             {/* Time / Next occurrence badge */}
             <View style={[styles.scheduleTimeBadge, isPaused && styles.scheduleTimeBadgePaused]}>
               {isPaused ? (
-                <PauseCircle size={10} color="#94a3b8" />
+                <PauseCircle size={10} strokeWidth={2.3} color="#94a3b8" />
               ) : (
-                <Clock size={10} color={COLORS.accent} />
+                <Clock3 size={10} strokeWidth={2.3} color={COLORS.accent} />
               )}
               <Text
                 style={[
@@ -313,7 +313,7 @@ export const InventoryCard: React.FC<InventoryCardProps> = ({
             onPress={() => onReactivate(item.id, item.name)}
             activeOpacity={0.8}
           >
-            <RotateCcw size={13} color="#231716" />
+            <RotateCcw size={13} strokeWidth={2.4} color="#231716" />
             <Text style={styles.reactivateActionBtnText}>
               {language === 'en' ? 'Reactivate / Refill' : 'Aktifkan Kembali'}
             </Text>
@@ -325,7 +325,7 @@ export const InventoryCard: React.FC<InventoryCardProps> = ({
             disabled={isEmpty}
             activeOpacity={0.8}
           >
-            <Syringe size={14} color="#231716" />
+            <Syringe size={14} strokeWidth={2.4} color="#231716" />
             <Text style={styles.primaryActionBtnText}>
               {language === 'en' ? 'Log Dose' : 'Catat Suntik'}
             </Text>
@@ -338,9 +338,9 @@ export const InventoryCard: React.FC<InventoryCardProps> = ({
           activeOpacity={0.8}
         >
           {isPaused ? (
-            <PlayCircle size={13} color={COLORS.mint} />
+            <PlayCircle size={13} strokeWidth={2.4} color={COLORS.mint} />
           ) : (
-            <PauseCircle size={13} color="#94a3b8" />
+            <PauseCircle size={13} strokeWidth={2.4} color="#94a3b8" />
           )}
           <Text style={[styles.secondaryActionBtnText, isPaused && { color: COLORS.mint }]}>
             {isPaused

@@ -11,17 +11,16 @@ import {
   Platform,
 } from 'react-native';
 import {
-  Activity,
   AlertTriangle,
   Archive,
   CalendarDays,
+  CalendarClock,
   CheckCircle2,
   ChevronLeft,
   ChevronRight,
   Clock3,
   Droplets,
-  FlaskConical,
-  History,
+  FlaskRound,
   PackageCheck,
   Snowflake,
   Syringe,
@@ -393,7 +392,7 @@ export const TodayScreen: React.FC<TodayScreenProps> = ({
           </View>
 
           <TouchableOpacity style={styles.quickLogPillBtn} onPress={openQuickLog} activeOpacity={0.8}>
-            <Syringe size={14} color="#231716" />
+            <Syringe size={14} strokeWidth={2.4} color="#231716" />
             <Text style={styles.quickLogPillText}>{language === 'en' ? 'Quick Log' : 'Catat'}</Text>
           </TouchableOpacity>
         </View>
@@ -405,7 +404,7 @@ export const TodayScreen: React.FC<TodayScreenProps> = ({
       <View style={styles.calendarStripCard}>
         <View style={styles.calendarStripHeader}>
           <View style={styles.calendarDateTitleRow}>
-            <CalendarDays size={14} color={COLORS.cyan} />
+            <CalendarDays size={14} strokeWidth={2.3} color={COLORS.cyan} />
             <Text style={styles.calendarMonthText}>
               {formatDateLong(selectedDate, language)}
             </Text>
@@ -413,7 +412,7 @@ export const TodayScreen: React.FC<TodayScreenProps> = ({
 
           <View style={styles.weekNavButtons}>
             <TouchableOpacity style={styles.weekNavBtn} onPress={() => setWeekOffset((v) => v - 1)}>
-              <ChevronLeft size={14} color={COLORS.textMuted} />
+              <ChevronLeft size={14} strokeWidth={2.4} color={COLORS.textMuted} />
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.weekNavBtn, weekOffset === 0 && styles.todayNavBtnActive]}
@@ -425,7 +424,7 @@ export const TodayScreen: React.FC<TodayScreenProps> = ({
               <Text style={styles.todayNavBtnText}>{language === 'en' ? 'Today' : 'Hari ini'}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.weekNavBtn} onPress={() => setWeekOffset((v) => v + 1)}>
-              <ChevronRight size={14} color={COLORS.textMuted} />
+              <ChevronRight size={14} strokeWidth={2.4} color={COLORS.textMuted} />
             </TouchableOpacity>
           </View>
         </View>
@@ -474,7 +473,7 @@ export const TodayScreen: React.FC<TodayScreenProps> = ({
       <View style={styles.feedSection}>
         <View style={styles.sectionHeaderRow}>
           <View style={styles.sectionTitleGroup}>
-            <Clock3 size={15} color={COLORS.yellow} />
+            <Clock3 size={15} strokeWidth={2.4} color={COLORS.yellow} />
             <Text style={styles.sectionTitleText}>
               {language === 'en' ? 'Activities for This Date' : 'Aktivitas Tanggal Ini'}
             </Text>
@@ -483,7 +482,7 @@ export const TodayScreen: React.FC<TodayScreenProps> = ({
 
         {selectedOccurrences.length === 0 && selectedLogs.length === 0 ? (
           <View style={styles.emptyFeedCard}>
-            <CheckCircle2 size={28} color={COLORS.mint} />
+            <CheckCircle2 size={28} strokeWidth={2.4} color={COLORS.mint} />
             <Text style={styles.emptyFeedTitle}>
               {language === 'en' ? 'No injections on this date' : 'Tidak ada jadwal pada tanggal ini'}
             </Text>
@@ -563,7 +562,7 @@ export const TodayScreen: React.FC<TodayScreenProps> = ({
                         style={styles.actionInjectBtn}
                         activeOpacity={0.8}
                       >
-                        <Syringe size={12} color="#231716" />
+                        <Syringe size={12} strokeWidth={2.4} color="#231716" />
                         <Text style={styles.actionInjectText}>
                           {language === 'en' ? 'Inject' : 'Suntik'}
                         </Text>
@@ -582,7 +581,7 @@ export const TodayScreen: React.FC<TodayScreenProps> = ({
               .filter((log) => !selectedOccurrences.some((occurrence) => occurrence.inventoryId === log.inventoryId))
               .map((log) => (
                 <View key={`log-${log.id}`} style={styles.loggedFeedCard}>
-                  <Syringe size={14} color={COLORS.mint} />
+                  <Syringe size={14} strokeWidth={2.4} color={COLORS.mint} />
                   <View style={{ flex: 1 }}>
                     <Text style={styles.loggedTitleText}>{log.peptideName || 'Log Injeksi'}</Text>
                     <Text style={styles.loggedMetaText}>{formatTime(log.timeStr || '')} • {log.dose || 0} {log.unit || ''} • {log.siteId || '-'}</Text>
@@ -601,7 +600,7 @@ export const TodayScreen: React.FC<TodayScreenProps> = ({
         <View style={styles.upcomingSection}>
           <View style={styles.sectionHeaderRow}>
             <View style={styles.sectionTitleGroup}>
-              <TrendingUp size={15} color={COLORS.mint} />
+              <TrendingUp size={15} strokeWidth={2.4} color={COLORS.mint} />
               <Text style={styles.sectionTitleText}>
                 {language === 'en' ? 'Upcoming Injections' : 'Jadwal Mendatang'}
               </Text>
@@ -659,7 +658,7 @@ export const TodayScreen: React.FC<TodayScreenProps> = ({
           onPress={() => onNavigateTab ? onNavigateTab('inventory') : onOpenInventory && onOpenInventory()}
           activeOpacity={0.8}
         >
-          <FlaskConical size={14} color={COLORS.mint} />
+          <FlaskRound size={14} strokeWidth={2.4} color={COLORS.mint} />
           <Text style={styles.glanceChipLabel}>{language === 'en' ? 'Fridge' : 'Kulkas'}</Text>
           <View style={styles.glanceNumberBadge}>
             <Text style={styles.glanceNumberText}>{analytics.activeVials}</Text>
@@ -671,7 +670,7 @@ export const TodayScreen: React.FC<TodayScreenProps> = ({
           onPress={() => onNavigateTab ? onNavigateTab('freezer') : null}
           activeOpacity={0.8}
         >
-          <Snowflake size={14} color={COLORS.cyan} />
+          <Snowflake size={14} strokeWidth={2.4} color={COLORS.cyan} />
           <Text style={styles.glanceChipLabel}>{language === 'en' ? 'Freezer' : 'Freezer'}</Text>
           <View style={styles.glanceNumberBadge}>
             <Text style={styles.glanceNumberText}>{analytics.freezerVials}</Text>
@@ -683,7 +682,7 @@ export const TodayScreen: React.FC<TodayScreenProps> = ({
           onPress={() => onNavigateTab ? onNavigateTab('history') : null}
           activeOpacity={0.8}
         >
-          <History size={14} color={COLORS.yellow} />
+          <CalendarClock size={14} strokeWidth={2.4} color={COLORS.yellow} />
           <Text style={styles.glanceChipLabel}>{language === 'en' ? 'History' : 'Riwayat'}</Text>
           <View style={styles.glanceNumberBadge}>
             <Text style={styles.glanceNumberText}>{safeLogs.length}</Text>
@@ -754,7 +753,7 @@ export const TodayScreen: React.FC<TodayScreenProps> = ({
                         </Text>
                         {rem !== null && (
                           <View style={styles.depletionPillRow}>
-                            <Target size={11} color={COLORS.mint} />
+                            <Target size={11} strokeWidth={2.4} color={COLORS.mint} />
                             <Text style={styles.depletionPillText}>
                               {language === 'en' ? `~${rem} injections left` : `Sisa ~${rem}x suntikan lagi`}
                             </Text>
@@ -816,7 +815,7 @@ export const TodayScreen: React.FC<TodayScreenProps> = ({
                 <Text style={styles.cancelBtnText}>{t('app.cancel') || 'Batal'}</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.saveBtn} onPress={saveQuickLog}>
-                <CheckCircle2 size={16} color="#231716" />
+                <CheckCircle2 size={16} strokeWidth={2.4} color="#231716" />
                 <Text style={styles.saveBtnText}>{t('today.confirmLog') || 'Simpan Log'}</Text>
               </TouchableOpacity>
             </View>

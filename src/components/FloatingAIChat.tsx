@@ -17,7 +17,7 @@ import {
   X,
   Send,
   Sparkles,
-  Settings,
+  Settings2,
   Key,
   Check,
   ChevronLeft,
@@ -250,7 +250,7 @@ export const FloatingAIChat: React.FC = () => {
         }}
         style={styles.floatingButton}
       >
-        <Sparkles size={20} color="#231716" />
+        <Sparkles size={20} strokeWidth={2.4} color="#231716" />
       </TouchableOpacity>
 
       <Modal visible={isOpen} animationType="slide" transparent>
@@ -265,7 +265,7 @@ export const FloatingAIChat: React.FC = () => {
                 <View style={styles.chatHeader}>
                   <View style={styles.headerTitleRow}>
                     <View style={styles.botIconWrap}>
-                      <Bot size={18} color={COLORS.accent} />
+                      <Bot size={18} strokeWidth={2.4} color={COLORS.accent} />
                     </View>
                     <View>
                       <Text style={styles.headerTitle}>BioStack AI Expert</Text>
@@ -284,13 +284,13 @@ export const FloatingAIChat: React.FC = () => {
                       onPress={() => setActiveView('settings')}
                       style={styles.iconBtn}
                     >
-                      <Settings size={18} color="#94a3b8" />
+                      <Settings2 size={18} strokeWidth={2.4} color="#94a3b8" />
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => setIsOpen(false)}
                       style={styles.iconBtn}
                     >
-                      <X size={18} color="#94a3b8" />
+                      <X size={18} strokeWidth={2.4} color="#94a3b8" />
                     </TouchableOpacity>
                   </View>
                 </View>

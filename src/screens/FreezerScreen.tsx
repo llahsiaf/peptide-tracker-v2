@@ -17,7 +17,7 @@ import {
   Plus,
   Search,
   Trash2,
-  FlaskConical,
+  FlaskRound,
   X,
   ArrowRight,
 } from 'lucide-react-native';
@@ -486,7 +486,7 @@ export const FreezerScreen: React.FC = () => {
                         onPress={() => handleActionOnItem(item)}
                         style={styles.reconstituteBtn}
                       >
-                        <FlaskConical size={15} color="#231716" />
+                        <FlaskRound size={15} strokeWidth={2.4} color="#231716" />
                         <Text style={styles.reconstituteBtnText} numberOfLines={1}>
                           {t('freezer.dissolveToFridge')}
                         </Text>
@@ -523,8 +523,9 @@ export const FreezerScreen: React.FC = () => {
 
             <View style={styles.modalHeader}>
               <View style={styles.modalTitleRow}>
-                <FlaskConical
+                <FlaskRound
                   size={19}
+                  strokeWidth={2.4}
                   color={COLORS.accent}
                 />
 

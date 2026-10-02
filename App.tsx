@@ -12,13 +12,13 @@ import {
 } from 'react-native';
 import * as Notifications from 'expo-notifications';
 import {
-  Activity,
-  FlaskConical,
-  History,
+  CalendarHeart,
+  FlaskRound,
+  CalendarClock,
   Snowflake,
   TrendingUp,
   Bell,
-  Settings,
+  Settings2,
   ShieldCheck,
   Calculator,
 } from 'lucide-react-native';
@@ -245,7 +245,7 @@ function BioStackApp() {
               style={[styles.calcLauncherBtn, isCalculatorOpen && styles.calcLauncherBtnActive]}
               accessibilityLabel={language === 'en' ? 'Dose calculator' : 'Kalkulator dosis'}
             >
-              <Calculator size={13} color="#231716" />
+              <Calculator size={13} strokeWidth={2.4} color="#231716" />
               <Text style={styles.calcLauncherText}>
                 {language === 'en' ? 'Calc' : 'Kalk'}
               </Text>
@@ -258,7 +258,7 @@ function BioStackApp() {
                 style={[styles.toolbarItem, isReminderHubOpen && styles.toolbarItemActive]}
                 accessibilityLabel={language === 'en' ? 'Reminder & Calendar Hub' : 'Pusat Pengingat & Kalender'}
               >
-                <Bell size={15} color={isReminderHubOpen ? COLORS.accent : '#9c8985'} />
+                <Bell size={15} strokeWidth={2.3} color={isReminderHubOpen ? COLORS.accent : '#9c8985'} />
               </TouchableOpacity>
 
               <View style={styles.toolbarDivider} />
@@ -268,7 +268,7 @@ function BioStackApp() {
                 style={[styles.toolbarItem, activeTab === 'analytics' && styles.toolbarItemActive]}
                 accessibilityLabel={language === 'en' ? 'Open analytics' : 'Buka analytics'}
               >
-                <TrendingUp size={15} color={activeTab === 'analytics' ? COLORS.accent : '#9c8985'} />
+                <TrendingUp size={15} strokeWidth={2.4} color={activeTab === 'analytics' ? COLORS.accent : '#9c8985'} />
               </TouchableOpacity>
 
               <View style={styles.toolbarDivider} />
@@ -278,7 +278,7 @@ function BioStackApp() {
                 style={[styles.toolbarItem, activeTab === 'settings' && styles.toolbarItemActive]}
                 accessibilityLabel={language === 'en' ? 'Open settings' : 'Buka pengaturan'}
               >
-                <Settings size={15} color={activeTab === 'settings' ? COLORS.accent : '#9c8985'} />
+                <Settings2 size={15} strokeWidth={2.4} color={activeTab === 'settings' ? COLORS.accent : '#9c8985'} />
               </TouchableOpacity>
             </View>
           </View>
@@ -305,9 +305,9 @@ function BioStackApp() {
       <View style={styles.navBarContainer}>
         <View style={styles.navBar}>
           {([
-            ['today', t('navigation.today'), Activity],
-            ['inventory', t('navigation.inventory'), FlaskConical],
-            ['history', t('navigation.history'), History],
+            ['today', t('navigation.today'), CalendarHeart],
+            ['inventory', t('navigation.inventory'), FlaskRound],
+            ['history', t('navigation.history'), CalendarClock],
             ['freezer', t('navigation.freezer'), Snowflake],
           ] as const).map(([tab, label, Icon]) => {
             const active = activeTab === tab;
@@ -321,7 +321,7 @@ function BioStackApp() {
                 accessibilityLabel={label}
               >
                 <View style={[styles.navIconWrap, active && styles.navIconWrapActive]}>
-                  <Icon size={16} color={active ? '#231716' : COLORS.muted} />
+                  <Icon size={17} strokeWidth={active ? 2.5 : 2.2} color={active ? '#231716' : COLORS.muted} />
                 </View>
                 <Text style={[styles.navTabText, active && styles.navTabTextActive]}>{label}</Text>
               </TouchableOpacity>
@@ -523,15 +523,15 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(223, 138, 58, 0.35)',
   },
   navIconWrap: {
-    width: 26,
-    height: 24,
-    borderRadius: 7,
+    width: 32,
+    height: 26,
+    borderRadius: 13,
     alignItems: 'center',
     justifyContent: 'center',
   },
   navIconWrapActive: {
     backgroundColor: COLORS.accent,
-    borderRadius: 7,
+    borderRadius: 13,
   },
   navTabText: {
     fontSize: 9,

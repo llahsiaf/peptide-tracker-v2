@@ -20,7 +20,7 @@ import {
   LockKeyhole,
   Languages,
   RotateCcw,
-  Settings as SettingsIcon,
+  Settings2 as SettingsIcon,
   ShieldCheck,
   Upload,
   WifiOff,
@@ -411,7 +411,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ onDone }) => {
         {/* HERO */}
         <View style={styles.hero}>
           <View style={styles.heroIcon}>
-            <SettingsIcon size={20} color={COLORS.accent} />
+            <SettingsIcon size={20} strokeWidth={2.4} color={COLORS.accent} />
           </View>
 
           <View style={styles.heroCopy}>

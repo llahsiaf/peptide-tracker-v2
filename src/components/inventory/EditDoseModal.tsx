@@ -10,7 +10,7 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import { X, Activity, Droplets, Sparkles, Check, CheckCircle2 } from 'lucide-react-native';
+import { X, Sparkles, Check, CheckCircle2 } from 'lucide-react-native';
 import { InventoryItem } from '../../store/useBioStackStore';
 import {
   calculateInjectionMetrics,
@@ -219,7 +219,7 @@ export const EditDoseModal: React.FC<EditDoseModalProps> = ({
             {/* 4. FITUR UTAMA: ESTIMASI TOTAL SUNTIKAN PER VIAL */}
             {estimatedTotalShots > 0 && (
               <View style={styles.estimationBanner}>
-                <Sparkles size={16} color="#fbbf24" />
+                <Sparkles size={16} strokeWidth={2.4} color="#fbbf24" />
                 <Text style={styles.estimationText}>
                   {language === 'en'
                     ? `With this dose, 1 vial yields approx. `
@@ -269,7 +269,7 @@ export const EditDoseModal: React.FC<EditDoseModalProps> = ({
 
             {/* 7. TOMBOL SIMPAN */}
             <TouchableOpacity style={styles.saveBtn} onPress={handleSave}>
-              <Check size={18} color="#042f2e" />
+              <Check size={18} strokeWidth={2.4} color="#042f2e" />
               <Text style={styles.saveBtnText}>
                 {language === 'en' ? 'Save Changes' : 'Simpan Perubahan'}
               </Text>
@@ -284,7 +284,7 @@ export const EditDoseModal: React.FC<EditDoseModalProps> = ({
                   onMarkEmpty(item.id, item.name);
                 }}
               >
-                <CheckCircle2 size={16} color="#fb7185" />
+                <CheckCircle2 size={16} strokeWidth={2.4} color="#fb7185" />
                 <Text style={styles.markEmptyBtnText}>
                   {language === 'en' ? 'Mark Vial as Empty' : 'Kosongkan Vial Ini (Sudah Habis)'}
                 </Text>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, View, Text, StyleSheet, TouchableOpacity, ScrollView, TextInput } from 'react-native';
-import { X, FlaskConical, ChevronRight, Check, Info, ShieldAlert } from 'lucide-react-native';
+import { X, FlaskRound, ChevronRight, Check, Info, ShieldAlert } from 'lucide-react-native';
 import { FreezerStockItem, ActiveInventoryItem } from '../types';
 import { DEFAULT_PEPTIDES } from '../database/defaultPeptides';
 import { useLanguage } from '../i18n/LanguageContext';
@@ -86,7 +86,7 @@ export const ReconstituteWizard: React.FC<ReconstituteWizardProps> = ({
           {/* Header */}
           <View style={styles.header}>
             <View style={styles.headerTitleWrap}>
-              <FlaskConical size={18} color={COLORS.accent} />
+              <FlaskRound size={18} strokeWidth={2.4} color={COLORS.accent} />
               <Text style={styles.headerTitle}>
                 {language === 'en' ? 'Reconstitution & Dose Setup' : 'Pelarutan & Penyetelan Dosis'}
               </Text>

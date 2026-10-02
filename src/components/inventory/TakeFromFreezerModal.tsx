@@ -10,7 +10,7 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import { X, Snowflake, FlaskConical, Droplet, ArrowRight, ArrowLeft, Check } from 'lucide-react-native';
+import { X, Snowflake, FlaskRound, Droplet, ArrowRight, ArrowLeft, Check } from 'lucide-react-native';
 import { FreezerItem } from '../../store/useBioStackStore';
 import { normalizeDecimalInput, parseDecimal } from '../../utils/injectionCalculations';
 import { FrostyFreezerBadge } from '../common/FrostyFreezerBadge';
@@ -176,7 +176,7 @@ export const TakeFromFreezerModal: React.FC<TakeFromFreezerModalProps> = ({
                 )}
 
                 <TouchableOpacity style={styles.confirmBtn} onPress={handleConfirm}>
-                  <FlaskConical size={18} color="#042f2e" />
+                  <FlaskRound size={18} strokeWidth={2.4} color="#042f2e" />
                   <Text style={styles.confirmBtnText}>
                     {selectedItem.unit === 'mL'
                       ? (language === 'en' ? 'Move to Active Fridge' : 'Pindahkan ke Kulkas Aktif')

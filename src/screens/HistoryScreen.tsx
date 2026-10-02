@@ -15,10 +15,10 @@ import {
   Calendar,
   Syringe,
   MapPin,
-  Activity,
+  CalendarClock,
   TrendingUp,
-  FlaskConical,
-  Clock,
+  FlaskRound,
+  Clock3,
 } from 'lucide-react-native';
 import { useBioStackStore } from '../store/useBioStackStore';
 import { getVialJourneys, getPeptideUsageStats } from '../utils/analyticsUtils';
@@ -333,7 +333,7 @@ export const HistoryScreen: React.FC = () => {
           onPress={() => setActiveSegment('logs')}
           activeOpacity={0.8}
         >
-          <Activity size={14} color={activeSegment === 'logs' ? '#231716' : COLORS.textMuted} />
+          <Syringe size={14} strokeWidth={2.4} color={activeSegment === 'logs' ? '#231716' : COLORS.textMuted} />
           <Text style={[styles.segmentBtnText, activeSegment === 'logs' && styles.segmentBtnTextActive]}>
             {language === 'en' ? 'Injection Logs' : 'Riwayat Injeksi'} ({safeHistory.length})
           </Text>
@@ -344,7 +344,7 @@ export const HistoryScreen: React.FC = () => {
           onPress={() => setActiveSegment('vials')}
           activeOpacity={0.8}
         >
-          <FlaskConical size={14} color={activeSegment === 'vials' ? '#231716' : COLORS.textMuted} />
+          <FlaskRound size={14} strokeWidth={2.4} color={activeSegment === 'vials' ? '#231716' : COLORS.textMuted} />
           <Text style={[styles.segmentBtnText, activeSegment === 'vials' && styles.segmentBtnTextActive]}>
             {language === 'en' ? 'Vial Journeys' : 'Perjalanan Vial'} ({vialJourneys.length})
           </Text>
@@ -478,8 +478,9 @@ export const HistoryScreen: React.FC = () => {
               styles.mostUsedRow
             }
           >
-            <FlaskConical
+            <FlaskRound
               size={12}
+              strokeWidth={2.4}
               color={COLORS.accent}
             />
 
@@ -519,8 +520,9 @@ export const HistoryScreen: React.FC = () => {
               styles.sectionTitleWithIcon
             }
           >
-            <FlaskConical
+            <FlaskRound
               size={14}
+              strokeWidth={2.4}
               color={COLORS.accent}
             />
 
@@ -695,7 +697,7 @@ export const HistoryScreen: React.FC = () => {
       >
         {filteredHistory.length === 0 ? (
           <View style={styles.emptyCard}>
-            <Activity size={36} color={COLORS.textMuted} />
+            <CalendarClock size={36} strokeWidth={2.2} color={COLORS.textMuted} />
             <Text style={styles.emptyTitle}>
               {language === 'en'
                 ? 'No Injection Logs'
@@ -799,7 +801,7 @@ export const HistoryScreen: React.FC = () => {
                     </View>
 
                     <View style={styles.logFooter}>
-                      <Clock size={11} color={COLORS.textMuted} />
+                      <Clock3 size={11} strokeWidth={2.3} color={COLORS.textMuted} />
                       <Text style={styles.timestampText}>
                         {item.recordedAtLocal || item.timestamp || '-'}
                       </Text>

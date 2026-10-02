@@ -11,7 +11,7 @@ import {
   Platform,
   Switch,
 } from 'react-native';
-import { X, Calendar, Clock, Activity, Check, CheckCircle2 } from 'lucide-react-native';
+import { X, Calendar, Clock3, RotateCw, Check, CheckCircle2 } from 'lucide-react-native';
 import { InventoryItem } from '../../store/useBioStackStore';
 import { COLORS, RADIUS, SHADOWS, SPACING } from '../../theme';
 import { useLanguage } from '../../i18n/LanguageContext';
@@ -158,7 +158,7 @@ export const ScheduleModal: React.FC<ScheduleModalProps> = ({
                       <Text style={[styles.presetTitle, isSelected && styles.presetTitleActive]}>
                         {p.label}
                       </Text>
-                      {isSelected && <CheckCircle2 size={16} color={COLORS.mint} />}
+                      {isSelected && <CheckCircle2 size={16} strokeWidth={2.4} color={COLORS.mint} />}
                     </View>
                     <Text style={styles.presetSub}>{p.sub}</Text>
                   </TouchableOpacity>
@@ -189,7 +189,7 @@ export const ScheduleModal: React.FC<ScheduleModalProps> = ({
             {/* 3. JAM TINDAKAN */}
             <View style={styles.timeCard}>
               <View style={styles.timeIconWrap}>
-                <Clock size={18} color={COLORS.cyan} />
+                <Clock3 size={18} strokeWidth={2.3} color={COLORS.cyan} />
               </View>
               <View style={{ flex: 1 }}>
                 <Text style={styles.timeLabel}>{language === 'en' ? 'Reminder Time' : 'Jam Pengingat Injeksi'}</Text>
@@ -211,7 +211,7 @@ export const ScheduleModal: React.FC<ScheduleModalProps> = ({
             <View style={styles.cycleCard}>
               <View style={styles.cycleHeaderRow}>
                 <View style={styles.cycleIconWrap}>
-                  <Activity size={16} color={COLORS.purple} />
+                  <RotateCw size={16} strokeWidth={2.4} color={COLORS.purple} />
                 </View>
                 <View style={{ flex: 1 }}>
                   <Text style={styles.cycleTitle}>{language === 'en' ? 'Cycle / Periodization' : 'Siklus / Periodisasi'}</Text>
@@ -255,7 +255,7 @@ export const ScheduleModal: React.FC<ScheduleModalProps> = ({
 
             {/* TOMBOL SIMPAN */}
             <TouchableOpacity style={styles.saveBtn} onPress={handleSave}>
-              <Check size={18} color="#042f2e" />
+              <Check size={18} strokeWidth={2.4} color="#042f2e" />
               <Text style={styles.saveBtnText}>{language === 'en' ? 'Save Schedule' : 'Simpan Jadwal'}</Text>
             </TouchableOpacity>
           </ScrollView>

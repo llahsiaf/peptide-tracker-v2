@@ -13,7 +13,7 @@ import {
 import {
   Bell,
   Calendar,
-  Clock,
+  Clock3,
   CheckCircle2,
   AlertCircle,
   RefreshCw,
@@ -189,7 +189,7 @@ export const ReminderHubModal: React.FC<ReminderHubModalProps> = ({
           <View style={styles.header}>
             <View style={styles.headerTitleRow}>
               <View style={styles.headerIconWrapper}>
-                <Bell size={18} color="#DF8A3A" />
+                <Bell size={18} strokeWidth={2.4} color="#DF8A3A" />
               </View>
               <View style={{ marginLeft: 10 }}>
                 <Text style={styles.headerTitle}>
@@ -203,7 +203,7 @@ export const ReminderHubModal: React.FC<ReminderHubModalProps> = ({
               </View>
             </View>
             <TouchableOpacity onPress={onClose} style={styles.closeBtn}>
-              <X size={18} color="#9c8985" />
+              <X size={18} strokeWidth={2.4} color="#9c8985" />
             </TouchableOpacity>
           </View>
 
@@ -212,7 +212,7 @@ export const ReminderHubModal: React.FC<ReminderHubModalProps> = ({
             <View style={styles.statusBanner}>
               <View style={styles.statusCol}>
                 <View style={styles.statusItemRow}>
-                  <Smartphone size={14} color="#9c8985" />
+                  <Smartphone size={14} strokeWidth={2.3} color="#9c8985" />
                   <Text style={styles.statusItemLabel}>
                     {language === 'en' ? 'Local Alerts' : 'Notifikasi HP'}
                   </Text>
@@ -241,7 +241,7 @@ export const ReminderHubModal: React.FC<ReminderHubModalProps> = ({
 
               <View style={styles.statusCol}>
                 <View style={styles.statusItemRow}>
-                  <Clock size={14} color="#9c8985" />
+                  <Clock3 size={14} strokeWidth={2.3} color="#9c8985" />
                   <Text style={styles.statusItemLabel}>
                     {language === 'en' ? 'Scheduled' : 'Tersimpan'}
                   </Text>
@@ -255,7 +255,7 @@ export const ReminderHubModal: React.FC<ReminderHubModalProps> = ({
 
               <View style={styles.statusCol}>
                 <View style={styles.statusItemRow}>
-                  <Sparkles size={14} color="#9c8985" />
+                  <Sparkles size={14} strokeWidth={2.4} color="#9c8985" />
                   <Text style={styles.statusItemLabel}>
                     {language === 'en' ? 'Protocols' : 'Protokol'}
                   </Text>
@@ -268,7 +268,7 @@ export const ReminderHubModal: React.FC<ReminderHubModalProps> = ({
 
             {/* Sideloadly & Privacy Safe Guarantee Pill */}
             <View style={styles.guaranteeBox}>
-              <ShieldCheck size={16} color="#DF8A3A" style={{ marginTop: 1 }} />
+              <ShieldCheck size={16} strokeWidth={2.4} color="#DF8A3A" style={{ marginTop: 1 }} />
               <View style={{ flex: 1 }}>
                 <Text style={styles.guaranteeTitle}>
                   {language === 'en' ? '100% Sideloadly Compatible' : '100% Kompatibel Sideloadly'}
@@ -285,7 +285,7 @@ export const ReminderHubModal: React.FC<ReminderHubModalProps> = ({
             <View style={styles.actionCard}>
               <View style={styles.actionCardHeader}>
                 <View style={styles.actionIconBox}>
-                  <Send size={15} color="#DF8A3A" />
+                  <Send size={15} strokeWidth={2.4} color="#DF8A3A" />
                 </View>
                 <View style={{ flex: 1 }}>
                   <Text style={styles.actionTitle}>
@@ -308,7 +308,7 @@ export const ReminderHubModal: React.FC<ReminderHubModalProps> = ({
                   <ActivityIndicator size="small" color="#DF8A3A" />
                 ) : (
                   <>
-                    <Bell size={14} color="#DF8A3A" />
+                    <Bell size={14} strokeWidth={2.4} color="#DF8A3A" />
                     <Text style={styles.testBtnText}>
                       {testSent
                         ? language === 'en' ? 'Send Test Again (5s)' : 'Kirim Tes Lagi (5s)'
@@ -323,7 +323,7 @@ export const ReminderHubModal: React.FC<ReminderHubModalProps> = ({
             <View style={styles.actionCard}>
               <View style={styles.actionCardHeader}>
                 <View style={styles.actionIconBox}>
-                  <RefreshCw size={15} color="#c2d3b6" />
+                  <RefreshCw size={15} strokeWidth={2.4} color="#c2d3b6" />
                 </View>
                 <View style={{ flex: 1 }}>
                   <Text style={styles.actionTitle}>
@@ -346,7 +346,7 @@ export const ReminderHubModal: React.FC<ReminderHubModalProps> = ({
                   <ActivityIndicator size="small" color="#231716" />
                 ) : (
                   <>
-                    <RefreshCw size={14} color="#231716" />
+                    <RefreshCw size={14} strokeWidth={2.4} color="#231716" />
                     <Text style={styles.syncBtnText}>
                       {language === 'en' ? 'Sync Reminders Now' : 'Sinkronkan Jadwal Sekarang'}
                     </Text>
@@ -359,7 +359,7 @@ export const ReminderHubModal: React.FC<ReminderHubModalProps> = ({
             <View style={styles.actionCard}>
               <View style={styles.actionCardHeader}>
                 <View style={styles.actionIconBox}>
-                  <Calendar size={15} color="#DF8A3A" />
+                  <Calendar size={15} strokeWidth={2.4} color="#DF8A3A" />
                 </View>
                 <View style={{ flex: 1 }}>
                   <Text style={styles.actionTitle}>
@@ -382,7 +382,7 @@ export const ReminderHubModal: React.FC<ReminderHubModalProps> = ({
                   <ActivityIndicator size="small" color="#231716" />
                 ) : (
                   <>
-                    <Calendar size={14} color="#231716" />
+                    <Calendar size={14} strokeWidth={2.4} color="#231716" />
                     <Text style={styles.calBtnText}>
                       {language === 'en' ? 'Add All to Apple Calendar' : 'Masukkan Semua ke Apple Calendar'}
                     </Text>
@@ -397,7 +397,7 @@ export const ReminderHubModal: React.FC<ReminderHubModalProps> = ({
                 {language === 'en' ? 'Tips for Best Experience:' : 'Tips Penggunaan Optimal:'}
               </Text>
               <View style={styles.guideRow}>
-                <CheckCircle2 size={13} color="#c2d3b6" style={{ marginTop: 2 }} />
+                <CheckCircle2 size={13} strokeWidth={2.4} color="#c2d3b6" style={{ marginTop: 2 }} />
                 <Text style={styles.guideText}>
                   {language === 'en'
                     ? 'Apple Calendar sync adds recurring events with 15-min pre-alerts that seamlessly ring on your Apple Watch.'
@@ -405,7 +405,7 @@ export const ReminderHubModal: React.FC<ReminderHubModalProps> = ({
                 </Text>
               </View>
               <View style={styles.guideRow}>
-                <CheckCircle2 size={13} color="#c2d3b6" style={{ marginTop: 2 }} />
+                <CheckCircle2 size={13} strokeWidth={2.4} color="#c2d3b6" style={{ marginTop: 2 }} />
                 <Text style={styles.guideText}>
                   {language === 'en'
                     ? 'Device notifications will automatically display the exact dose and syringe units (e.g. 500 mcg (5 Units)).'
